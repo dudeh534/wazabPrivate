@@ -69,12 +69,12 @@
                 </LinearLayout>
 
                 <com.ourincheon.wazap.NotoTextView
-                    android:id="@+id/textView32"
+                    android:id="@+id/day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="13dp"
-                    android:text="디자인" />
+                    android:text="D - 0" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="디자인"
-                        android:id="@+id/textView36"
+                        android:id="@+id/category"
                         android:textSize="13dp"
                         android:textColor="#0057ff" />
                 </LinearLayout>

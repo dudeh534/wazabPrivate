@@ -34,8 +34,8 @@ import retrofit2.Retrofit;
 public class JoinActivity extends AppCompatActivity {
 
     reqContest contest;
-    TextView jTitle,jButton,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost;
-    String access_token,num;
+    TextView jTitle,jButton,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos,jPro;
+    String access_token,num,Writer;
     Button jPick,jBefore;
 
     @Override
@@ -52,6 +52,9 @@ public class JoinActivity extends AppCompatActivity {
         jMem = (TextView) findViewById(R.id.jMem);
         jDate = (TextView) findViewById(R.id.jDate);
         jHost = (TextView) findViewById(R.id.jHost);
+        jLoc = (TextView) findViewById(R.id.jLoc);
+        jPos = (TextView) findViewById(R.id.jPos);
+
 
         Intent intent = getIntent();
         num =  intent.getExtras().getString("id");
@@ -83,6 +86,17 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pickContest(num, access_token);
+            }
+        });
+
+        jPro = (TextView) findViewById(R.id.jPro);
+        jPro.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(JoinActivity.this, showMypageActivity.class);
+                intent.putExtra("user_id", Writer);
+                intent.putExtra("flag",1);
+                startActivity(intent);
             }
         });
     }
@@ -214,6 +228,9 @@ public class JoinActivity extends AppCompatActivity {
                     jName.setText(contest.getData().getUsername());
                     jCover.setText(contest.getData().getCover());
                     jHost.setText(contest.getData().getHosts());
+                    jLoc.setText(contest.getData().getCont_locate());
+                    jPos.setText(contest.getData().getPositions());
+                    Writer = contest.getData().getCont_writer();
 
                     String[] parts = contest.getData().getPeriod().split("T");
                     Dday day = new Dday();

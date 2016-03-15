@@ -33,5 +33,6 @@ class JSONData{
     String kakao_id;
     String introduce;
     String exp;
+    String skill;
     int age;
 }

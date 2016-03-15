@@ -37,7 +37,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
     reqContest contest;
     ContestData contestData;
-    TextView jTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost;
+    TextView jTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos;
     Button eBtn,jBefore;
     String access_token,num;
     AlertDialog.Builder ad,deleteD;
@@ -59,7 +59,8 @@ public class MasterJoinActivity extends AppCompatActivity {
         jMem = (TextView) findViewById(R.id.jmMem);
         jDate = (TextView) findViewById(R.id.jmDate);
         jHost = (TextView) findViewById(R.id.jmHost);
-
+        jLoc = (TextView) findViewById(R.id.jmLoc);
+        jPos = (TextView) findViewById(R.id.jmPos);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         access_token = pref.getString("access_token", "");
@@ -173,6 +174,7 @@ public class MasterJoinActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("삭제 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
 
                     } else {
                         Log.d("삭제 실패: ", msg);
@@ -269,6 +271,8 @@ public class MasterJoinActivity extends AppCompatActivity {
                     jName.setText(contest.getData().getUsername());
                     jCover.setText(contest.getData().getCover());
                     jHost.setText(contest.getData().getHosts());
+                    jLoc.setText(contest.getData().getCont_locate());
+                    jPos.setText(contest.getData().getPositions());
 
                     String[] parts = contest.getData().getPeriod().split("T");
                     Dday day = new Dday();
@@ -284,6 +288,8 @@ public class MasterJoinActivity extends AppCompatActivity {
                     contestData.setHosts(contest.getData().getHosts());
                     contestData.setContests_id(contest.getData().getContests_id());
                     contestData.setPeriod(parts[0]);
+                    contestData.setCont_locate(contest.getData().getCont_locate());
+                    contestData.setPositions(contest.getData().getPositions());
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

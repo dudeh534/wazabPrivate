@@ -7,8 +7,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserInfo {
 
-    @SerializedName("access_token")
+   /* @SerializedName("access-token")
     String access_token;
+    */
     @SerializedName("kakao_id")
     String kakao_id;
     @SerializedName("username")
@@ -19,6 +20,8 @@ public class UserInfo {
     int age;
     @SerializedName("major")
     String major;
+    @SerializedName("skill")
+    String skill;
     @SerializedName("locate")
     String locate;
     @SerializedName("introduce")
@@ -27,9 +30,8 @@ public class UserInfo {
     String exp;
 
     public UserInfo(){};
-    public UserInfo(String access_token, String kakao_id, String username, String school, int age, String major,String locate, String introduce, String exp)
+    public UserInfo(String kakao_id, String username, String school, int age, String major, String skill ,String locate, String introduce, String exp)
     {
-        this.access_token = access_token;
         this.kakao_id = kakao_id;
         this.username = username;
         this.school = school;
@@ -38,11 +40,13 @@ public class UserInfo {
         this.locate = locate;
         this.introduce = introduce;
         this.exp = exp;
+        this.skill = skill;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public String getSkill() {
+        return skill;
     }
+
 
     public String getKakao_id() {
         return kakao_id;

@@ -64,6 +64,17 @@
         android:layout_alignLeft="@+id/sLoc"
         android:layout_alignStart="@+id/sLoc" />
 
+    <com.ourincheon.wazap.NotoTextView
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:hint="특기"
+        android:id="@+id/sSkill"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/sKakao"
+        android:layout_alignLeft="@+id/sKakao"
+        android:layout_alignStart="@+id/sKakao" />
+
     <ImageView
         android:id="@+id/sPro"
         android:layout_width="120dp"
@@ -79,7 +90,7 @@
         android:textSize="20dp"
         android:text="200자 소개"
         android:id="@+id/textView8"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/sSkill"
         android:layout_alignLeft="@+id/sIntro"
         android:layout_alignStart="@+id/sIntro" />
 
@@ -90,7 +101,6 @@
         android:singleLine="false"
         android:lines="3"
         android:textSize="20dp"
-        android:layout_marginTop="10dp"
         android:id="@+id/sIntro"
         android:layout_below="@+id/textView8"
         android:layout_centerHorizontal="true" />

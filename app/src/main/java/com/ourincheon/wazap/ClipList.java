@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -66,6 +67,7 @@ public class ClipList extends AppCompatActivity {
         loadClip(access_token);
 
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("찜 목록 지우기").setMessage("해당 스크랩을 지우시겠습니까?")
                 .setCancelable(true).setPositiveButton("지우기", new DialogInterface.OnClickListener() {
@@ -87,7 +89,7 @@ public class ClipList extends AppCompatActivity {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ClipList.this, "취소", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ClipList.this, "취소", Toast.LENGTH_SHORT).show();
                 posi = position;
                 dialog.show();
                 return false;
@@ -98,16 +100,22 @@ public class ClipList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                ContestData mData = mAdapter.mListData.get(position);
-                //Toast.makeText(ContestList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-                contest_id = String.valueOf(mData.getContests_id());
-                applyContest( contest_id, access_token);
+        //        ContestData mData = mAdapter.mListData.get(position);
+        //        contest_id = String.valueOf(mData.getContests_id());
+        //        applyContest( contest_id, access_token);
             }
         });
 
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //loadClip(access_token);
     }
 
     void applyContest(String num, String access_token) {
@@ -136,7 +144,7 @@ public class ClipList extends AppCompatActivity {
                         //deleteClip(contest_id);
                     } else {
                         Log.d("저장 실패: ", msg);
-                        Toast.makeText(getApplicationContext(), "신청 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                     }
 
                 } else if (response.isSuccess()) {
@@ -177,7 +185,6 @@ public class ClipList extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩 취소되었습니다.", Toast.LENGTH_SHORT).show();
-
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -233,7 +240,7 @@ public class ClipList extends AppCompatActivity {
                                     jsonArr.getJSONObject(i).getString("period"),
                                     jsonArr.getJSONObject(i).getString("categories"),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("members")));
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")));
 
                             id_list[i]= jsonArr.getJSONObject(i).getString("contests_id");
                           }
@@ -265,7 +272,7 @@ public class ClipList extends AppCompatActivity {
         public TextView cTitle;
         public TextView Cate;
         public TextView Member;
-
+        Button Join;
     }
 
     private class ListViewAdapter extends BaseAdapter {
@@ -300,7 +307,7 @@ public class ClipList extends AppCompatActivity {
             addInfo.setPeriod(parts[0]);
             addInfo.setCategories(categories);
             addInfo.setContests_id(id);
-            addInfo.setMembers(member);
+            addInfo.setRecruitment(member);
 
             mListData.add(addInfo);
         }
@@ -315,7 +322,7 @@ public class ClipList extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -326,7 +333,18 @@ public class ClipList extends AppCompatActivity {
                 holder.Dday = (TextView) convertView.findViewById(R.id.cDday);
                 holder.cTitle = (TextView) convertView.findViewById(R.id.cTitle);
                 holder.Cate = (TextView) convertView.findViewById(R.id.cCate);
-                holder.Member = (TextView) convertView.findViewById(R.id.cMember);;
+                holder.Member = (TextView) convertView.findViewById(R.id.cMember);
+
+                holder.Join = (Button) convertView.findViewById(R.id.cJoin);
+                holder.Join.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ContestData mData = mListData.get(position);
+                        contest_id = String.valueOf(mData.getContests_id());
+                        //Toast.makeText(ClipList.this, contest_id+position, Toast.LENGTH_SHORT).show();
+                        applyContest(contest_id, access_token);
+                    }
+                });
 
                 convertView.setTag(holder);
             }else{
@@ -342,7 +360,7 @@ public class ClipList extends AppCompatActivity {
 
             holder.Cate.setText(mData.getCategories());
 
-            holder.Member.setText("확정인원 " + mData.getMembers() + "명");
+            holder.Member.setText("모집인원 " + mData.getRecruitment() + "명");
 
             return convertView;
         }

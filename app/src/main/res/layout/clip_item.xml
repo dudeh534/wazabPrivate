@@ -72,7 +72,7 @@
                     <com.ourincheon.wazap.NotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="확정인원 2명"
+                        android:text="모집인원 2명"
                         android:id="@+id/cMember"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="16dp"
@@ -85,7 +85,7 @@
                 android:focusable="false"
                 android:layout_width="58dp"
                 android:layout_height="22dp"
-                android:id="@+id/require"
+                android:id="@+id/cJoin"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:background="@drawable/require_info_button"

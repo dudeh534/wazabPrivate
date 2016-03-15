@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:id="@+id/linearLayout">
         <Button
-            android:id="@+id/libray_btn_toggle"
+            android:id="@+id/reBack"
             android:layout_width="13dp"
             android:layout_height="22dp"
             android:background="@drawable/detail_btn_back"
@@ -86,7 +86,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="350dp"
         android:layout_below="@+id/lineardivider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -103,7 +103,7 @@
             <com.ourincheon.wazap.NotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="공모전 명칭"
+                android:text="공모전 주최"
                 android:id="@+id/textView18"
                 android:layout_gravity="left|center_horizontal"
                 android:layout_marginTop="26.33dp"
@@ -124,8 +124,7 @@
                 android:layout_height="wrap_content"
                 android:text="모집인원"
                 android:id="@+id/textView20"
-                android:layout_gravity="left|center_horizontal"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="90dp"
                 android:layout_marginLeft="12dp" />
 
             <com.ourincheon.wazap.NotoTextView
@@ -133,7 +132,22 @@
                 android:layout_height="wrap_content"
                 android:text="모집마감일"
                 android:id="@+id/textView25"
-                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="12dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지역"
+                android:id="@+id/textView26"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="12dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모집포지션"
+                android:id="@+id/textView27"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="12dp" />
         </LinearLayout>
@@ -157,22 +171,50 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="110dp"
                 android:layout_marginTop="5dp">
 
-                <CheckBox
+                <com.ourincheon.wazap.NotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="IT 콘텐츠"
-                    android:id="@+id/checkBox4"
+                    android:text="광고/아이디어/마케팅"
+                    android:id="@+id/checkAd"
                     android:checked="false"
                     android:textSize="13dp" />
 
-                <CheckBox
+                <com.ourincheon.wazap.NotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="마케팅 광고"
-                    android:id="@+id/checkBox2"
+                    android:text="디자인"
+                    android:id="@+id/checkDe"
+                    android:textSize="13dp" />
+
+                <com.ourincheon.wazap.NotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="사진/영상/UCC"
+                    android:id="@+id/checkUc"
+                    android:textSize="13dp" />
+
+                <com.ourincheon.wazap.NotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="게임/소프트웨어"
+                    android:id="@+id/checkIt"
+                    android:textSize="13dp" />
+
+                <com.ourincheon.wazap.NotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="해외"
+                    android:id="@+id/checkFo"
+                    android:textSize="13dp" />
+
+                <com.ourincheon.wazap.NotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기타"
+                    android:id="@+id/checkEtc"
                     android:textSize="13dp" />
 
             </LinearLayout>
@@ -193,14 +235,29 @@
 
             </LinearLayout>
 
-            <EditText
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="2016 - 01 - 25"
+                android:hint="날짜를 선택하세요"
                 android:id="@+id/reDate"
                 android:textSize="14dp" />
 
+            <EditText
+                android:hint="지역을 선택하세요"
+                android:id="@+id/reLoc"
+                android:textSize="14dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
 
+
+            <EditText
+                android:hint="모집포지션을 입력하세요"
+                android:id="@+id/rePos"
+                android:textSize="14dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
 
 
         </LinearLayout>
@@ -244,7 +301,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:hint="상세소개를 입력하세요"
-            android:lines="7"
+            android:lines="5"
             android:id="@+id/reIntro"
             android:layout_gravity="left|top"
             android:layout_below="@+id/textView7"

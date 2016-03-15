@@ -188,5 +188,11 @@ public class showProfile extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        //Toast.makeText(this, "Back button pressed.", Toast.LENGTH_SHORT).show();
+        ((ApplierList)(ApplierList.mContext)).onResume();
+        super.onBackPressed();
+    }
 }
 

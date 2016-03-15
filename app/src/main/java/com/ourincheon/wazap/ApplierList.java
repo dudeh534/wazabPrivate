@@ -38,11 +38,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ApplierList extends AppCompatActivity {
+    public static Context mContext;
     private ListView mListView = null;
     private ListViewAdapter mAdapter = null;
     Appliers appliers;
     ArrayList<ApplierData> applier_list;
-    String num;
+    String num,access_token;
     int count;
 
     @Override
@@ -51,6 +52,8 @@ public class ApplierList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applier_list);
 
+        mContext = this;
+
         Intent intent = getIntent();
         System.out.println(intent.getExtras().getString("id"));
         num = intent.getExtras().getString("id");
@@ -58,7 +61,7 @@ public class ApplierList extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.applierlistView);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        String access_token = pref.getString("access_token", "");
+        access_token = pref.getString("access_token", "");
         System.out.println(pref.getString("profile_img", ""));
 
         applier_list = new ArrayList<ApplierData>();
@@ -69,6 +72,12 @@ public class ApplierList extends AppCompatActivity {
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    //    loadApplier(num, access_token);
     }
 
     void loadApplier(String num, String access_token)
@@ -236,7 +245,7 @@ public class ApplierList extends AppCompatActivity {
             holder.aPBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, mData.getApp_users_id(), Toast.LENGTH_LONG).show();
+                //    Toast.makeText(context, mData.getApp_users_id(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(ApplierList.this, showProfile.class);
                     intent.putExtra("thumbnail", mData.getProfile_img());
                     intent.putExtra("user_id", mData.getApp_users_id());

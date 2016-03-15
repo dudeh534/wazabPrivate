@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ourincheon.wazap.MypageActivity">
 
-    <EditText
+    <com.ourincheon.wazap.NotoTextView
         android:drawableLeft="@drawable/star"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
@@ -67,6 +67,18 @@
         android:layout_alignLeft="@+id/eLoc"
         android:layout_alignStart="@+id/eLoc" />
 
+    <EditText
+        android:drawableLeft="@drawable/star"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:hint="특기"
+        android:id="@+id/eSkill"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/eKakao"
+        android:layout_alignLeft="@+id/eKakao"
+        android:layout_alignStart="@+id/eKakao" />
+
     <ImageView
         android:id="@+id/ePro"
         android:layout_width="120dp"
@@ -82,10 +94,10 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:text="200자 소개"
-        android:layout_below="@+id/eKakao"
-        android:layout_alignLeft="@+id/eKakao"
-        android:layout_alignStart="@+id/eKakao"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/eSkill"
+        android:layout_alignLeft="@+id/eSkill"
+        android:layout_alignStart="@+id/eSkill"
+        android:layout_marginTop="10dp"
         android:id="@+id/textView8" />
 
     <EditText
@@ -93,7 +105,7 @@
         android:layout_height="wrap_content"
         android:gravity="top"
         android:singleLine="false"
-        android:lines="3"
+        android:lines="2"
         android:textSize="18dp"
         android:id="@+id/eIntro"
         android:layout_below="@+id/textView8"

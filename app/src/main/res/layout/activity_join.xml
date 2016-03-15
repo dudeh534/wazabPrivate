@@ -92,7 +92,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="270dp"
         android:layout_below="@+id/lineardivider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -145,7 +145,7 @@
                 android:layout_width="65.67dp"
                 android:layout_height="20dp"
                 android:text="상세프로필"
-                android:id="@+id/textView31"
+                android:id="@+id/jPro"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="23.33dp" />
         </LinearLayout>
@@ -174,7 +174,7 @@
             <com.ourincheon.wazap.NotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="모집인원"
+                android:text="모집/전체인원"
                 android:id="@+id/textView20"
                 android:layout_gravity="left|center_horizontal"
                 android:layout_marginTop="18.67dp" />
@@ -192,6 +192,22 @@
                 android:layout_height="wrap_content"
                 android:text="신청인원"
                 android:id="@+id/textView25"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="18.67dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모임지역"
+                android:id="@+id/textView26"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="18.67dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모집직군"
+                android:id="@+id/textView27"
                 android:layout_gravity="left|center_horizontal"
                 android:layout_marginTop="18.67dp" />
         </LinearLayout>
@@ -303,6 +319,22 @@
                 android:layout_marginTop="18.67dp"
                 android:textSize="14dp" />
 
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="서울"
+                android:id="@+id/jLoc"
+                android:layout_marginTop="18.67dp"
+                android:textSize="14dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개발"
+                android:id="@+id/jPos"
+                android:layout_marginTop="18.67dp"
+                android:textSize="14dp" />
+
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -345,7 +377,7 @@
         <com.ourincheon.wazap.NotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="같이 레드닷 어워즈 함께할 팀원을 구합니다 파티원 구해요 같이 할분 구합니다             같이 레드닷 어워즈 함께할 팀원을 구합니다 파티원 구해요 같이 할분 구합니다 같이 레드닷 어워즈 함께할 팀원을 구합니다 파티원 구해요 같이 할분 구합니다 같이 레드닷 어워즈 함께할 팀원을 구합니다 파티원 구해요 같이 할분 구합니다 같이 레드닷 어워즈 함께할 팀원을 구합니다 파티원 구해요 같이 할분 구합니다"
+            android:text="소"
             android:id="@+id/jCover"
             android:layout_gravity="left|top"
             android:layout_below="@+id/textView7"

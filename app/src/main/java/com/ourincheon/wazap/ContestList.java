@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -69,11 +70,11 @@ public class ContestList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                ContestData mData = mAdapter.mListData.get(position);
+       //         ContestData mData = mAdapter.mListData.get(position);
                 // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
-                intent.putExtra("id",String.valueOf(mData.getContests_id()));
-                startActivity(intent);
+       //         Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
+        //        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+         //       startActivity(intent);
             }
         });
 
@@ -148,6 +149,7 @@ public class ContestList extends AppCompatActivity {
         public TextView Cate;
         public TextView Man;
         public TextView Member;
+        Button Detail;
     }
 
     private class ListViewAdapter extends BaseAdapter {
@@ -200,7 +202,7 @@ public class ContestList extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -214,6 +216,16 @@ public class ContestList extends AppCompatActivity {
                 holder.Man = (TextView) convertView.findViewById(R.id.rman);
                 holder.Member = (TextView) convertView.findViewById(R.id.rmember);
 
+                holder.Detail = (Button) convertView.findViewById(R.id.rdetail);
+                holder.Detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ContestData mData = mAdapter.mListData.get(position);
+                        Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
+                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                        startActivity(intent);
+                    }
+                });
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();

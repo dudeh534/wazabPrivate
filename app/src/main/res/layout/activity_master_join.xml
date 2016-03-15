@@ -91,7 +91,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="270dp"
         android:layout_below="@+id/lineardivider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -192,6 +192,22 @@
                 android:layout_height="wrap_content"
                 android:text="신청인원"
                 android:id="@+id/textView25"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="18.67dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모임지역"
+                android:id="@+id/textView26"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="18.67dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모집직군"
+                android:id="@+id/textView27"
                 android:layout_gravity="left|center_horizontal"
                 android:layout_marginTop="18.67dp" />
         </LinearLayout>
@@ -300,6 +316,22 @@
                 android:layout_height="wrap_content"
                 android:text="27"
                 android:id="@+id/jmApply"
+                android:layout_marginTop="18.67dp"
+                android:textSize="14dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="서울"
+                android:id="@+id/jmLoc"
+                android:layout_marginTop="18.67dp"
+                android:textSize="14dp" />
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개발"
+                android:id="@+id/jmPos"
                 android:layout_marginTop="18.67dp"
                 android:textSize="14dp" />
 

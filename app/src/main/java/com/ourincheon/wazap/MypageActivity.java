@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.UserInfo;
@@ -33,8 +35,9 @@ public class MypageActivity extends AppCompatActivity {
     ImageView profileImg;
     String thumbnail;
     regUser reguser;
-    private EditText eName, eMajor, eUniv, eLoc, eKakao, eIntro, eExp;
-    String access_token, kakao_id, username, password, school, major, locate, introduce, exp;
+    TextView eName;
+    private EditText eMajor, eUniv, eLoc, eKakao, eIntro, eExp,eSkill;
+    String access_token, kakao_id, username, password, school, major, locate, introduce, exp,skill;
     int age;
     UserInfo userInfo;
     regMsg res;
@@ -44,15 +47,17 @@ public class MypageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
 
-        eName = (EditText) findViewById(R.id.eName);
+        eName = (TextView) findViewById(R.id.eName);
         eMajor = (EditText) findViewById(R.id.eMajor);
         eUniv = (EditText) findViewById(R.id.eUniv);
         eLoc = (EditText) findViewById(R.id.eLoc);
         eKakao = (EditText) findViewById(R.id.eKakao);
         eIntro = (EditText) findViewById(R.id.eIntro);
         eExp = (EditText) findViewById(R.id.eExp);
+        eSkill = (EditText) findViewById(R.id.eSkill);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        access_token = pref.getString("access_token", "");
         profileImg = (ImageView)findViewById(R.id.ePro);
         thumbnail = pref.getString("profile_img","");
         ThumbnailImage thumb = new ThumbnailImage(thumbnail, profileImg);
@@ -77,7 +82,7 @@ public class MypageActivity extends AppCompatActivity {
         Call<regUser> call = service.getUserInfo(user_id);
         call.enqueue(new Callback<regUser>() {
             @Override
-            public void onResponse( Response<regUser> response) {
+            public void onResponse(Response<regUser> response) {
                 if (response.isSuccess() && response.body() != null) {
 
                     Log.d("SUCCESS", response.message());
@@ -87,13 +92,13 @@ public class MypageActivity extends AppCompatActivity {
                     //Log.d("SUCCESS", reguser.getMsg());
 
                     String result = new Gson().toJson(reguser);
-                    Log.d("SUCESS-----",result);
+                    Log.d("SUCESS-----", result);
 
                     JSONObject jsonRes;
-                    try{
+                    try {
                         jsonRes = new JSONObject(result);
                         JSONArray jsonArr = jsonRes.getJSONArray("data");
-                        Log.d("username",jsonArr.getJSONObject(0).getString("username"));
+                        Log.d("username", jsonArr.getJSONObject(0).getString("username"));
                         eName.setText(jsonArr.getJSONObject(0).getString("username"));
                         eMajor.setText(jsonArr.getJSONObject(0).getString("major"));
                         eUniv.setText(jsonArr.getJSONObject(0).getString("school"));
@@ -101,9 +106,11 @@ public class MypageActivity extends AppCompatActivity {
                         eKakao.setText(jsonArr.getJSONObject(0).getString("kakao_id"));
                         eIntro.setText(jsonArr.getJSONObject(0).getString("introduce"));
                         eExp.setText(jsonArr.getJSONObject(0).getString("exp"));
+                        eSkill.setText(jsonArr.getJSONObject(0).getString("skill"));
 
-                    }catch (JSONException e)
-                    {};
+                    } catch (JSONException e) {
+                    }
+                    ;
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
@@ -113,7 +120,7 @@ public class MypageActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure( Throwable t) {
+            public void onFailure(Throwable t) {
                 t.printStackTrace();
                 Log.e("Errorglg''';kl", t.getMessage());
             }
@@ -143,22 +150,27 @@ public class MypageActivity extends AppCompatActivity {
             kakao_id = eKakao.getText().toString();
             introduce = eIntro.getText().toString().trim();
             exp = eExp.getText().toString().trim();
+            skill = eSkill.getText().toString().trim();
 
             SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
-            userInfo = new UserInfo(pref.getString("access_token", ""), kakao_id, username, school, 94, major, locate, introduce, exp);
+            userInfo = new UserInfo( kakao_id, username, school, 94, major , skill, locate, introduce, exp);
 
-            postInfo(userInfo);
-            finish();
+            if(major.equals("") || locate.equals("") || kakao_id.equals("") || skill.equals("") || introduce.equals("") || exp.equals(""))
+                Toast.makeText(getApplicationContext(), "필수사항을 모두 입력해주세요.", Toast.LENGTH_LONG).show();
+            else
+            {
+                postInfo(userInfo);
+                ((showMypageActivity)(showMypageActivity.showContext)).onResume();
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    void postInfo(UserInfo userInfo) {
-
-        System.out.println(userInfo.getAccess_token());
-        System.out.println(userInfo.getAge());
+    void postInfo(UserInfo userInfo)
+    {
          Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -166,7 +178,7 @@ public class MypageActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<regMsg> call = service.createInfo(userInfo);
+        Call<regMsg> call = service.createInfo(access_token, userInfo);
         call.enqueue(new Callback<regMsg>() {
             @Override
             public void onResponse( Response<regMsg> response) {
@@ -175,11 +187,14 @@ public class MypageActivity extends AppCompatActivity {
                     res = response.body();
                     Log.d("SUCCESS-------------", response.message());
                     Log.d("SUCCESS", res.getMsg());
+                    Toast.makeText(getApplicationContext(), "수정 되었습니다.", Toast.LENGTH_SHORT).show();
                     //user = response.body();
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
+                    Toast.makeText(getApplicationContext(), "수정 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("Response Error Body", response.errorBody().toString());
+                    Toast.makeText(getApplicationContext(), "수정 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -187,6 +202,7 @@ public class MypageActivity extends AppCompatActivity {
             public void onFailure( Throwable t) {
                 t.printStackTrace();
                 Log.e("Error", t.getMessage());
+                Toast.makeText(getApplicationContext(), "수정 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
             }
         });
     }

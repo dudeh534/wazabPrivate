@@ -18,6 +18,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -44,6 +45,7 @@ public interface WazapService {
     // 사용자 정보 저장하기
     @POST("/users/reg")
     Call<regMsg> createInfo(
+            @Header("access-token") String access_token,
             @Body UserInfo userInfo);
 
 
@@ -56,13 +58,14 @@ public interface WazapService {
     // 모집글 쓰기
     @POST("contests")
     Call<LinkedTreeMap> createContests(
+            @Header("access-token") String access_token,
             @Body ContestInfo contestInfo
     );
 
     // 메인목록 받아오기
     @GET("contests")
     Call<Contests> getContests(
-            @Query("access_token") String access_token,
+            @Header("access-token") String access_token,
             @Query("amount") int amount
     );
 
@@ -70,30 +73,28 @@ public interface WazapService {
     @GET("contests/{contest_id}")
     Call<reqContest> getConInfo(
             @Path("contest_id") String contest_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 모집글 신청
-    @FormUrlEncoded
     @POST("contests/{contest_id}/join")
     Call<LinkedTreeMap> applyContests(
             @Path("contest_id") String contest_id,
-            @Field("access_token") String access_token
+            @Header("access-token") String access_token
 
     );
 
     // 글 찜하기
-    @FormUrlEncoded
     @POST("clips/{contest_id}")
     Call<LinkedTreeMap> clipContests(
             @Path("contest_id") String contest_id,
-            @Field("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 신청목록 받아오기
     @GET("contests/applications")
     Call<Contests> getAppplylist(
-            @Query("access_token") String access_token,
+            @Header("access-token") String access_token,
             @Query("start_id") int start_id,
             @Query("amount") int amount
     );
@@ -101,7 +102,7 @@ public interface WazapService {
     // 알람목록 받아오기
     @GET("alrams")
     Call<Alarms> getAlarmlist(
-            @Query("access_token") String access_token,
+            @Header("access-token") String access_token,
             @Query("start_id") int start_id,
             @Query("amount") int amount
     );
@@ -109,7 +110,7 @@ public interface WazapService {
     // 찜목록 받아오기
     @GET("clips")
     Call<Contests> getCliplist(
-            @Query("access_token") String access_token,
+            @Header("access-token") String access_token,
             @Query("start_id") int start_id,
             @Query("amount") int amount
     );
@@ -117,6 +118,7 @@ public interface WazapService {
     // 게시글 수정하기
     @PUT("contests/{contest_id}")
     Call<LinkedTreeMap> editContest(
+            @Header("access-token") String access_token,
             @Path("contest_id") String contest_id,
             @Body ContestInfo contestInfo
     );
@@ -125,38 +127,36 @@ public interface WazapService {
     @DELETE("contests/{contest_id}")
     Call<LinkedTreeMap> delContest(
             @Path("contest_id") String contest_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 모집목록 받아오기
     @GET("contests/list/{writer_id}")
     Call<Contests> getContestlist(
             @Path("writer_id") String writer_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 신청자목록 받아오기
     @GET("contests/{contest_id}/applies")
     Call<Appliers> getApplierlist(
             @Path("contest_id") String contest_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 멤버변경하기
-    @FormUrlEncoded
     @POST("contests/{contest_id}/{applies_id}")
     Call<LinkedTreeMap> changeMember(
             @Path("contest_id") String contest_id,
             @Path("applies_id") String applies_id,
-            @Field("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 마감하기
-    @FormUrlEncoded
     @PUT("contests/finish/{contest_id}")
     Call<LinkedTreeMap> finishContest(
             @Path("contest_id") String contest_id,
-            @Field("access_token") String access_token
+            @Header("access-token") String access_token
             //@Body Access access_token
     );
 
@@ -164,15 +164,14 @@ public interface WazapService {
     @DELETE("clips/{contest_id}")
     Call<LinkedTreeMap> delClip(
             @Path("contest_id") String contest_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 
     // 신청글 취소하기
-    @DELETE("contests/{contest_id}/{applies_id}")
+    @DELETE("contests/{contest_id}/join")
     Call<LinkedTreeMap> delApply(
             @Path("contest_id") String contest_id,
-            @Path("applies_id") String applies_id,
-            @Query("access_token") String access_token
+            @Header("access-token") String access_token
     );
 }
 

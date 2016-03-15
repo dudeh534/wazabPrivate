@@ -12,8 +12,11 @@ import java.util.ArrayList;
  * Created by sue on 2016-02-20.
  */
 public class ContestInfo {
+
+    /*
     @SerializedName("access_token")
     String access_token;
+    */
     @SerializedName("title")
     String title;
     @SerializedName("hosts")
@@ -29,18 +32,21 @@ public class ContestInfo {
     String positions;
     @SerializedName("recruitment")
     int recruitment;
+    @SerializedName("cont_locate")
+    String cont_locate;
+
 
     public ContestInfo(){
         //categories = new JSONArray();
         categories = new ArrayList<String>();
     }
 
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
+    public String getCont_locate() {
+        return cont_locate;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public void setCont_locate(String cont_locate) {
+        this.cont_locate = cont_locate;
     }
 
     public void setTitle(String title) {

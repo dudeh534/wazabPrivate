@@ -1,9 +1,11 @@
 package com.ourincheon.wazap;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,8 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /*
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     ImageView profileImg;
     String thumbnail;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,30 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 //        .setAction("Action", null).show();
             }
         });
+
+
+        final TextView spinnerT =(TextView)findViewById(R.id.spinnerT);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+     //           spinnerT.setText(""+parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+     /*   final TextView spinnerT =(TextView)findViewById(R.id.spinnerT);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemClickListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                spinnerT.setText(""+parent.getItemAtPosition(position));
+            }
+        });
+*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -96,6 +125,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             public void onClick(View v) {
                 //  Toast.makeText(getApplicationContext(), "프로필 보기", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(MainActivity.this, showMypageActivity.class);
+                i.putExtra("flag",0);
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                String user_id = pref.getString("user_id", "");
+                i.putExtra("user_id",user_id);
                 // i.putExtra("KakaoInfo",kakao);
                 startActivity(i);
             }
@@ -124,6 +157,17 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ContestList.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+        ImageView alarmBtn = (ImageView) findViewById(R.id.alarmBtn);
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AlarmList.class);
                 startActivity(intent);
 
             }

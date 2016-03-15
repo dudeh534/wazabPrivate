@@ -52,6 +52,7 @@ public class ApplyList extends AppCompatActivity {
     String[] cont_id,apply_id;
     AlertDialog dialog;
     String access_token;
+    String contest_id;
     Button jBefore;
 
     @Override
@@ -74,13 +75,15 @@ public class ApplyList extends AppCompatActivity {
         loadApply(access_token);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("찜 목록 지우기").setMessage("해당 스크랩을 지우시겠습니까?")
+        builder.setTitle("신청 목록 지우기").setMessage("해당 신청공모전을 지우시겠습니까?")
                 .setCancelable(true).setPositiveButton("지우기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //finish();
                 System.out.println("----------------------"+posi);
-                deleteApply(cont_id[posi],apply_id[posi]);
+                ContestData mData = mAdapter.mListData.get(posi);
+                contest_id = String.valueOf(mData.getContests_id());
+                deleteApply(contest_id,apply_id[posi]);
                // loadApply(access_token);
             }
         }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -94,7 +97,6 @@ public class ApplyList extends AppCompatActivity {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ApplyList.this, "취소", Toast.LENGTH_SHORT).show();
                 posi = position;
                 dialog.show();
                 return false;
@@ -105,11 +107,11 @@ public class ApplyList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                ContestData mData = mAdapter.mListData.get(position);
+        //        ContestData mData = mAdapter.mListData.get(position);
                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ApplyList.this, JoinActivity.class);
-                intent.putExtra("id",String.valueOf(mData.getContests_id()));
-                startActivity(intent);
+        //        Intent intent = new Intent(ApplyList.this, JoinActivity.class);
+        //        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+         //       startActivity(intent);
             }
         });
 
@@ -139,7 +141,7 @@ public class ApplyList extends AppCompatActivity {
 
         System.out.println("-------------------"+access_token);
 
-        Call<LinkedTreeMap> call = service.delApply(contest, apply, access_token);
+        Call<LinkedTreeMap> call = service.delApply(contest, access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
             public void onResponse(Response<LinkedTreeMap> response) {
@@ -152,11 +154,11 @@ public class ApplyList extends AppCompatActivity {
 
                     if (result) {
                         Log.d("저장 결과: ", msg);
-                        Toast.makeText(getApplicationContext(), "신청 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "신청 취소되었습니다.", Toast.LENGTH_LONG).show();
 
                     } else {
                         Log.d("저장 실패: ", msg);
-                        Toast.makeText(getApplicationContext(), "신청취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "신청취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_LONG).show();
                     }
 
                 } else if (response.isSuccess()) {
@@ -279,6 +281,7 @@ public class ApplyList extends AppCompatActivity {
         public TextView Cate;
         public TextView Man;
         public TextView Member;
+        Button Detail;
     }
 
     private class ListViewAdapter extends BaseAdapter {
@@ -317,6 +320,7 @@ public class ApplyList extends AppCompatActivity {
             addInfo.setMembers(member);
             addInfo.setTitle(title);
 
+
             System.out.println("----------------33333333   " + member);
             System.out.println("-------------------------"+addInfo.getMembers());
             mListData.add(addInfo);
@@ -333,7 +337,7 @@ public class ApplyList extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -346,6 +350,17 @@ public class ApplyList extends AppCompatActivity {
                 holder.Cate = (TextView) convertView.findViewById(R.id.cate);
                 holder.Man = (TextView) convertView.findViewById(R.id.man);
                 holder.Member = (TextView) convertView.findViewById(R.id.member);
+
+                holder.Detail = (Button) convertView.findViewById(R.id.detail);
+                holder.Detail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ContestData mData = mAdapter.mListData.get(position);
+                        Intent intent = new Intent(ApplyList.this, JoinActivity.class);
+                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                        startActivity(intent);
+                    }
+                });
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();
@@ -435,6 +450,7 @@ public class ApplyList extends AppCompatActivity {
                 holder.Cate = (TextView) convertView.findViewById(R.id.cate);
                 holder.Man = (TextView) convertView.findViewById(R.id.man);
                 holder.Member = (TextView) convertView.findViewById(R.id.member);
+
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();

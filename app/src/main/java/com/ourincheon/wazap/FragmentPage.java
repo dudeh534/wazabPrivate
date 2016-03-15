@@ -13,8 +13,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +78,6 @@ public class FragmentPage extends Fragment {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager);
-
 
                 SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                 final String user_id = pref.getString("user_id", "");
@@ -220,14 +221,20 @@ public class FragmentPage extends Fragment {
                         id_list = new String[len];
                         writer_list = new String[len];
 
-                        for(int i =0 ; i<len; i++) {
-                            id_list[i]=jsonArr.getJSONObject(i).getString("contests_id");
-                            writer_list[i]=jsonArr.getJSONObject(i).getString("cont_writer");
+                        for (int i = 0; i < len; i++) {
+                            id_list[i] = jsonArr.getJSONObject(i).getString("contests_id");
+                            writer_list[i] = jsonArr.getJSONObject(i).getString("cont_writer");
+
+                            String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
+                            Dday day = new Dday();
+
                             item[i] = new Recycler_item(jsonArr.getJSONObject(i).getString("title"),
                                     jsonArr.getJSONObject(i).getString("hosts"), jsonArr.getJSONObject(i).getString("username"),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("members")),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("is_clip"))
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("is_clip")),
+                                    jsonArr.getJSONObject(i).getString("categories"), jsonArr.getJSONObject(i).getString("cont_locate"),
+                                    "D - " + day.dday(parts[0])
                             );
                             items.add(item[i]);
                             //
@@ -252,6 +259,7 @@ public class FragmentPage extends Fragment {
         });
 
     }
+
 
 
 }

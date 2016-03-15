@@ -171,8 +171,8 @@ public class FacebookLogin extends Activity {
             HttpService httpService = client.create(HttpService.class);
 
             Call<LinkedTreeMap> call = httpService.setUserInfo(
-                    user_id,
                     accessToken.getToken(),
+                    user_id,
                     object.getString("name"),
                     url.toString()
             );

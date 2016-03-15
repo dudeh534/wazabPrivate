@@ -85,18 +85,19 @@
                         android:textSize="10dp" />
 
                     <com.ourincheon.wazap.NotoTextView
-                        android:id="@+id/textView39"
+                        android:id="@+id/spinnerT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="65dp"
-                        android:text="New Text"
+                        android:text=""
                         android:textColor="#FFD2D2D2" />
 
                     <Spinner
                         android:id="@+id/spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_marginLeft="10dp"
+                        android:entries="@array/categories"/>
                 </LinearLayout>
 
                 <android.support.v4.view.ViewPager
@@ -160,7 +161,8 @@
                 android:layout_width="26.33dp"
                 android:layout_height="26.33dp"
                 android:layout_marginRight="13.67dp"
-                android:src="@drawable/alarm" />
+                android:src="@drawable/alarm"
+                android:id="@+id/alarmBtn" />
 
             <ImageView
                 android:layout_width="26.33dp"

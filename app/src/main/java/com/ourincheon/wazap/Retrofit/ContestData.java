@@ -19,6 +19,7 @@ public class ContestData  implements Serializable {
     String period;
     String cover;
     String positions;
+    String cont_locate;
     int members;
     int appliers;
     int clips;
@@ -29,6 +30,14 @@ public class ContestData  implements Serializable {
     public ContestData(){}
     public int getIs_finish() {
         return is_finish;
+    }
+
+    public String getCont_locate() {
+        return cont_locate;
+    }
+
+    public void setCont_locate(String cont_locate) {
+        this.cont_locate = cont_locate;
     }
 
     public int getIs_clip() {

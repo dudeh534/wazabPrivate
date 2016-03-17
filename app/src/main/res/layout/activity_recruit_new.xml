@@ -86,7 +86,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="380dp"
         android:layout_below="@+id/lineardivider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -99,6 +99,16 @@
             android:layout_width="124dp"
             android:layout_height="match_parent"
             android:background="#ffffff">
+
+            <com.ourincheon.wazap.NotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="공모전 명칭"
+                android:id="@+id/textVie"
+                android:layout_gravity="left|center_horizontal"
+                android:layout_marginTop="26.33dp"
+                android:textSize="13dp"
+                android:layout_marginLeft="12dp" />
 
             <com.ourincheon.wazap.NotoTextView
                 android:layout_width="wrap_content"
@@ -162,10 +172,19 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/reHost"
+                android:id="@+id/reCTitle"
                 android:layout_marginRight="12dp"
                 android:hint="입력하세요"
                 android:layout_marginTop="15dp"
+                android:textSize="13dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reHost"
+                android:layout_marginRight="12dp"
+                android:hint="입력하세요"
+                android:layout_marginTop="5dp"
                 android:textSize="13dp" />
 
             <LinearLayout

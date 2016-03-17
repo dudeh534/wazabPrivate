@@ -51,7 +51,7 @@ public class FacebookLogin extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        getHash();
+    //    getHash();
         /* android app key 생성
         try {
             PackageInfo info = getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -187,6 +187,7 @@ public class FacebookLogin extends Activity {
 
                         if (result) {
                             Log.d("저장 결과: ", msg);
+                            Toast.makeText(getApplicationContext(), "로그인 되었습니다.", Toast.LENGTH_LONG);
 
                         } else {
                             Log.d("저장 실패: ", msg);

@@ -34,11 +34,17 @@ public class ContestInfo {
     int recruitment;
     @SerializedName("cont_locate")
     String cont_locate;
+    @SerializedName("cont_title")
+    String cont_title;
 
 
     public ContestInfo(){
         //categories = new JSONArray();
         categories = new ArrayList<String>();
+    }
+
+    public void setCont_title(String cont_title) {
+        this.cont_title = cont_title;
     }
 
     public String getCont_locate() {
@@ -59,7 +65,7 @@ public class ContestInfo {
 
     public void setCategories(String category) {
         categories.add(category);
-       // categories.put(category);
+        // categories.put(category);
 
         //String str = categories.toString();
         /*try {

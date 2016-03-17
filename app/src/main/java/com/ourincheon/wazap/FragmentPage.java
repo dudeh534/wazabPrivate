@@ -82,10 +82,16 @@ public class FragmentPage extends Fragment {
                 SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                 final String user_id = pref.getString("user_id", "");
                 System.out.println(user_id);
-                String access_token = pref.getString("access_token","");
+                String access_token = pref.getString("access_token", "");
 
                 items = new ArrayList<>();
-                loadPage(access_token);
+
+                Bundle bundle = getArguments();
+                int category = bundle.getInt("position");
+                Toast.makeText(getContext(), "ccccccccccccccccc" + category, Toast.LENGTH_SHORT).show();
+
+                loadPage(access_token,category);
+
 
 
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
@@ -184,7 +190,7 @@ public class FragmentPage extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    void loadPage(String access_token)
+    void loadPage(String access_token, int category)
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to/")
@@ -228,7 +234,8 @@ public class FragmentPage extends Fragment {
                             String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
                             Dday day = new Dday();
 
-                            item[i] = new Recycler_item(jsonArr.getJSONObject(i).getString("title"),
+                            String title =  jsonArr.getJSONObject(i).getString("title");
+                            item[i] = new Recycler_item( title,//jsonArr.getJSONObject(i).getString("title"),
                                     jsonArr.getJSONObject(i).getString("hosts"), jsonArr.getJSONObject(i).getString("username"),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("members")),

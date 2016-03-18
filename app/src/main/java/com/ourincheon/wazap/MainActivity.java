@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 startActivity(intent);
             }
         });
+
         Button side_Button2 = (Button) findViewById(R.id.side_button2);
         side_Button2.setOnClickListener(new View.OnClickListener() {
             @Override

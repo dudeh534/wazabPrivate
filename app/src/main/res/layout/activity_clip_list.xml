@@ -13,10 +13,12 @@
         android:padding="1dp">
 
         <Button
-            android:id="@+id/libray_btn_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#0057ff" />
+            android:id="@+id/cBefore"
+            android:layout_width="15dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16.47dp"
+            android:background="@drawable/detail_btn_back_white"
+            android:layout_gravity="center_vertical" />
 
         <com.ourincheon.wazap.NotoTextView
             android:layout_width="0dp"

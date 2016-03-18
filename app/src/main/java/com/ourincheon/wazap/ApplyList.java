@@ -107,11 +107,11 @@ public class ApplyList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        //        ContestData mData = mAdapter.mListData.get(position);
+                ContestData mData = mAdapter.mListData.get(position);
                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-        //        Intent intent = new Intent(ApplyList.this, JoinActivity.class);
-        //        intent.putExtra("id",String.valueOf(mData.getContests_id()));
-         //       startActivity(intent);
+                Intent intent = new Intent(ApplyList.this, JoinActivity.class);
+                intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                startActivity(intent);
             }
         });
 
@@ -356,9 +356,8 @@ public class ApplyList extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         ContestData mData = mAdapter.mListData.get(position);
-                        Intent intent = new Intent(ApplyList.this, JoinActivity.class);
-                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
-                        startActivity(intent);
+                        contest_id = String.valueOf(mData.getContests_id());
+                        deleteApply(contest_id, apply_id[position]);
                     }
                 });
                 convertView.setTag(holder);

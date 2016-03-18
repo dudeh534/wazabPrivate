@@ -34,7 +34,7 @@ import retrofit2.Retrofit;
 public class JoinActivity extends AppCompatActivity {
 
     reqContest contest;
-    TextView jTitle,jButton,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos,jPro;
+    TextView jTitle,jCTitle,jButton,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos,jPro;
     String access_token,num,Writer;
     Button jPick,jBefore;
 
@@ -44,6 +44,7 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
 
         jTitle = (TextView) findViewById(R.id.jTitle);
+        jCTitle = (TextView) findViewById(R.id.jCTitle);
         jCate =  (TextView) findViewById(R.id.jCate);
         jApply = (TextView) findViewById(R.id.jApply);
         jRec = (TextView) findViewById(R.id.jRec);
@@ -101,6 +102,12 @@ public class JoinActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPage(num);
+    }
+
     void pickContest(String num, final String access_token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to/")
@@ -125,7 +132,7 @@ public class JoinActivity extends AppCompatActivity {
                         if (result) {
                             Log.d("저장 결과: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 되었습니다.", Toast.LENGTH_SHORT).show();
-
+                            onResume();
                         } else {
                             Log.d("저장 실패: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -150,7 +157,46 @@ public class JoinActivity extends AppCompatActivity {
 
     void removeClip()
     {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://come.n.get.us.to/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
+        WazapService service = retrofit.create(WazapService.class);
+
+        Call<LinkedTreeMap> call = service.delClip(num,access_token);
+        call.enqueue(new Callback<LinkedTreeMap>() {
+            @Override
+            public void onResponse(Response<LinkedTreeMap> response) {
+                if (response.isSuccess() && response.body() != null) {
+
+                    LinkedTreeMap temp = response.body();
+
+                    boolean result = Boolean.parseBoolean(temp.get("result").toString());
+                    String msg = temp.get("msg").toString();
+
+                    if (result) {
+                        Log.d("저장 결과: ", msg);
+                        Toast.makeText(getApplicationContext(), "찜 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        onResume();
+                    } else {
+                        Log.d("저장 실패: ", msg);
+                        Toast.makeText(getApplicationContext(), "찜 취소안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else if (response.isSuccess()) {
+                    Log.d("Response Body isNull", response.message());
+                } else {
+                    Log.d("Response Error Body", response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+                Log.e("Error", t.getMessage());
+            }
+        });
     }
 
     void applyContest(String num, String access_token)
@@ -219,8 +265,8 @@ public class JoinActivity extends AppCompatActivity {
 
                     Log.d("SUCCESS", contest.getMsg());
 
-                    System.out.println(contest.getData().getTitle());
                     jTitle.setText(contest.getData().getTitle());
+                    jCTitle.setText(contest.getData().getCont_title());
                     jCate.setText(contest.getData().getCategories());
                     jApply.setText(String.valueOf(contest.getData().getAppliers()));
                     jMem.setText(String.valueOf(contest.getData().getMembers()));
@@ -231,6 +277,12 @@ public class JoinActivity extends AppCompatActivity {
                     jLoc.setText(contest.getData().getCont_locate());
                     jPos.setText(contest.getData().getPositions());
                     Writer = contest.getData().getCont_writer();
+
+                    if(contest.getData().getIs_clip()==0)
+                       jPick.setBackgroundResource(R.drawable.heart1);
+                    else
+                        jPick.setBackgroundResource(R.drawable.heart2);
+
 
                     String[] parts = contest.getData().getPeriod().split("T");
                     Dday day = new Dday();

@@ -45,7 +45,7 @@ import retrofit2.Retrofit;
 
 public class RecruitActivity extends AppCompatActivity {
 
-    EditText reTitle, reHost, reNum, reIntro, reLoc, rePos;
+    EditText reTitle, reCTitle, reHost, reNum, reIntro, reLoc, rePos;
     Button reDate, reBack;
     TextView save;
     ImageView profileImg;
@@ -67,9 +67,10 @@ public class RecruitActivity extends AppCompatActivity {
         contest2 = new ContestInfo();
 
         reTitle = (EditText) findViewById(R.id.reTitle);
+        reCTitle = (EditText) findViewById(R.id.reCTitle);
         reHost = (EditText) findViewById(R.id.reHost);
         reNum = (EditText) findViewById(R.id.reNum);
- /////       reDate = (EditText) findViewById(R.id.reDate);
+        /////       reDate = (EditText) findViewById(R.id.reDate);
         reDate = (Button) findViewById(R.id.reDate);
         reLoc = (EditText) findViewById(R.id.reLoc);
         rePos = (EditText) findViewById(R.id.rePos);
@@ -100,6 +101,7 @@ public class RecruitActivity extends AppCompatActivity {
         if (mode == 1) {
             System.out.println("----------------------------------------------");
             reTitle.setText(con.getTitle());
+            reCTitle.setText(con.getCont_title());
             System.out.println(con.getTitle());
             reHost.setText(con.getHosts());
             reNum.setText(String.valueOf(con.getRecruitment()));
@@ -115,24 +117,31 @@ public class RecruitActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
- //               Toast.makeText(getApplicationContext(), reDate.getText().toString(), Toast.LENGTH_SHORT).show();
-                contest2.setTitle(reTitle.getText().toString());
-                contest2.setRecruitment(Integer.parseInt(reNum.getText().toString()));
-                contest2.setHosts(reHost.getText().toString());
-                contest2.setCover(reIntro.getText().toString());
-                contest2.setCategories("논문/학술");
-                contest2.setPeriod(reDate.getText().toString());
-                contest2.setCont_locate(reLoc.getText().toString());
-                //contest2.setPeriod("2016-04-29");
-                contest2.setPositions(rePos.getText().toString());
-
-                if(mode == 0)
-                    sendContest(contest2);
+                //               Toast.makeText(getApplicationContext(), reDate.getText().toString(), Toast.LENGTH_SHORT).show();
+                if(reTitle.getText().toString().equals("") || reCTitle.getText().toString().equals("") || reNum.getText().toString().equals("")
+                    ||reHost.getText().toString().equals("") || reIntro.getText().toString().equals("") || reDate.getText().toString().equals("")
+                        || reLoc.getText().toString().equals("") || rePos.getText().toString().equals("")  )
+                    Toast.makeText(getApplicationContext(), "필수사항을 모두 입력해주세요.", Toast.LENGTH_LONG).show();
                 else
-                    editCon(contest2);
+                {
+                    contest2.setTitle(reTitle.getText().toString());
+                    contest2.setCont_title(reCTitle.getText().toString());
+                    contest2.setRecruitment(Integer.parseInt(reNum.getText().toString()));
+                    contest2.setHosts(reHost.getText().toString());
+                    contest2.setCover(reIntro.getText().toString());
+                    contest2.setCategories("논문/학술");
+                    contest2.setPeriod(reDate.getText().toString());
+                    contest2.setCont_locate(reLoc.getText().toString());
+                    //contest2.setPeriod("2016-04-29");
+                    contest2.setPositions(rePos.getText().toString());
 
-                finish();
+                    if (mode == 0)
+                        sendContest(contest2);
+                    else
+                        editCon(contest2);
 
+                    finish();
+                }
             }
         });
     }
@@ -140,9 +149,8 @@ public class RecruitActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
     {
         @Override
-          public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             String msg = String.format("%d-%d-%d", year,monthOfYear+1, dayOfMonth);
-            Toast.makeText(RecruitActivity.this, msg, Toast.LENGTH_SHORT).show();
             reDate.setText(msg);
         }
 
@@ -174,6 +182,7 @@ public class RecruitActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("수정 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                        ((MasterJoinActivity)(MasterJoinActivity.mContext)).onResume();
 
                     } else {
                         Log.d("수정 실패: ", msg);

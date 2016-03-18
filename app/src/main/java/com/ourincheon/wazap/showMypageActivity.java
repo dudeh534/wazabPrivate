@@ -12,12 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.regUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,14 +60,16 @@ public class showMypageActivity extends AppCompatActivity {
         sIntro = (TextView) findViewById(R.id.sIntro);
         sExp = (TextView) findViewById(R.id.sExp);
         sSkill = (TextView) findViewById(R.id.sSkill);
+        profileImg = (ImageView) findViewById(R.id.sPro);
 
         if(flag==0) {
-            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+    /*        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
             profileImg = (ImageView) findViewById(R.id.sPro);
             thumbnail = pref.getString("profile_img", "");
             System.out.println(pref.getString("access_token", ""));
             ThumbnailImage thumb = new ThumbnailImage(thumbnail, profileImg);
             thumb.execute();
+            */
         }
 
         loadPage();
@@ -73,25 +79,6 @@ public class showMypageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-    /*    sName = (TextView) findViewById(R.id.sName);
-        sMajor = (TextView)  findViewById(R.id.sMajor);
-        sUniv = (TextView)  findViewById(R.id.sUniv);
-        sLoc = (TextView)  findViewById(R.id.sLoc);
-        sKakao = (TextView)  findViewById(R.id.sKakao);
-        sIntro = (TextView) findViewById(R.id.sIntro);
-        sExp = (TextView) findViewById(R.id.sExp);
-        sSkill = (TextView) findViewById(R.id.sSkill);
-
-        if(flag==0) {
-            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-            profileImg = (ImageView) findViewById(R.id.sPro);
-            thumbnail = pref.getString("profile_img", "");
-            System.out.println(pref.getString("access_token", ""));
-            ThumbnailImage thumb = new ThumbnailImage(thumbnail, profileImg);
-            thumb.execute();
-        }
-*/
         loadPage();
     }
 
@@ -136,6 +123,17 @@ public class showMypageActivity extends AppCompatActivity {
                         sIntro.setText(jsonArr.getJSONObject(0).getString("introduce"));
                         sExp.setText(jsonArr.getJSONObject(0).getString("exp"));
                         sSkill.setText(jsonArr.getJSONObject(0).getString("skill"));
+
+                        try {
+                            thumbnail = URLDecoder.decode(jsonArr.getJSONObject(0).getString("profile_img"), "EUC_KR");
+                            Glide.with(showContext).load(thumbnail).into(profileImg);
+                         //   ThumbnailImage thumb = new ThumbnailImage(thumbnail, profileImg);
+                         //   thumb.execute();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println(thumbnail);
+
                     } catch (JSONException e) {
                     }
 

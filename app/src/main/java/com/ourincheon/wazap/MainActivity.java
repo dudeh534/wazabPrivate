@@ -68,7 +68,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-     //           spinnerT.setText(""+parent.getItemAtPosition(position));
+                //spinnerT.setText(""+parent.getItemAtPosition(position));기
+
+                /****fragment로 값보내****/
+                FragmentPage fragment = new FragmentPage();
+                Bundle bundle = new Bundle();
+                bundle.putInt("category",position);
+                fragment.setArguments(bundle);
             }
 
             @Override

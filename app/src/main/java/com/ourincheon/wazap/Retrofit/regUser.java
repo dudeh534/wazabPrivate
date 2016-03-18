@@ -34,5 +34,6 @@ class JSONData{
     String introduce;
     String exp;
     String skill;
+    String profile_img;
     int age;
 }

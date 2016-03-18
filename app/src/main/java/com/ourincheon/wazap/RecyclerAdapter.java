@@ -3,6 +3,7 @@ package com.ourincheon.wazap;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Recycler_item item = items.get(position);
+
+        Log.d("SUCESS-----", item.getTitle());
         holder.title.setText(item.getTitle());
         holder.name.setText(item.getName());
         holder.text.setText(item.getText());

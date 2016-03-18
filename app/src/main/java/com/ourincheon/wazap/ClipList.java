@@ -3,6 +3,7 @@ package com.ourincheon.wazap;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class ClipList extends AppCompatActivity {
     String[] id_list;
     AlertDialog dialog;
     String access_token,contest_id;
-
+    Button jBefore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +97,25 @@ public class ClipList extends AppCompatActivity {
             }
         });
 
+        /**** 상세보기 ****/
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        //        ContestData mData = mAdapter.mListData.get(position);
-        //        contest_id = String.valueOf(mData.getContests_id());
-        //        applyContest( contest_id, access_token);
+                ContestData mData = mAdapter.mListData.get(position);
+                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ClipList.this, JoinActivity.class);
+                intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                startActivity(intent);
+            }
+        });
+
+
+        jBefore = (Button) findViewById(R.id.cBefore);
+        jBefore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -115,7 +128,7 @@ public class ClipList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //loadClip(access_token);
+      //  loadClip(access_token);
     }
 
     void applyContest(String num, String access_token) {
@@ -185,6 +198,7 @@ public class ClipList extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                       // onResume();
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -305,7 +319,7 @@ public class ClipList extends AppCompatActivity {
             addInfo.setTitle(title);
             String[] parts = period.split("T");
             addInfo.setPeriod(parts[0]);
-            addInfo.setCategories(categories);
+     //       addInfo.setCategories(categories);
             addInfo.setContests_id(id);
             addInfo.setRecruitment(member);
 
@@ -358,7 +372,7 @@ public class ClipList extends AppCompatActivity {
 
             holder.cTitle.setText(mData.getTitle());
 
-            holder.Cate.setText(mData.getCategories());
+  //          holder.Cate.setText(mData.getCategories());
 
             holder.Member.setText("모집인원 " + mData.getRecruitment() + "명");
 

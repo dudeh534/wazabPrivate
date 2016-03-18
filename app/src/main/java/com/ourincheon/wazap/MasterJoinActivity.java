@@ -1,5 +1,6 @@
 package com.ourincheon.wazap;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,9 +36,10 @@ import retrofit2.Retrofit;
 
 public class MasterJoinActivity extends AppCompatActivity {
 
+    public static Context mContext;
     reqContest contest;
     ContestData contestData;
-    TextView jTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos;
+    TextView jTitle,jCTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos;
     Button eBtn,jBefore;
     String access_token,num;
     AlertDialog.Builder ad,deleteD;
@@ -48,9 +50,12 @@ public class MasterJoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_join);
 
+        mContext = this;
+
         contestData = new ContestData();
 
         jTitle = (TextView) findViewById(R.id.jmTitle);
+        jCTitle = (TextView) findViewById(R.id.jmCTitle);
         jCate =  (TextView) findViewById(R.id.jmCate);
         jApply = (TextView) findViewById(R.id.jmApply);
         jRec = (TextView) findViewById(R.id.jmRec);
@@ -137,6 +142,12 @@ public class MasterJoinActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPage(num);
     }
 
     void editCont()
@@ -264,6 +275,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
                     System.out.println(contest.getData().getTitle());
                     jTitle.setText(contest.getData().getTitle());
+                    jCTitle.setText(contest.getData().getCont_title());
                     jCate.setText(contest.getData().getCategories());
                     jApply.setText(String.valueOf(contest.getData().getAppliers()));
                     jMem.setText(String.valueOf(contest.getData().getMembers()));
@@ -278,7 +290,10 @@ public class MasterJoinActivity extends AppCompatActivity {
                     Dday day = new Dday();
                     jDate.setText("D - "+day.dday(parts[0]));
 
+                    contestData = contest.getData();
+                    /*
                     contestData.setTitle(contest.getData().getTitle());
+                    contestData.setCont_title(contest.getData().getCont_title());
                     contestData.setCategories(contest.getData().getCategories());
                     contestData.setAppliers(contest.getData().getAppliers());
                     contestData.setMembers(contest.getData().getMembers());
@@ -290,6 +305,7 @@ public class MasterJoinActivity extends AppCompatActivity {
                     contestData.setPeriod(parts[0]);
                     contestData.setCont_locate(contest.getData().getCont_locate());
                     contestData.setPositions(contest.getData().getPositions());
+                    */
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

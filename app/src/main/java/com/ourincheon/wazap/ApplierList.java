@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.ApplierData;
 import com.ourincheon.wazap.Retrofit.Appliers;
@@ -229,8 +230,9 @@ public class ApplierList extends AppCompatActivity {
 
           if (mData.getProfile_img() != null) {
               holder.aImage.setVisibility(View.VISIBLE);
-              ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.aImage);
-              thumb.execute();
+              Glide.with(mContext).load(mData.getProfile_img()).error(R.drawable.icon_user).override(150,150).crossFade().into(holder.aImage);
+            //  ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.aImage);
+            //  thumb.execute();
           }else{
               holder.aImage.setVisibility(View.VISIBLE);
               holder.aImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_user));

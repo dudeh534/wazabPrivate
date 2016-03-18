@@ -25,4 +25,7 @@ public class Contests
         return data.get(i);
     }
 
+    public int getDatasize()
+    {return  data.size();}
+
 }

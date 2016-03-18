@@ -41,6 +41,7 @@ public class ContestList extends AppCompatActivity {
     Contests contests;
     ArrayList<ContestData> contest_list;
     int count;
+    Button jBefore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,32 +58,28 @@ public class ContestList extends AppCompatActivity {
 
         loadContest(user_id, access_token);
 
-    /*    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 ContestData mData = mAdapter.mListData.get(position);
-                Toast.makeText(ClipList.this, mData.getTitle(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
+                intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                startActivity(intent);
             }
         });
-*/
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+        jBefore = (Button) findViewById(R.id.conBefore);
+        jBefore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-       //         ContestData mData = mAdapter.mListData.get(position);
-                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-       //         Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
-        //        intent.putExtra("id",String.valueOf(mData.getContests_id()));
-         //       startActivity(intent);
+            public void onClick(View v) {
+                finish();
             }
         });
 
         mAdapter = new ListViewAdapter(this);
         mListView.setAdapter(mAdapter);
-
-
-
     }
 
     void loadContest(String user_id, String access_token)
@@ -220,8 +217,13 @@ public class ContestList extends AppCompatActivity {
                 holder.Detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ContestData mData = mAdapter.mListData.get(position);
+                 /*       ContestData mData = mAdapter.mListData.get(position);
                         Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
+                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+                        startActivity(intent);
+                   */
+                        ContestData mData = mAdapter.mListData.get(position);
+                        Intent intent = new Intent(ContestList.this, ApplierList.class);
                         intent.putExtra("id",String.valueOf(mData.getContests_id()));
                         startActivity(intent);
                     }

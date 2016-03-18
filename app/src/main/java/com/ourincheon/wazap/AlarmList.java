@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.Retrofit.Alarms;
@@ -222,8 +223,9 @@ public class AlarmList extends AppCompatActivity {
 
             if (mData.getProfile_img() != null) {
                 holder.mIcon.setVisibility(View.VISIBLE);
-                ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.mIcon);
-                thumb.execute();
+                Glide.with(mContext).load(mData.getProfile_img()).error(R.drawable.icon_user).override(150,150).crossFade().into(holder.mIcon);
+         //       ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.mIcon);
+         //      thumb.execute();
             }else{
                 holder.mIcon.setVisibility(View.VISIBLE);
                 holder.mIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_user));

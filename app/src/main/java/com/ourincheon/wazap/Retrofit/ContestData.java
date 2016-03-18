@@ -1,6 +1,7 @@
 package com.ourincheon.wazap.Retrofit;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by sue on 2016-02-24.
@@ -11,6 +12,7 @@ public class ContestData  implements Serializable {
     int contests_id;
     int recruitment;
     String title;
+    String cont_title;
     String cont_writer;
     String hosts;
     String username;
@@ -30,6 +32,14 @@ public class ContestData  implements Serializable {
     public ContestData(){}
     public int getIs_finish() {
         return is_finish;
+    }
+
+    public String getCont_title() {
+        return cont_title;
+    }
+
+    public void setCont_title(String cont_title) {
+        this.cont_title = cont_title;
     }
 
     public String getCont_locate() {
@@ -112,6 +122,74 @@ public class ContestData  implements Serializable {
         this.categories = categories;
     }
 
+
+ /*
+     public String getCategories() {
+     String str="";
+        String[] temp;
+         categories = categories.substring(1,categories.length()-1);
+        temp = categories.split("\"");
+         for(int i=0; i<temp.length; i++)
+             str += temp[i]+" ";
+
+        return str;
+
+         return categories;
+     }
+
+    public void setCategories(String categories) {
+            this.categories = categories;
+        }
+
+
+ /*   public String getCateStr()
+    {
+        String str="";
+        for(int i=0; i<categories.size(); i++) {
+            if (categories.get(i).equals(Category_Arr[0]))
+            {
+                str += Category_Arr[0]+" ";
+                category_idx[0]=1;
+            }
+            else if (categories.get(i).equals(Category_Arr[1]))
+            {
+                str += Category_Arr[1]+" ";
+                category_idx[1]=1;
+            }
+            else if (categories.get(i).equals(Category_Arr[2]))
+            {
+                str += Category_Arr[2]+" ";
+                category_idx[2]=1;
+            }
+            else if (categories.get(i).equals(Category_Arr[3]))
+            {
+                str += Category_Arr[3]+" ";
+                category_idx[3]=1;
+            }
+            else if (categories.get(i).equals(Category_Arr[4]))
+            {
+                str += Category_Arr[4]+" ";
+                category_idx[4]=1;
+            }
+            else
+            {
+                str += Category_Arr[5]+" ";
+                category_idx[5]=1;
+            }
+        }
+        for(int j=0; j<6; j++)
+            System.out.print(category_idx[j]+" ");
+        return str;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+*/
     public String getPeriod() {
         return period;
     }

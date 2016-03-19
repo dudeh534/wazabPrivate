@@ -131,8 +131,8 @@ public class FragmentPage extends Fragment {
                 content.setLayoutManager(layoutManager2);
                 List<Recycler_item> items2 = new ArrayList<>();
                 Recycler_item[] item2 = new Recycler_item[5];
-                item2[0] = new Recycler_item("스타트업 브라더 창업지업 프로그램 5차 모집", "마케팅", "2016-01-25 ~ 2016-02-22");
-                item2[1] = new Recycler_item("[해외] 제9회 iPhone 사진공모전", "사진/영상/UCC, 해외", "2016-02-16 ~ 2016-03-31");
+                item2[0] = new Recycler_item("?ㅽ??몄뾽 釉뚮씪??李쎌뾽吏???꾨줈洹몃옩 5李?紐⑥쭛", "留덉???, "2016-01-25 ~ 2016-02-22");
+                item2[1] = new Recycler_item("[?댁쇅] ????iPhone ?ъ쭊怨듬え??, "?ъ쭊/?곸긽/UCC, ?댁쇅", "2016-02-16 ~ 2016-03-31");
 
                 for (int i = 0; i < 2; i++) items2.add(item2[i]);
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
@@ -175,7 +175,7 @@ public class FragmentPage extends Fragment {
                 v.setLayoutParams(params);
                 v.setGravity(Gravity.CENTER);
                 v.setBackgroundResource(R.drawable.background_card);
-                v.setText("준비 중 입니다...");
+                v.setText("以鍮?以??낅땲??..");
 
                 fl.addView(v);
                 return fl;
@@ -217,6 +217,32 @@ public class FragmentPage extends Fragment {
                     String result = new Gson().toJson(contest);
                     Log.d("SUCESS-----", result);
 
+
+                    item = new Recycler_item[contest.getDatasize()];
+                    id_list = new String[contest.getDatasize()];
+                    writer_list = new String[contest.getDatasize()];
+
+                    for (int i = 0; i < contest.getDatasize(); i++) {
+                        id_list[i] = String.valueOf(contest.getData(i).getContests_id());
+                        writer_list[i] = contest.getData(i).getCont_writer();
+
+                        //String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
+                        String[] parts = contest.getData(i).getPeriod().split("T");
+                        Dday day = new Dday();
+
+                        item[i] = new Recycler_item( contest.getData(i).getTitle(),
+                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
+                                contest.getData(i).getRecruitment(),
+                                contest.getData(i).getMembers(),
+                                contest.getData(i).getIs_clip(),
+                                contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
+                                "D - " + day.dday(parts[0])
+                        );
+                        items.add(item[i]);
+                        //
+                        System.out.println(items.get(i).getName());
+                    }
+                    /*
                     JSONObject jsonRes;
                     try {
                         jsonRes = new JSONObject(result);
@@ -250,6 +276,7 @@ public class FragmentPage extends Fragment {
                         rec.notifyDataSetChanged();
                     } catch (JSONException e) {
                     }
+                    */
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

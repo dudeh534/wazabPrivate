@@ -36,15 +36,13 @@ public class Recycler_contestItem
         return imageView;
     }
 
-    Recycler_contestItem(String title, String text, String dday, String date, ImageView imageView) //, int id, String writer)
+    Recycler_contestItem(String title)//, String text, String dday, String date, ImageView imageView)
     {
         this.title = title;
-        this.text = text;
-        this.dday = dday;
-        this.date = date;
-        this.imageView = imageView;
-        //    this.id = id;
-        //    this.writer = writer;
+      //  this.text = text;
+      //  this.dday = dday;
+      //  this.date = date;
+      //  this.imageView = imageView;
     }
 
 }

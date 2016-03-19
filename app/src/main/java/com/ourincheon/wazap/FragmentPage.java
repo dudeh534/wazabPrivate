@@ -186,33 +186,23 @@ public class FragmentPage extends Fragment {
                    String result = new Gson().toJson(weekly);
                    Log.d("SUCESS-----", result);
 
-                    /*
+
                     contestItem = new Recycler_contestItem[weekly.getDatasize()];
-                    //contestItems = new Recycler_contestItem[contest.getDatasize()];
-                 //   id_list = new String[contest.getDatasize()];
-                //    writer_list = new String[contest.getDatasize()];
 
                     for (int i = 0; i < weekly.getDatasize(); i++) {
-                   //     id_list[i] = String.valueOf(contest.getData(i).getContests_id());
-                   //     writer_list[i] = contest.getData(i).getCont_writer();
 
-                        //String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
-                        String[] parts = weekly.getData(i).getPeriod().split("T");
-                        Dday day = new Dday();
-    /*
-                        item[i] = new Recycler_item(contest.getData(i).getTitle())
-
-                        item[i] = new Recycler_item(contest.getData(i).getTitle(),
+                        contestItem[i] = new Recycler_contestItem(weekly.getData(i).getTITLE());
+                        /*item[i] = new Recycler_contestItem(contest.getData(i).getTitle(),
                                 contest.getData(i).getHosts(), contest.getData(i).getUsername(),
                                 contest.getData(i).getRecruitment(),
                                 contest.getData(i).getMembers(),
                                 contest.getData(i).getIs_clip(),
                                 contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
                                 "D - " + day.dday(parts[0])
-                        );
-
+                        );*/
                         contestItems.add(contestItem[i]);
-                        //*/
+                        //
+                    }
 
                     /*
                     JSONObject jsonRes;

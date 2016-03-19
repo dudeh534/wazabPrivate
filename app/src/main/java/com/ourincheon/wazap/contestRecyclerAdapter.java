@@ -3,11 +3,13 @@ package com.ourincheon.wazap;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -34,7 +36,11 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            holder.title.setText("2015 젊은 IT 기획자 선발 공모전");
+            final Recycler_contestItem item = items.get(position);
+
+            Log.d("SUCESS-----", item.getTitle());
+            holder.title.setText(item.getTitle());
+
             holder.text_con.setText("미래창조과학부");
             holder.dday.setText("D - 52");
             holder.date.setText("2015 12.07~2016 01.22");
@@ -46,11 +52,12 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
 
                 }
             });
+
         }
 
         @Override
         public int getItemCount() {
-            return 6;
+            return this.items.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

@@ -8,25 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.Contests;
-import com.ourincheon.wazap.Retrofit.regUser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +78,7 @@ public class FragmentPage extends Fragment {
 
                 items = new ArrayList<>();
 
+
                 Bundle bundle = getArguments();
                 int category = bundle.getInt("position");
                 Toast.makeText(getContext(), "ccccccccccccccccc" + category, Toast.LENGTH_SHORT).show();
@@ -125,24 +115,20 @@ public class FragmentPage extends Fragment {
                 return linearLayout;
 
             case 1:
-/*
+                contestItems = new ArrayList<>();
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
                 content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
-                LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity());
+                LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
-                content.setLayoutManager(layoutManager2);
+                content.setLayoutManager(layoutManager1);
 
-                SharedPreferences pref2 = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                access_token = pref2.getString("access_token", "");
+                items = new ArrayList<>();
 
-                contestItems = new ArrayList<>();
 
-                loadContest(access_token);
 
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-
                     }
 
                     @Override
@@ -156,26 +142,6 @@ public class FragmentPage extends Fragment {
                 linearLayout.removeAllViews();
                 linearLayout.addView(content);
                 return linearLayout;
-*/
-
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-
-                FrameLayout fl = new FrameLayout(getActivity());
-                fl.setLayoutParams(params);
-
-                final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-                        .getDisplayMetrics());
-
-                TextView v = new TextView(getActivity());
-                params.setMargins(margin, margin, margin, margin);
-                v.setLayoutParams(params);
-                v.setLayoutParams(params);
-                v.setGravity(Gravity.CENTER);
-                v.setBackgroundResource(R.drawable.background_card);
-                v.setText("준비중입니다.");
-
-                fl.addView(v);
-                return fl;
                 
             default:
                 return null;
@@ -227,17 +193,8 @@ public class FragmentPage extends Fragment {
                         String[] parts = contest.getData(i).getPeriod().split("T");
                         Dday day = new Dday();
 
-                        contestItem[i] = new Recycler_contestItem(contest.getData(i).getTitle(),
-                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
-                                contest.getData(i).getRecruitment(),
-                                contest.getData(i).getMembers(),
-                                contest.getData(i).getIs_clip(),
-                                contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
-                                "D - " + day.dday(parts[0])
-                        );
                         contestItems.add(contestItem[i]);
                         //
-                        System.out.println(contestItems.get(i).getName());
                     }
                     /*
                     JSONObject jsonRes;

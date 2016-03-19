@@ -3,13 +3,11 @@ package com.ourincheon.wazap;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,29 +23,22 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
         public contestRecyclerAdapter(Context context, List<Recycler_contestItem> items, int item_layout) {
             this.context = context;
             this.items = items;
-            this.item_layout = item_layout;//번호별로 상세페이지
+            this.item_layout = item_layout;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cardview, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cardview_contest, parent, false);
             return new ViewHolder(v);
         }
 
-
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            final Recycler_contestItem item = items.get(position);
-
-            Log.d("SUCESS-----", item.getTitle());
-            holder.title.setText(item.getTitle());
-            holder.name.setText(item.getName());
-            holder.text.setText(item.getText());
-            holder.category.setText(item.getCategory());
-            holder.loc.setText(item.getLoc());
-            holder.recruit.setText(" / " + String.valueOf(item.getRecruit()));
-            holder.member.setText(String.valueOf(item.getMember()));
-            holder.day.setText(item.getDay());
+            holder.title.setText("2015 젊은 IT 기획자 선발 공모전");
+            holder.text_con.setText("미래창조과학부");
+            holder.dday.setText("D - 52");
+            holder.date.setText("2015 12.07~2016 01.22");
+            holder.imageView.setBackgroundResource(R.drawable.testcontest);
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -55,44 +46,27 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
 
                 }
             });
-            if(item.getClip()==0)
-                holder.heart.setBackgroundResource(R.drawable.heart1);
-            else
-                holder.heart.setBackgroundResource(R.drawable.heart2);
-
-            holder.heart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, item.getClip() + " " + position, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
         }
 
         @Override
         public int getItemCount() {
-            return this.items.size();
+            return 6;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            TextView title, text, name,recruit, member,loc,category,day;
+            TextView title, text_con, dday, date;
             CardView cardview;
-            Button heart;
+            ImageView imageView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                name = (TextView) itemView.findViewById(R.id.name);
-                text = (TextView) itemView.findViewById(R.id.text);
-                loc = (TextView) itemView.findViewById(R.id.loc);
-                category = (TextView) itemView.findViewById(R.id.category);
-                title = (TextView) itemView.findViewById(R.id.title);
-                recruit = (TextView) itemView.findViewById(R.id.recruit);
-                member = (TextView) itemView.findViewById(R.id.member);
+                text_con = (TextView) itemView.findViewById(R.id.text_con);
+                dday = (TextView) itemView.findViewById(R.id.dday);
+                title = (TextView) itemView.findViewById(R.id.title_con);
+                date = (TextView) itemView.findViewById(R.id.date);
                 cardview = (CardView) itemView.findViewById(R.id.cardView);
-                heart = (Button) itemView.findViewById(R.id.hbutton);
-                day = (TextView) itemView.findViewById(R.id.day);
+                imageView = (ImageView) itemView.findViewById(R.id.contest_image);
             }
         }
     }

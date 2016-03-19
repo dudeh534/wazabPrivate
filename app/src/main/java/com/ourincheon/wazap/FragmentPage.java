@@ -49,8 +49,11 @@ public class FragmentPage extends Fragment {
     private int position;
     Contests contest;
     RecyclerAdapter rec;
+    contestRecyclerAdapter conRec;
     List<Recycler_item> items;
+    List<Recycler_contestItem> contestItems;
     Recycler_item[] item;
+    Recycler_contestItem[] contestItem;
     String[] id_list,writer_list;
     Intent Joininfo;
     String access_token;
@@ -82,7 +85,7 @@ public class FragmentPage extends Fragment {
                 SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                 final String user_id = pref.getString("user_id", "");
                 System.out.println(user_id);
-                String access_token = pref.getString("access_token", "");
+                access_token = pref.getString("access_token", "");
 
                 items = new ArrayList<>();
 
@@ -122,31 +125,24 @@ public class FragmentPage extends Fragment {
                 return linearLayout;
 
             case 1:
-                /*
-                Log.e("position", String.valueOf(storage.getInstance().getPosition()));
+/*
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
                 content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
                 LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager2);
-                List<Recycler_item> items2 = new ArrayList<>();
-                Recycler_item[] item2 = new Recycler_item[5];
-                item2[0] = new Recycler_item("?ㅽ??몄뾽 釉뚮씪??李쎌뾽吏???꾨줈洹몃옩 5李?紐⑥쭛", "留덉???, "2016-01-25 ~ 2016-02-22");
-                item2[1] = new Recycler_item("[?댁쇅] ????iPhone ?ъ쭊怨듬え??, "?ъ쭊/?곸긽/UCC, ?댁쇅", "2016-02-16 ~ 2016-03-31");
 
-                for (int i = 0; i < 2; i++) items2.add(item2[i]);
+                SharedPreferences pref2 = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                access_token = pref2.getString("access_token", "");
+
+                contestItems = new ArrayList<>();
+
+                loadContest(access_token);
+
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        String link;
-                        if(position==0)
-                            link="http://www.brother-korea.com";
-                        else
-                            link="http://www.ippawards.com/the-competition/";
 
-                        Intent intent = new Intent(getActivity(), WebSiteActivity.class);
-                        intent.putExtra("url", link);
-                        startActivity(intent);
                     }
 
                     @Override
@@ -154,13 +150,14 @@ public class FragmentPage extends Fragment {
 
                     }
                 }));
-                rec = new RecyclerAdapter(getActivity(), items2, R.layout.fragment_page);
-                content.setAdapter(rec);
-                //content.setAdapter(new RecyclerAdapter(getActivity(), items2, R.layout.fragment_page));
+                // content.setAdapter(new RecyclerAdapter(getActivity(), items, R.layout.fragment_page));
+                conRec = new contestRecyclerAdapter(getActivity(), contestItems, R.layout.fragment_page);
+                content.setAdapter(conRec);
                 linearLayout.removeAllViews();
                 linearLayout.addView(content);
                 return linearLayout;
-                */
+*/
+
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
                 FrameLayout fl = new FrameLayout(getActivity());
@@ -175,19 +172,122 @@ public class FragmentPage extends Fragment {
                 v.setLayoutParams(params);
                 v.setGravity(Gravity.CENTER);
                 v.setBackgroundResource(R.drawable.background_card);
-                v.setText("以鍮?以??낅땲??..");
+                v.setText("준비중입니다.");
 
                 fl.addView(v);
                 return fl;
-
+                
             default:
                 return null;
+
         }
     }
 
     @Override
     public void onActivityCreated( Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    void loadContest(String access_token)
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://come.n.get.us.to/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WazapService service = retrofit.create(WazapService.class);
+
+
+        System.out.println("------------------------" + access_token);
+        Call<Contests> call = service.getContests(access_token, 300);
+        call.enqueue(new Callback<Contests>() {
+            @Override
+            public void onResponse(Response<Contests> response) {
+                if (response.isSuccess() && response.body() != null) {
+
+                    Log.d("SUCCESS", response.message());
+                    contest = response.body();
+
+                    //user = response.body();
+                    //Log.d("SUCCESS", reguser.getMsg());
+
+                    String result = new Gson().toJson(contest);
+                    Log.d("SUCESS-----", result);
+
+                    contestItem = new Recycler_contestItem[contest.getDatasize()];
+                    //contestItems = new Recycler_contestItem[contest.getDatasize()];
+                 //   id_list = new String[contest.getDatasize()];
+                //    writer_list = new String[contest.getDatasize()];
+
+                    for (int i = 0; i < contest.getDatasize(); i++) {
+                   //     id_list[i] = String.valueOf(contest.getData(i).getContests_id());
+                   //     writer_list[i] = contest.getData(i).getCont_writer();
+
+                        //String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
+                        String[] parts = contest.getData(i).getPeriod().split("T");
+                        Dday day = new Dday();
+
+                        contestItem[i] = new Recycler_contestItem(contest.getData(i).getTitle(),
+                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
+                                contest.getData(i).getRecruitment(),
+                                contest.getData(i).getMembers(),
+                                contest.getData(i).getIs_clip(),
+                                contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
+                                "D - " + day.dday(parts[0])
+                        );
+                        contestItems.add(contestItem[i]);
+                        //
+                        System.out.println(contestItems.get(i).getName());
+                    }
+                    /*
+                    JSONObject jsonRes;
+                    try {
+                        jsonRes = new JSONObject(result);
+                        JSONArray jsonArr = jsonRes.getJSONArray("data");
+                        System.out.println("--------------" + jsonArr.length());
+                        int len = jsonArr.length();
+                        item = new Recycler_item[len];
+                        id_list = new String[len];
+                        writer_list = new String[len];
+
+                        for (int i = 0; i < len; i++) {
+                            id_list[i] = jsonArr.getJSONObject(i).getString("contests_id");
+                            writer_list[i] = jsonArr.getJSONObject(i).getString("cont_writer");
+
+                            String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
+                            Dday day = new Dday();
+
+                            String title =  jsonArr.getJSONObject(i).getString("title");
+                            item[i] = new Recycler_item( title,//jsonArr.getJSONObject(i).getString("title"),
+                                    jsonArr.getJSONObject(i).getString("hosts"), jsonArr.getJSONObject(i).getString("username"),
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")),
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("members")),
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("is_clip")),
+                                    jsonArr.getJSONObject(i).getString("categories"), jsonArr.getJSONObject(i).getString("cont_locate"),
+                                    "D - " + day.dday(parts[0])
+                            );
+                            items.add(item[i]);
+                            //
+                            System.out.println(items.get(i).getName());
+                        }
+                        rec.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                    }
+                    */
+
+                } else if (response.isSuccess()) {
+                    Log.d("Response Body isNull", response.message());
+                } else {
+                    Log.d("Response Error Body", response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+                Log.e("Errorglg''';kl", t.getMessage());
+            }
+        });
     }
 
     void loadPage(String access_token, int category)
@@ -200,7 +300,7 @@ public class FragmentPage extends Fragment {
         WazapService service = retrofit.create(WazapService.class);
 
 
-        System.out.println("------------------------"+access_token);
+        System.out.println("------------------------" + access_token);
         Call<Contests> call = service.getContests(access_token, 300);
         call.enqueue(new Callback<Contests>() {
             @Override
@@ -230,7 +330,7 @@ public class FragmentPage extends Fragment {
                         String[] parts = contest.getData(i).getPeriod().split("T");
                         Dday day = new Dday();
 
-                        item[i] = new Recycler_item( contest.getData(i).getTitle(),
+                        item[i] = new Recycler_item(contest.getData(i).getTitle(),
                                 contest.getData(i).getHosts(), contest.getData(i).getUsername(),
                                 contest.getData(i).getRecruitment(),
                                 contest.getData(i).getMembers(),

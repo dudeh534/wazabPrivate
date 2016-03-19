@@ -34,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="title"
+                android:singleLine="true"
                 android:id="@+id/title_con"
                 android:layout_below="@+id/contest_image"
                 android:layout_alignParentLeft="true"

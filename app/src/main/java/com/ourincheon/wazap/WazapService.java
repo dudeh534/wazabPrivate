@@ -8,6 +8,7 @@ import com.ourincheon.wazap.Retrofit.Appliers;
 import com.ourincheon.wazap.Retrofit.ContestInfo;
 import com.ourincheon.wazap.Retrofit.Contests;
 import com.ourincheon.wazap.Retrofit.UserInfo;
+import com.ourincheon.wazap.Retrofit.WeeklyList;
 import com.ourincheon.wazap.Retrofit.regMsg;
 import com.ourincheon.wazap.Retrofit.regUser;
 import com.ourincheon.wazap.Retrofit.reqContest;
@@ -173,6 +174,13 @@ public interface WazapService {
             @Path("contest_id") String contest_id,
             @Header("access-token") String access_token
     );
+
+    // 주간목록 받아오기
+    @GET("weekly_list")
+    Call<WeeklyList> getWeeklylist(
+            @Header("access-token") String access_token
+    );
+
 }
 
 

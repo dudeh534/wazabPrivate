@@ -64,8 +64,6 @@ public class ApplyList extends AppCompatActivity {
         mListView2 = (ListView)findViewById(R.id.listView1);
 
         scrollView = (ScrollView) findViewById(R.id.scrollView1);
-        //ListView listView1 = (ListView) findViewById(R.id.listView1);
-        //not_listAdapter = new Not_ListAdapter(this, R.layout.not_require_item);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         access_token = pref.getString("access_token", "");
@@ -474,44 +472,4 @@ public class ApplyList extends AppCompatActivity {
         }
     }
 
-
-/*
-    public class not_ListAdapter extends ArrayAdapter<String> {
-        private final Activity context;
-        TextView dday, title, cate, man;
-        ImageView small;
-        Button bt;
-        Contests contest;
-        ArrayList<ContestData> cont_list;
-        int count;
-
-        public not_ListAdapter(Activity context, int resource) {
-            super(context, resource);
-            this.context = context;
-            //list = new ArrayList<Contests>();
-            SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
-            String access_token = pref.getString("access_token", "");
-            //loadPage(access_token);
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.not_require_item, null, true);
-            dday = (TextView) rowView.findViewById(R.id.dday);
-            title = (TextView) rowView.findViewById(R.id.title);
-            cate = (TextView) rowView.findViewById(R.id.cate);
-            man = (TextView) rowView.findViewById(R.id.man);
-            bt = (Button) rowView.findViewById(R.id.require);
-
-            title.setText("[서울] 한화생명 보험 아이디어 공모전");
-            cate.setText("영상/ucc/사진");
-            man.setText("모집인원 5명");
-            return rowView;
-        }
-
-        @Override
-        public int getCount() {
-            return cont_list.size();
-        }
-    }*/
 }

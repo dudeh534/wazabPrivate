@@ -132,7 +132,7 @@ public class ClipList extends AppCompatActivity {
         mListView2.setAdapter(not_listAdapter);
     }
 
-    // 리스크 크기조정용
+    // 리스트 크기조정용
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -278,6 +278,7 @@ public class ClipList extends AppCompatActivity {
                         id_list = new String[count];
                         System.out.println(count);
                         for (int i = 0; i < count; i++) {
+                            System.out.println("------------------"+Integer.parseInt(jsonArr.getJSONObject(i).getString("is_finish")));
                             if(Integer.parseInt(jsonArr.getJSONObject(i).getString("is_finish")) == 0) {
                                 id_list[i]= jsonArr.getJSONObject(i).getString("contests_id");
                                 mAdapter.addItem(jsonArr.getJSONObject(i).getString("title"),
@@ -289,7 +290,7 @@ public class ClipList extends AppCompatActivity {
                             }
                             else
                             {
-                                mAdapter.addItem(jsonArr.getJSONObject(i).getString("title"),
+                                not_listAdapter.addItem(jsonArr.getJSONObject(i).getString("title"),
                                         jsonArr.getJSONObject(i).getString("period"),
                                         jsonArr.getJSONObject(i).getString("categories"),
                                         Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")),
@@ -297,7 +298,7 @@ public class ClipList extends AppCompatActivity {
                                         Integer.parseInt(jsonArr.getJSONObject(i).getString("is_apply")));
                             }
                           }
-                        mAdapter.notifyDataSetChanged();
+                        mListView.setAdapter(mAdapter);
                         mListView2.setAdapter(not_listAdapter);
 
                         setListViewHeightBasedOnChildren(mListView);
@@ -488,7 +489,7 @@ public class ClipList extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.not_clip_item, null);
 
-                holder.Dday = (TextView) convertView.findViewById(R.id.cDday);
+                holder.Dday = (TextView) convertView.findViewById(R.id.ncDday);
                 holder.cTitle = (TextView) convertView.findViewById(R.id.ncTitle);
                 holder.Cate = (TextView) convertView.findViewById(R.id.ncCate);
                 holder.Member = (TextView) convertView.findViewById(R.id.ncMember);
@@ -499,11 +500,6 @@ public class ClipList extends AppCompatActivity {
             }
 
             ContestData mData = mListData.get(position);
-
-            // System.out.println(mData.getAppliers());
-
-            Dday day = new Dday();
-            // holder.Dday.setText("D "+day.dday(mData.getPeriod()));
 
             holder.cTitle.setText(mData.getTitle());
 

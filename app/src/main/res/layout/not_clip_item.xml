@@ -24,7 +24,7 @@
                 <com.ourincheon.wazap.NotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/dday"
+                    android:id="@+id/ncDday"
                     android:textSize="11dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="12.33dp"

@@ -66,8 +66,9 @@
                 android:layout_marginLeft="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:text="text_con"
                     android:id="@+id/text_con"
                     android:layout_below="@+id/textView29"
@@ -82,9 +83,10 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:text="date"
+                        android:singleLine="true"
                         android:id="@+id/date"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"

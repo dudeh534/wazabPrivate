@@ -124,15 +124,12 @@ public class FragmentPage extends Fragment {
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager1);
 
-
-
                 SharedPreferences pref2 = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                 access_token = pref2.getString("access_token", "");
 
                 items = new ArrayList<>();
 
                 loadContest(access_token);
-
 
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -195,7 +192,13 @@ public class FragmentPage extends Fragment {
                                             weekly.getData(i).getHOSTING(),
                                             "D - " + day.dday(weekly.getData(i).getDEADLINE_DATE()),
                                             weekly.getData(i).getSTART_DATE()+" ~ "+weekly.getData(i).getDEADLINE_DATE(),
-                                            weekly.getData(i).getIMG());
+                                            weekly.getData(i).getIMG(),
+                                            weekly.getData(i).getTOTALPRIZE(),
+                                            weekly.getData(i).getTARGET(),
+                                            weekly.getData(i).getBENEFIT(),
+                                            weekly.getData(i).getFIRSTPRIZE(),
+                                            weekly.getData(i).getHOMEPAGE()
+                                );
                         contestItems.add(contestItem[i]);
                         //
                     }

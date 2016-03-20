@@ -254,7 +254,8 @@ public class ClipList extends AppCompatActivity {
                                     jsonArr.getJSONObject(i).getString("period"),
                                     jsonArr.getJSONObject(i).getString("categories"),
                                     Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")));
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")),
+                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("is_apply")));
 
                             id_list[i]= jsonArr.getJSONObject(i).getString("contests_id");
                           }
@@ -313,7 +314,7 @@ public class ClipList extends AppCompatActivity {
             return position;
         }
 
-        public void addItem(String title,String period, String categories, int id, int member ){
+        public void addItem(String title,String period, String categories, int id, int member,int is_apply ){
             ContestData addInfo = null;
             addInfo = new ContestData();
             addInfo.setTitle(title);
@@ -322,6 +323,7 @@ public class ClipList extends AppCompatActivity {
      //       addInfo.setCategories(categories);
             addInfo.setContests_id(id);
             addInfo.setRecruitment(member);
+            addInfo.setIs_apply(is_apply);
 
             mListData.add(addInfo);
         }
@@ -350,6 +352,7 @@ public class ClipList extends AppCompatActivity {
                 holder.Member = (TextView) convertView.findViewById(R.id.cMember);
 
                 holder.Join = (Button) convertView.findViewById(R.id.cJoin);
+
                 holder.Join.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -375,6 +378,12 @@ public class ClipList extends AppCompatActivity {
   //          holder.Cate.setText(mData.getCategories());
 
             holder.Member.setText("모집인원 " + mData.getRecruitment() + "명");
+
+
+            if(mData.getIs_apply()==0)
+                holder.Join.setBackgroundResource(R.drawable.scrap_info_button);
+            else
+                holder.Join.setBackgroundResource(R.drawable.appliedbtn);
 
             return convertView;
         }

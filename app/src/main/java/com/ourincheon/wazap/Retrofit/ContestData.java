@@ -22,12 +22,21 @@ public class ContestData  implements Serializable {
     String cover;
     String positions;
     String cont_locate;
+    int is_apply;
     int members;
     int appliers;
     int clips;
     int views;
     int is_finish;
     int is_clip;
+
+    public int getIs_apply() {
+        return is_apply;
+    }
+
+    public void setIs_apply(int is_apply) {
+        this.is_apply = is_apply;
+    }
 
     public ContestData(){}
     public int getIs_finish() {

@@ -22,6 +22,8 @@ public class ContestData  implements Serializable {
     String cover;
     String positions;
     String cont_locate;
+    String kakao_id;
+    String profile_img;
     int is_apply;
     int members;
     int appliers;
@@ -29,6 +31,22 @@ public class ContestData  implements Serializable {
     int views;
     int is_finish;
     int is_clip;
+
+    public String getKakao_id() {
+        return kakao_id;
+    }
+
+    public void setKakao_id(String kakao_id) {
+        this.kakao_id = kakao_id;
+    }
+
+    public String getProfile_img() {
+        return profile_img;
+    }
+
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
+    }
 
     public int getIs_apply() {
         return is_apply;

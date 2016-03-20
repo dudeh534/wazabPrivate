@@ -102,10 +102,10 @@
                 android:focusable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/applicant_btn"
                 android:id="@+id/rdetail"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:text="신청자목록"
                 android:layout_marginRight="15.67dp"
                 android:layout_marginTop="5dp" />
         </LinearLayout>

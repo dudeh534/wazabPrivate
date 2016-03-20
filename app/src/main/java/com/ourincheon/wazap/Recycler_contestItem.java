@@ -13,7 +13,8 @@ public class Recycler_contestItem
     private String text;
     private String dday;
     private String date;
-    private ImageView imageView;
+    private String img;
+ //   private ImageView imageView;
 
 
     String getTitle() {
@@ -32,16 +33,18 @@ public class Recycler_contestItem
         return date;
     }
 
-    public ImageView getImageView() {
-        return imageView;
+    public String getImg()
+    {
+        return img;
     }
 
-    Recycler_contestItem(String title)//, String text, String dday, String date, ImageView imageView)
+    Recycler_contestItem(String title, String text, String dday, String date, String img)//, ImageView imageView)
     {
         this.title = title;
-      //  this.text = text;
-      //  this.dday = dday;
-      //  this.date = date;
+        this.text = text;
+        this.dday = dday;
+        this.date = date;
+        this.img = img;
       //  this.imageView = imageView;
     }
 

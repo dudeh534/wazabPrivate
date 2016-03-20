@@ -188,57 +188,17 @@ public class FragmentPage extends Fragment {
 
 
                     contestItem = new Recycler_contestItem[weekly.getDatasize()];
+                    Dday day = new Dday();
 
                     for (int i = 0; i < weekly.getDatasize(); i++) {
-
-                        contestItem[i] = new Recycler_contestItem(weekly.getData(i).getTITLE());
-                        /*item[i] = new Recycler_contestItem(contest.getData(i).getTitle(),
-                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
-                                contest.getData(i).getRecruitment(),
-                                contest.getData(i).getMembers(),
-                                contest.getData(i).getIs_clip(),
-                                contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
-                                "D - " + day.dday(parts[0])
-                        );*/
+                        contestItem[i] = new Recycler_contestItem(weekly.getData(i).getTITLE(),
+                                            weekly.getData(i).getHOSTING(),
+                                            "D - " + day.dday(weekly.getData(i).getDEADLINE_DATE()),
+                                            weekly.getData(i).getSTART_DATE()+" ~ "+weekly.getData(i).getDEADLINE_DATE(),
+                                            weekly.getData(i).getIMG());
                         contestItems.add(contestItem[i]);
                         //
                     }
-
-                    /*
-                    JSONObject jsonRes;
-                    try {
-                        jsonRes = new JSONObject(result);
-                        JSONArray jsonArr = jsonRes.getJSONArray("data");
-                        System.out.println("--------------" + jsonArr.length());
-                        int len = jsonArr.length();
-                        item = new Recycler_item[len];
-                        id_list = new String[len];
-                        writer_list = new String[len];
-
-                        for (int i = 0; i < len; i++) {
-                            id_list[i] = jsonArr.getJSONObject(i).getString("contests_id");
-                            writer_list[i] = jsonArr.getJSONObject(i).getString("cont_writer");
-
-                            String[] parts = jsonArr.getJSONObject(i).getString("period").split("T");
-                            Dday day = new Dday();
-
-                            String title =  jsonArr.getJSONObject(i).getString("title");
-                            item[i] = new Recycler_item( title,//jsonArr.getJSONObject(i).getString("title"),
-                                    jsonArr.getJSONObject(i).getString("hosts"), jsonArr.getJSONObject(i).getString("username"),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("members")),
-                                    Integer.parseInt(jsonArr.getJSONObject(i).getString("is_clip")),
-                                    jsonArr.getJSONObject(i).getString("categories"), jsonArr.getJSONObject(i).getString("cont_locate"),
-                                    "D - " + day.dday(parts[0])
-                            );
-                            items.add(item[i]);
-                            //
-                            System.out.println(items.get(i).getName());
-                        }
-                        rec.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                    }
-                    */
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

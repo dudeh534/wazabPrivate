@@ -1,6 +1,7 @@
 package com.ourincheon.wazap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -40,16 +43,19 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
 
             Log.d("SUCESS-----", item.getTitle());
             holder.title.setText(item.getTitle());
+            holder.text_con.setText(item.getText());
+            holder.dday.setText(item.getDday());
+            holder.date.setText(item.getDate());
 
-            holder.text_con.setText("미래창조과학부");
-            holder.dday.setText("D - 52");
-            holder.date.setText("2015 12.07~2016 01.22");
-            holder.imageView.setBackgroundResource(R.drawable.testcontest);
+            //holder.imageView.setBackgroundResource(R.drawable.testcontest);
+            Glide.with(context).load(item.getImg()).error(R.drawable.testcontest).override(400,100).centerCrop().crossFade().into(holder.imageView);
+
+
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Toast.makeText(context, item.getTitle() + " " + position, Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(context, item.getTitle() + " " + position, Toast.LENGTH_SHORT).show();
+                  //  Intent intent = new Intent(contestRecyclerAdapter.class, )
                 }
             });
 

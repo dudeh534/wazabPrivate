@@ -67,51 +67,51 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         if(temp.length == 2 ) {
             holder.category1.setText(temp[1]);
 
-            if(temp[1].equals("논문/학술"))
-                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
-            else if(temp[1].equals("디자인/UCC"))
+            if(temp[1].equals("사진/영상/UCC"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+            else if(temp[1].equals("디자인"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
-            else if(temp[1].equals("IT/개발"))
+            else if(temp[1].equals("게임/소프트웨어"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
-            else if(temp[1].equals("게임"))
+            else if(temp[1].equals("해외"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
-            else if(temp[1].equals("마케팅/광고"))
+            else if(temp[1].equals("광고/아이디어/마케팅"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
             else
-                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
 
             holder.category2.setText(" ");
             holder.c2.setVisibility(View.INVISIBLE);
         }
         else if(temp.length > 3) {
             holder.category1.setText(temp[1]);
-            if(temp[1].equals("논문/학술"))
-                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
-            else if(temp[1].equals("디자인/UCC"))
+            if(temp[1].equals("사진/영상/UCC"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+            else if(temp[1].equals("디자인"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
-            else if(temp[1].equals("IT/개발"))
+            else if(temp[1].equals("게임/소프트웨어"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
-            else if(temp[1].equals("게임"))
+            else if(temp[1].equals("해외"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
-            else if(temp[1].equals("마케팅/광고"))
+            else if(temp[1].equals("광고/아이디어/마케팅"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
             else
-                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
 
             holder.category2.setText(temp[3]);
             holder.c2.setVisibility(View.VISIBLE);
-            if(temp[3].equals("논문/학술"))
-                holder.c2.setBackgroundResource(R.drawable.detail_icon_scenario);
-            else if(temp[3].equals("디자인/UCC"))
+            if(temp[3].equals("사진/영상/UCC"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_video);
+            else if(temp[3].equals("디자인"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_design);
-            else if(temp[3].equals("IT/개발"))
+            else if(temp[3].equals("게임/소프트웨어"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_it);
-            else if(temp[3].equals("게임"))
+            else if(temp[3].equals("해외"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_idea);
-            else if(temp[3].equals("마케팅/광고"))
+            else if(temp[3].equals("광고/아이디어/마케팅"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_marketing);
             else
-                holder.c2.setBackgroundResource(R.drawable.detail_icon_video);
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_scenario);
         }
 
         holder.loc.setText(item.getLoc());

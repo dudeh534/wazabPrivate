@@ -328,7 +328,10 @@ public class ClipList extends AppCompatActivity {
 
         public TextView Dday;
         public TextView cTitle;
-        public TextView Cate;
+        public TextView Cate1;
+        public TextView Cate2;
+        public ImageView img1;
+        public ImageView img2;
         public TextView Member;
         Button Join;
     }
@@ -391,7 +394,7 @@ public class ClipList extends AppCompatActivity {
 
                 holder.Dday = (TextView) convertView.findViewById(R.id.cDday);
                 holder.cTitle = (TextView) convertView.findViewById(R.id.cTitle);
-                holder.Cate = (TextView) convertView.findViewById(R.id.cCate);
+                holder.Cate1 = (TextView) convertView.findViewById(R.id.cCate1);
                 holder.Member = (TextView) convertView.findViewById(R.id.cMember);
 
                 holder.Join = (Button) convertView.findViewById(R.id.cJoin);
@@ -491,7 +494,7 @@ public class ClipList extends AppCompatActivity {
 
                 holder.Dday = (TextView) convertView.findViewById(R.id.ncDday);
                 holder.cTitle = (TextView) convertView.findViewById(R.id.ncTitle);
-                holder.Cate = (TextView) convertView.findViewById(R.id.ncCate);
+                holder.Cate1 = (TextView) convertView.findViewById(R.id.ncCate);
                 holder.Member = (TextView) convertView.findViewById(R.id.ncMember);
 
                 convertView.setTag(holder);

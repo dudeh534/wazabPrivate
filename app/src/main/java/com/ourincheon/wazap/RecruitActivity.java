@@ -48,7 +48,7 @@ import retrofit2.Retrofit;
  */
 
 public class RecruitActivity extends AppCompatActivity {
-
+    String[] Category_arr ={"광고/아이디어/마케팅","디자인","사진/영상/UCC","게임/소프트웨어","해외","기타"};
     EditText reTitle, reCTitle, reHost, reNum, reIntro, reLoc, rePos;
     Button reDate, reBack;
     TextView save;
@@ -95,14 +95,42 @@ public class RecruitActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton cb, boolean b) {
                 // How can I improve this condition?
-                System.out.println("esttsetse" + count);
                 if(count == 2 && b){
                     cb.setChecked(false);
+                    Toast.makeText(getApplicationContext(), "카테고리는 두개까지 선택 가능합니다.", Toast.LENGTH_LONG).show();
                 }else if(b){
                     count++;
+                    System.out.println("-------------------------" + cb.getText());
+                    cb.setTextColor(Color.BLUE);
+                    if(cb.getText().equals(Category_arr[0]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_marketing);
+                    else if(cb.getText().equals(Category_arr[1]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_design);
+                    else if(cb.getText().equals(Category_arr[2]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_video);
+                    else if(cb.getText().equals(Category_arr[3]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_it);
+                    else if(cb.getText().equals(Category_arr[4]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_idea);
+                    else if(cb.getText().equals(Category_arr[5]))
+                        cb.setButtonDrawable(R.drawable.detail_icon_scenario);
 
                 }else if(!b){
                     count--;
+                    cb.setTextColor(Color.BLACK);
+                    if(cb.getText().equals(Category_arr[0]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_marketing);
+                    else if(cb.getText().equals(Category_arr[1]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_design);
+                    else if(cb.getText().equals(Category_arr[2]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_video);
+                    else if(cb.getText().equals(Category_arr[3]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_it);
+                    else if(cb.getText().equals(Category_arr[4]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_idea);
+                    else if(cb.getText().equals(Category_arr[5]))
+                        cb.setButtonDrawable(R.drawable.detail_disable_scenario);
+
                 }
             }
 
@@ -165,7 +193,9 @@ public class RecruitActivity extends AppCompatActivity {
                 //               Toast.makeText(getApplicationContext(), reDate.getText().toString(), Toast.LENGTH_SHORT).show();
                 if(reTitle.getText().toString().equals("") || reCTitle.getText().toString().equals("") || reNum.getText().toString().equals("")
                     ||reHost.getText().toString().equals("") || reIntro.getText().toString().equals("") || reDate.getText().toString().equals("")
-                        || reLoc.getText().toString().equals("") || rePos.getText().toString().equals("")  )
+                        || reLoc.getText().toString().equals("") || rePos.getText().toString().equals("")
+                        || (checkbox[0].isChecked() == false && checkbox[1].isChecked() == false && checkbox[2].isChecked() == false
+                            && checkbox[3].isChecked() == false && checkbox[4].isChecked() == false &&checkbox[5].isChecked() == false  ) )
                     Toast.makeText(getApplicationContext(), "필수사항을 모두 입력해주세요.", Toast.LENGTH_LONG).show();
                 else
                 {
@@ -174,7 +204,10 @@ public class RecruitActivity extends AppCompatActivity {
                     contest2.setRecruitment(Integer.parseInt(reNum.getText().toString()));
                     contest2.setHosts(reHost.getText().toString());
                     contest2.setCover(reIntro.getText().toString());
-                    contest2.setCategories("논문/학술");
+                    for(int i=0; i<6; i++) {
+                        if (checkbox[i].isChecked())
+                            contest2.setCategories(checkbox[i].getText().toString());
+                    }
                     contest2.setPeriod(reDate.getText().toString());
                     contest2.setCont_locate(reLoc.getText().toString());
                     //contest2.setPeriod("2016-04-29");

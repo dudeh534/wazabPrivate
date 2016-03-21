@@ -95,7 +95,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="420dp"
         android:layout_below="@+id/lineardivider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -236,7 +236,7 @@
                     android:id="@+id/checkIt"
                     android:layout_marginTop="5dp"
                     android:textSize="13dp"
-                    android:button="@drawable/checkit"/>
+                    android:button="@drawable/detail_disable_it"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -245,7 +245,7 @@
                     android:layout_marginTop="5dp"
                     android:id="@+id/checkFo"
                     android:textSize="13dp"
-                    android:button="@drawable/checkfo"/>
+                    android:button="@drawable/detail_disable_idea"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -254,7 +254,7 @@
                     android:layout_marginTop="5dp"
                     android:id="@+id/checkEtc"
                     android:textSize="13dp"
-                    android:button="@drawable/checketc"/>
+                    android:button="@drawable/detail_disable_scenario"/>
 
             </LinearLayout>
 

@@ -181,6 +181,14 @@ public interface WazapService {
             @Header("access-token") String access_token
     );
 
+    // 타이틀명 검색하기
+    @GET("search")
+    Call<Contests> getSearchlist(
+            @Header("access-token") String access_token,
+            @Query("search") String search,
+            @Query("start_id") int start_id,
+            @Query("amount") int amount
+    );
 }
 
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import retrofit2.Retrofit;
  * Created by Youngdo on 2016-01-19.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    final String[] Img_Arr ={"detail_icon_scenario"};
     Context context;
     List<Recycler_item> items;
     int item_layout;
@@ -58,7 +60,60 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.title.setText(item.getTitle());
         holder.name.setText(item.getName());
         holder.text.setText(item.getText());
-        holder.category.setText(item.getCategory());
+
+        String[] temp = item.getCategory().split(" ");
+     /*    System.out.println("!!!!!!!!!!!!!!!!!!!!" + item.getCategory());
+       holder.category1.setText(item.getCategory());*/
+        if(temp.length == 2 ) {
+            holder.category1.setText(temp[1]);
+
+            if(temp[1].equals("논문/학술"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
+            else if(temp[1].equals("디자인/UCC"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
+            else if(temp[1].equals("IT/개발"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
+            else if(temp[1].equals("게임"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
+            else if(temp[1].equals("마케팅/광고"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
+            else
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+
+            holder.category2.setText(" ");
+            holder.c2.setVisibility(View.INVISIBLE);
+        }
+        else if(temp.length > 3) {
+            holder.category1.setText(temp[1]);
+            if(temp[1].equals("논문/학술"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
+            else if(temp[1].equals("디자인/UCC"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
+            else if(temp[1].equals("IT/개발"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
+            else if(temp[1].equals("게임"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
+            else if(temp[1].equals("마케팅/광고"))
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
+            else
+                holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+
+            holder.category2.setText(temp[3]);
+            holder.c2.setVisibility(View.VISIBLE);
+            if(temp[3].equals("논문/학술"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_scenario);
+            else if(temp[3].equals("디자인/UCC"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_design);
+            else if(temp[3].equals("IT/개발"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_it);
+            else if(temp[3].equals("게임"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_idea);
+            else if(temp[3].equals("마케팅/광고"))
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_marketing);
+            else
+                holder.c2.setBackgroundResource(R.drawable.detail_icon_video);
+        }
+
         holder.loc.setText(item.getLoc());
         holder.recruit.setText(" / " + String.valueOf(item.getRecruit()));
         holder.member.setText(String.valueOf(item.getMember()));
@@ -93,6 +148,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     }
+
 
     void pickContest(final String num, final String access_token) {
         Retrofit retrofit = new Retrofit.Builder()
@@ -189,7 +245,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, text, name,recruit, member,loc,category,day;
+        TextView title, text, name,recruit, member,loc,category1,category2,day;
+        ImageView c1,c2;
         CardView cardview;
         Button heart;
 
@@ -198,13 +255,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             name = (TextView) itemView.findViewById(R.id.name);
             text = (TextView) itemView.findViewById(R.id.text);
             loc = (TextView) itemView.findViewById(R.id.loc);
-            category = (TextView) itemView.findViewById(R.id.category);
+            category1 = (TextView) itemView.findViewById(R.id.category1);
+            category2 = (TextView) itemView.findViewById(R.id.category2);
             title = (TextView) itemView.findViewById(R.id.title);
             recruit = (TextView) itemView.findViewById(R.id.recruit);
             member = (TextView) itemView.findViewById(R.id.member);
             cardview = (CardView) itemView.findViewById(R.id.cardView);
             heart = (Button) itemView.findViewById(R.id.hbutton);
             day = (TextView) itemView.findViewById(R.id.day);
+
+            c1 =(ImageView) itemView.findViewById(R.id.imageView1);
+            c2 =(ImageView) itemView.findViewById(R.id.imageView2);
         }
     }
 }

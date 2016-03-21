@@ -1,5 +1,7 @@
 package com.ourincheon.wazap.Retrofit;
 
+import com.facebook.FacebookRequestError;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,6 +10,8 @@ import java.util.ArrayList;
  */
 
 public class ContestData  implements Serializable {
+    final String[] Category_Arr = {"논문/학술","디자인/UCC","IT/개발","게임","마케팅/광고","기타"};
+    int[] category_idx = new int[6];
     int applies_id;
     int contests_id;
     int recruitment;
@@ -141,6 +145,7 @@ public class ContestData  implements Serializable {
         this.username = username;
     }
 
+    /*
     public String getCategories() {
         return categories;
     }
@@ -149,8 +154,8 @@ public class ContestData  implements Serializable {
         this.categories = categories;
     }
 
+*/
 
- /*
      public String getCategories() {
      String str="";
         String[] temp;
@@ -160,16 +165,15 @@ public class ContestData  implements Serializable {
              str += temp[i]+" ";
 
         return str;
-
-         return categories;
      }
 
     public void setCategories(String categories) {
             this.categories = categories;
         }
 
+    /*
 
- /*   public String getCateStr()
+    public String getCateStr()
     {
         String str="";
         for(int i=0; i<categories.size(); i++) {
@@ -207,14 +211,6 @@ public class ContestData  implements Serializable {
         for(int j=0; j<6; j++)
             System.out.print(category_idx[j]+" ");
         return str;
-    }
-
-    public ArrayList<String> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
     }
 */
     public String getPeriod() {

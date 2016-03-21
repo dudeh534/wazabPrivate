@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +52,8 @@ public class RecruitActivity extends AppCompatActivity {
     EditText reTitle, reCTitle, reHost, reNum, reIntro, reLoc, rePos;
     Button reDate, reBack;
     TextView save;
+    final CheckBox[] checkbox = new CheckBox[6];
+    //CheckBox checkDe, checkAd, checkUc, checkIt,checkFo,checkEtc;
     ImageView profileImg;
     String thumbnail;
     ContestData con;
@@ -55,7 +61,7 @@ public class RecruitActivity extends AppCompatActivity {
     int mode,contest_id;
     String access_token;
     int year, month, day;
-
+    int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +82,45 @@ public class RecruitActivity extends AppCompatActivity {
         rePos = (EditText) findViewById(R.id.rePos);
         reIntro = (EditText) findViewById(R.id.reIntro);
         reBack = (Button) findViewById(R.id.reBack);
+
+        /*
+        checkAd = (CheckBox) findViewById(R.id.checkAd);
+        checkDe = (CheckBox) findViewById(R.id.checkDe);
+        checkUc = (CheckBox) findViewById(R.id.checkUc);
+        checkIt = (CheckBox) findViewById(R.id.checkIt);
+        checkFo = (CheckBox) findViewById(R.id.checkFo);
+        checkEtc = (CheckBox) findViewById(R.id.checkEtc);
+*/
+        CompoundButton.OnCheckedChangeListener checker = new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton cb, boolean b) {
+                // How can I improve this condition?
+                System.out.println("esttsetse" + count);
+                if(count == 2 && b){
+                    cb.setChecked(false);
+                }else if(b){
+                    count++;
+
+                }else if(!b){
+                    count--;
+                }
+            }
+
+        };
+                checkbox[0] = (CheckBox) findViewById(R.id.checkAd);
+        checkbox[0].setOnCheckedChangeListener(checker);
+                checkbox[1] = (CheckBox) findViewById(R.id.checkDe);
+            checkbox[1].setOnCheckedChangeListener(checker);
+            checkbox[2] = (CheckBox) findViewById(R.id.checkUc);
+        checkbox[2].setOnCheckedChangeListener(checker);
+            checkbox[3] = (CheckBox) findViewById(R.id.checkIt);
+        checkbox[3].setOnCheckedChangeListener(checker);
+            checkbox[4] = (CheckBox) findViewById(R.id.checkFo);
+        checkbox[4].setOnCheckedChangeListener(checker);
+            checkbox[5] = (CheckBox) findViewById(R.id.checkEtc);
+        checkbox[5].setOnCheckedChangeListener(checker);
+
+
 
         /*** DatePicker ***/
         GregorianCalendar calendar = new GregorianCalendar();

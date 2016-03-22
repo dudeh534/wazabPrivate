@@ -186,7 +186,7 @@ public interface WazapService {
     Call<Contests> getSearchlist(
             @Header("access-token") String access_token,
             @Query("search") String search,
-            @Query("start_id") int start_id,
+           // @Query("start_id") int start_id,
             @Query("amount") int amount
     );
 }

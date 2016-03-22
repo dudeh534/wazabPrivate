@@ -40,7 +40,7 @@ public class SearchActivity extends AppCompatActivity {
     private ListViewAdapter mAdapter = null;
     Contests contests;
     ArrayList<ContestData> contest_list;
-
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +61,17 @@ public class SearchActivity extends AppCompatActivity {
 
         contest_list = new ArrayList<ContestData>();
 
-        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 ContestData mData = mAdapter.mListData.get(position);
                 // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ContestList.this, MasterJoinActivity.class);
+                Intent intent = new Intent(SearchActivity.this, JoinActivity.class);
                 intent.putExtra("id",String.valueOf(mData.getContests_id()));
                 startActivity(intent);
             }
         });
-        */
 
         mAdapter = new ListViewAdapter(this);
 
@@ -92,7 +91,7 @@ public class SearchActivity extends AppCompatActivity {
         String access_token = pref.getString("access_token", "");
 
         System.out.println("------------"+text+"------------"+access_token);
-        Call<Contests> call = service.getSearchlist(access_token, text, 100, 100);
+        Call<Contests> call = service.getSearchlist(access_token, text, 300);
         call.enqueue(new Callback<Contests>() {
             @Override
             public void onResponse(Response<Contests> response) {
@@ -105,7 +104,6 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d("SUCESS-----", result);
 
 
-                    /*
                     JSONObject jsonRes;
                     try {
                         jsonRes = new JSONObject(result);
@@ -113,13 +111,14 @@ public class SearchActivity extends AppCompatActivity {
                         count = jsonArr.length();
                         System.out.println(count);
                         for (int i = 0; i < count; i++) {
-                                mAdapter.addItem(jsonArr.getJSONObject(i).getString("title"));
+                                mAdapter.addItem(jsonArr.getJSONObject(i).getString("title")
+                                ,Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")));
 
                         }
                         mListView.setAdapter(mAdapter);
                     } catch (JSONException e) {
                     }
-*/
+
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
                 } else {
@@ -165,13 +164,12 @@ public class SearchActivity extends AppCompatActivity {
             return position;
         }
 
-        public void addItem(String title){
+        public void addItem(String title, int id){
             ContestData addInfo = null;
             addInfo = new ContestData();
             addInfo.setTitle(title);
-
+            addInfo.setContests_id(id);
             mListData.add(addInfo);
-
         }
 
 

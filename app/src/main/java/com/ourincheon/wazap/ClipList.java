@@ -330,8 +330,7 @@ public class ClipList extends AppCompatActivity {
         public TextView cTitle;
         public TextView Cate1;
         public TextView Cate2;
-        public ImageView img1;
-        public ImageView img2;
+        public ImageView c1,c2;
         public TextView Member;
         Button Join;
     }
@@ -366,7 +365,7 @@ public class ClipList extends AppCompatActivity {
             addInfo.setTitle(title);
             String[] parts = period.split("T");
             addInfo.setPeriod(parts[0]);
-     //       addInfo.setCategories(categories);
+            addInfo.setCategories(categories);
             addInfo.setContests_id(id);
             addInfo.setRecruitment(member);
             addInfo.setIs_apply(is_apply);
@@ -396,6 +395,10 @@ public class ClipList extends AppCompatActivity {
                 holder.cTitle = (TextView) convertView.findViewById(R.id.cTitle);
                 holder.Cate1 = (TextView) convertView.findViewById(R.id.cCate1);
                 holder.Member = (TextView) convertView.findViewById(R.id.cMember);
+                holder.Cate2 = (TextView) convertView.findViewById(R.id.cCate2);
+
+                holder.c1 = (ImageView) convertView.findViewById(R.id.image1);
+                holder.c2 = (ImageView) convertView.findViewById(R.id.image2);
 
                 holder.Join = (Button) convertView.findViewById(R.id.cJoin);
 
@@ -421,10 +424,65 @@ public class ClipList extends AppCompatActivity {
 
             holder.cTitle.setText(mData.getTitle());
 
-  //          holder.Cate.setText(mData.getCategories());
+            //holder.Cate1.setText(mData.getCategories());
 
             holder.Member.setText("모집인원 " + mData.getRecruitment() + "명");
 
+
+            //// 카테고리 명에 맞는 이미지 출력 ////
+            String[] temp = mData.getCategories().split(" ");
+            System.out.println(temp.length);
+
+            if(temp.length == 1 ) {
+                holder.Cate1.setText(temp[0]);
+
+                if(temp[0].equals("사진/UCC"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+                else if(temp[0].equals("디자인"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
+                else if(temp[0].equals("게임/소프트웨어"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
+                else if(temp[0].equals("해외"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
+                else if(temp[0].equals("광고/아이디어/마케팅"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
+                else
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
+
+                holder.Cate2.setText(" ");
+                holder.c2.setVisibility(View.INVISIBLE);
+            }
+            else if(temp.length > 2) {
+                holder.Cate1.setText(temp[0]);
+
+                if(temp[0].equals("사진/UCC"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
+                else if(temp[0].equals("디자인"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
+                else if(temp[0].equals("게임/소프트웨어"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_it);
+                else if(temp[0].equals("해외"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_idea);
+                else if(temp[0].equals("광고/아이디어/마케팅"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_marketing);
+                else
+                    holder.c1.setBackgroundResource(R.drawable.detail_icon_scenario);
+
+                holder.Cate2.setText(temp[2]);
+                holder.c2.setVisibility(View.VISIBLE);
+                if(temp[2].equals("사진/UCC"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_video);
+                else if(temp[2].equals("디자인"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_design);
+                else if(temp[2].equals("게임/소프트웨어"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_it);
+                else if(temp[2].equals("해외"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_idea);
+                else if(temp[2].equals("광고/아이디어/마케팅"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_marketing);
+                else
+                    holder.c2.setBackgroundResource(R.drawable.detail_icon_scenario);
+            }
 
             if(mData.getIs_apply()==0)
                 holder.Join.setBackgroundResource(R.drawable.scrap_info_button);
@@ -466,7 +524,7 @@ public class ClipList extends AppCompatActivity {
             addInfo.setTitle(title);
             String[] parts = period.split("T");
             addInfo.setPeriod(parts[0]);
-            //       addInfo.setCategories(categories);
+            addInfo.setCategories(categories);
             addInfo.setContests_id(id);
             addInfo.setRecruitment(member);
             addInfo.setIs_apply(is_apply);
@@ -494,7 +552,7 @@ public class ClipList extends AppCompatActivity {
 
                 holder.Dday = (TextView) convertView.findViewById(R.id.ncDday);
                 holder.cTitle = (TextView) convertView.findViewById(R.id.ncTitle);
-                holder.Cate1 = (TextView) convertView.findViewById(R.id.ncCate);
+                holder.Cate1 = (TextView) convertView.findViewById(R.id.ncCate1);
                 holder.Member = (TextView) convertView.findViewById(R.id.ncMember);
 
                 convertView.setTag(holder);

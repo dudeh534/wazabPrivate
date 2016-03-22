@@ -48,7 +48,7 @@ import retrofit2.Retrofit;
  */
 
 public class RecruitActivity extends AppCompatActivity {
-    String[] Category_arr ={"광고/아이디어/마케팅","디자인","사진/영상/UCC","게임/소프트웨어","해외","기타"};
+    String[] Category_arr ={"광고/아이디어/마케팅","디자인","사진/UCC","게임/소프트웨어","해외","기타"};
     EditText reTitle, reCTitle, reHost, reNum, reIntro, reLoc, rePos;
     Button reDate, reBack;
     TextView save;

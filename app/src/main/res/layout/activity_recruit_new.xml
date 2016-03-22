@@ -223,7 +223,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사진/영상/UCC"
+                    android:text="사진/UCC"
                     android:layout_marginTop="5dp"
                     android:id="@+id/checkUc"
                     android:textSize="13dp"

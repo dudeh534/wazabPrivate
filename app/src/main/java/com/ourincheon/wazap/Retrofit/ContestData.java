@@ -157,6 +157,8 @@ public class ContestData  implements Serializable {
 */
 
      public String getCategories() {
+
+         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+categories);
      String str="";
         String[] temp;
          categories = categories.substring(1,categories.length()-1);

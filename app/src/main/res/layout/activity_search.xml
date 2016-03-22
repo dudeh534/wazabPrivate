@@ -10,6 +10,7 @@
     tools:context="com.ourincheon.wazap.SearchActivity">
 
     <EditText
+        android:hint="검색어를 입력하세요"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:id="@+id/search_box"/>

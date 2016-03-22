@@ -1,6 +1,8 @@
 package com.ourincheon.wazap;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -49,8 +52,8 @@ import retrofit2.Retrofit;
 
 public class RecruitActivity extends AppCompatActivity {
     String[] Category_arr ={"광고/아이디어/마케팅","디자인","사진/UCC","게임/소프트웨어","해외","기타"};
-    EditText reTitle, reCTitle, reHost, reNum, reIntro, reLoc, rePos;
-    Button reDate, reBack;
+    EditText reTitle, reCTitle, reHost, reNum, reIntro,  rePos;
+    Button reDate, reBack ,reLoc;
     TextView save;
     final CheckBox[] checkbox = new CheckBox[6];
     //CheckBox checkDe, checkAd, checkUc, checkIt,checkFo,checkEtc;
@@ -62,6 +65,9 @@ public class RecruitActivity extends AppCompatActivity {
     String access_token;
     int year, month, day;
     int count;
+    String state,substate;
+    ArrayAdapter<String> city,subcity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +84,15 @@ public class RecruitActivity extends AppCompatActivity {
         reNum = (EditText) findViewById(R.id.reNum);
         /////       reDate = (EditText) findViewById(R.id.reDate);
         reDate = (Button) findViewById(R.id.reDate);
-        reLoc = (EditText) findViewById(R.id.reLoc);
+        reLoc = (Button) findViewById(R.id.reLoc);
         rePos = (EditText) findViewById(R.id.rePos);
         reIntro = (EditText) findViewById(R.id.reIntro);
         reBack = (Button) findViewById(R.id.reBack);
+
+        city = new ArrayAdapter<String>(RecruitActivity.this, android.R.layout.select_dialog_singlechoice);
+        getList();
+        subcity = new ArrayAdapter<String>(RecruitActivity.this, android.R.layout.select_dialog_singlechoice);
+
 
         /*
         checkAd = (CheckBox) findViewById(R.id.checkAd);
@@ -91,6 +102,7 @@ public class RecruitActivity extends AppCompatActivity {
         checkFo = (CheckBox) findViewById(R.id.checkFo);
         checkEtc = (CheckBox) findViewById(R.id.checkEtc);
 */
+        // check box //
         CompoundButton.OnCheckedChangeListener checker = new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton cb, boolean b) {
@@ -162,6 +174,35 @@ public class RecruitActivity extends AppCompatActivity {
             { new DatePickerDialog(RecruitActivity.this, dateSetListener,year,month,day).show();}
         });
 
+        reLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder alertCity = new AlertDialog.Builder(
+                        RecruitActivity.this);
+                alertCity.setTitle("항목중에 하나를 선택하세요.");
+                alertCity.setAdapter(city, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Toast.makeText(getApplicationContext(), city.getItem(which), Toast.LENGTH_SHORT).show();
+                        getCitybased(city.getItem(which));
+
+                        AlertDialog.Builder inCity = new AlertDialog.Builder(RecruitActivity.this);
+                        inCity.setTitle("군구를 선택하세요.");
+                        inCity.setAdapter(subcity, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                substate = subcity.getItem(which);
+                                Toast.makeText(getApplicationContext(), state + " "+ substate, Toast.LENGTH_SHORT).show();
+                                reLoc.setText(state+" "+substate);
+                            }
+                        });
+                        inCity.show();
+                    }
+                });
+                alertCity.show();
+            }
+        });
+
         reBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
@@ -205,8 +246,9 @@ public class RecruitActivity extends AppCompatActivity {
                     contest2.setHosts(reHost.getText().toString());
                     contest2.setCover(reIntro.getText().toString());
                     for(int i=0; i<6; i++) {
-                        if (checkbox[i].isChecked())
+                        if (checkbox[i].isChecked()) {
                             contest2.setCategories(checkbox[i].getText().toString());
+                        }
                     }
                     contest2.setPeriod(reDate.getText().toString());
                     contest2.setCont_locate(reLoc.getText().toString());
@@ -235,6 +277,119 @@ public class RecruitActivity extends AppCompatActivity {
     };
 
 
+    // 시구 목록 받아오
+    void getList()
+    {
+        String baseUrl = "http://come.n.get.us.to/";
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        WazapService service = client.create(WazapService.class);
+
+        Call<LinkedTreeMap> call = service.getLocatelist(access_token);
+        call.enqueue(new Callback<LinkedTreeMap>() {
+            @Override
+            public void onResponse(Response<LinkedTreeMap> response) {
+                if (response.isSuccess() && response.body() != null) {
+                    LinkedTreeMap temp = response.body();
+
+                    boolean result = Boolean.parseBoolean(temp.get("result").toString());
+                    String msg = temp.get("msg").toString();
+                    String data = temp.get("data").toString();
+
+                    String[] split = (data.substring(1,data.length()-1)).split(", ");
+
+                    for(int i=0; i<split.length; i++) {
+                        System.out.println(split[i]);
+                        city.add(split[i]);
+                    }
+
+                    System.out.println(data);
+                    if (result) {
+                        Log.d("리스트 받아오기: ", msg);
+                        //Toast.makeText(getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                     //   ((MasterJoinActivity)(MasterJoinActivity.mContext)).onResume();
+
+                    } else {
+                        Log.d("리스트 받기 실패: ", msg);
+                        //Toast.makeText(getApplicationContext(), "수정이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else if (response.isSuccess()) {
+                    Log.d("Response Body is NULL", response.message());
+                    //Toast.makeText(getApplicationContext(), "수정이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.d("Response Error Body", response.errorBody().toString());
+                    System.out.println(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
+    }
+
+    // 시구 목록 받아오
+    void getCitybased(final String cityname)
+    {
+        String baseUrl = "http://come.n.get.us.to/";
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        WazapService service = client.create(WazapService.class);
+
+        Call<LinkedTreeMap> call = service.getLocatebasedlist(access_token, cityname);
+        call.enqueue(new Callback<LinkedTreeMap>() {
+            @Override
+            public void onResponse(Response<LinkedTreeMap> response) {
+                if (response.isSuccess() && response.body() != null) {
+                    LinkedTreeMap temp = response.body();
+
+                    boolean result = Boolean.parseBoolean(temp.get("result").toString());
+                    String msg = temp.get("msg").toString();
+                    String data = temp.get("data").toString();
+                    System.out.println(data);
+
+                    String[] split = (data.substring(1,data.length()-1)).split(", ");
+
+                    state = cityname;
+                    for(int i=0; i<split.length; i++) {
+                        System.out.println(split[i]);
+                        subcity.add(split[i]);
+                    }
+
+                    System.out.println(data);
+                    if (result) {
+                        Log.d("군구리스트 받아오기: ", msg);
+                        //Toast.makeText(getApplicationContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                        //   ((MasterJoinActivity)(MasterJoinActivity.mContext)).onResume();
+
+                    } else {
+                        Log.d("군구리스트 받기 실패: ", msg);
+                        //Toast.makeText(getApplicationContext(), "수정이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else if (response.isSuccess()) {
+                    Log.d("Response Body is NULL", response.message());
+                    //Toast.makeText(getApplicationContext(), "수정이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.d("Response Error Body", response.errorBody().toString());
+                    System.out.println(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
+    }
 
     void editCon(ContestInfo contest)
     {

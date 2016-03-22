@@ -189,6 +189,20 @@ public interface WazapService {
            // @Query("start_id") int start_id,
             @Query("amount") int amount
     );
+
+    // 시구 검색하기
+    @GET("locate")
+    Call<LinkedTreeMap> getLocatelist(
+            @Header("access-token") String access_token
+    );
+
+    // 군구 검색하기
+    @GET("locate/{state_name}")
+    Call<LinkedTreeMap> getLocatebasedlist(
+            @Header("access-token") String access_token,
+            @Path("state_name") String state_name
+    );
 }
+
 
 

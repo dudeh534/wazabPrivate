@@ -34,6 +34,7 @@ import retrofit2.Retrofit;
 
 public class SearchActivity extends AppCompatActivity {
 
+    Context context;
     EditText sBox;
     Button sBtn;
     private ListView mListView = null;
@@ -47,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        context = this;
         mListView = (ListView) findViewById(R.id.sList);
 
         sBox =(EditText) findViewById(R.id.search_box);
@@ -59,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        contest_list = new ArrayList<ContestData>();
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -110,6 +112,7 @@ public class SearchActivity extends AppCompatActivity {
                         JSONArray jsonArr = jsonRes.getJSONArray("data");
                         count = jsonArr.length();
                         System.out.println(count);
+                        mAdapter=new ListViewAdapter(context);
                         for (int i = 0; i < count; i++) {
                                 mAdapter.addItem(jsonArr.getJSONObject(i).getString("title")
                                 ,Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")));

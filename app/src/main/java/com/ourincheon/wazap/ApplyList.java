@@ -41,6 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ApplyList extends AppCompatActivity {
+    Context context;
     ScrollView scrollView;
     private ListView mListView = null;
     private ListView mListView2 = null;
@@ -59,6 +60,8 @@ public class ApplyList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_list);
+
+        context = this;
 
         mListView = (ListView) findViewById(R.id.listView);
         mListView2 = (ListView)findViewById(R.id.listView1);
@@ -153,7 +156,7 @@ public class ApplyList extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "신청 취소되었습니다.", Toast.LENGTH_LONG).show();
-
+                        onResume();
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "신청취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_LONG).show();
@@ -172,6 +175,12 @@ public class ApplyList extends AppCompatActivity {
                 Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadApply(access_token);
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -221,11 +230,10 @@ public class ApplyList extends AppCompatActivity {
                         count = jsonArr.length();
                         cont_id = new String[count];
                         apply_id = new String[count];
-                        System.out.println(count);
+
+                        mAdapter = new ListViewAdapter(context);
+                        not_listAdapter = new Not_ListViewAdapter(context);
                         for (int i = 0; i < count; i++) {
-                            System.out.println(Integer.parseInt(jsonArr.getJSONObject(i).getString("recruitment")));
-                            System.out.println(jsonArr.getJSONObject(i).getString("recruitment"));
-                            System.out.println(jsonArr.getJSONObject(i).getString("is_finish"));
                             if(Integer.parseInt(jsonArr.getJSONObject(i).getString("is_finish")) == 0) {
                                 cont_id[i] = jsonArr.getJSONObject(i).getString("contests_id");
                                 apply_id[i] = jsonArr.getJSONObject(i).getString("applies_id");

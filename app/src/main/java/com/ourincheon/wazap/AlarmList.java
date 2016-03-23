@@ -79,6 +79,8 @@ public class AlarmList extends AppCompatActivity {
                 System.out.println(temp);
                 if(temp.equals("/contests/list"))
                     intent = new Intent(AlarmList.this, ContestList.class);
+                else if(temp.equals("/contests/appl"))
+                    intent = new Intent(AlarmList.this, ApplyList.class);
                 startActivity(intent);
 
             }

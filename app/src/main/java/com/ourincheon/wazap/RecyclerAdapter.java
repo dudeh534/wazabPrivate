@@ -118,6 +118,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.recruit.setText(" / " + String.valueOf(item.getRecruit()));
         holder.member.setText(String.valueOf(item.getMember()));
         holder.day.setText(item.getDay());
+
+        // 카드뷰 터치ㅣ시-> 상세페이지로
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

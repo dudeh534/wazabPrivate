@@ -43,6 +43,7 @@ import retrofit2.Retrofit;
  * Created by hsue on 16. 2. 25.
  */
 public class ClipList extends AppCompatActivity {
+    Context context;
     ScrollView scrollView;
     private ListView mListView = null;
     private ListView mListView2 = null;
@@ -60,6 +61,8 @@ public class ClipList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clip_list);
+
+        context = this;
 
         mListView = (ListView) findViewById(R.id.cliplistView);
         mListView2 = (ListView)findViewById(R.id.listView1);
@@ -156,7 +159,7 @@ public class ClipList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-      //  loadClip(access_token);
+        loadClip(access_token);
     }
 
     void applyContest(String num, String access_token) {
@@ -182,6 +185,7 @@ public class ClipList extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "신청되었습니다.", Toast.LENGTH_SHORT).show();
+                        onResume();
                         //deleteClip(contest_id);
                     } else {
                         Log.d("저장 실패: ", msg);
@@ -227,7 +231,7 @@ public class ClipList extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                       // onResume();
+                        onResume();
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "스크랩취소 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -277,6 +281,10 @@ public class ClipList extends AppCompatActivity {
                         count = jsonArr.length();
                         id_list = new String[count];
                         System.out.println(count);
+
+                        mAdapter = new ListViewAdapter(context);
+                        not_listAdapter = new Not_ListViewAdapter(context);
+
                         for (int i = 0; i < count; i++) {
                             System.out.println("------------------"+Integer.parseInt(jsonArr.getJSONObject(i).getString("is_finish")));
                             if(Integer.parseInt(jsonArr.getJSONObject(i).getString("is_finish")) == 0) {

@@ -34,6 +34,7 @@ public class showWeeklyActivity extends AppCompatActivity {
         Prize = (NotoTextView)findViewById(R.id.sPrize);
         Homepage = (NotoTextView)findViewById(R.id.sHomepage);
 
+
         img = (ImageView)findViewById(R.id.sImg);
 
 
@@ -46,6 +47,7 @@ public class showWeeklyActivity extends AppCompatActivity {
         Benefit.setText(contestItem.getBenefit());
         Prize.setText(contestItem.getPrize());
         Homepage.setText(contestItem.getHomepage());
+        Category.setText(contestItem.getCategory());
 
         Glide.with(context).load(contestItem.getImg()).error(R.drawable.testcontest).crossFade().into(img);
     }

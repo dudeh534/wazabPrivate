@@ -58,11 +58,24 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
                 public void onClick(View v) {
                     //Intent intent = new Intent(, showWeeklyActivity.class);
                     //activity.startActivity(new Intent(activity,showWeeklyActivity.class));
-                    Intent intent = new Intent(context,showWeeklyActivity.class);
-                    intent.putExtra("Item",item);
+                    Intent intent = new Intent(context, showWeeklyActivity.class);
+                    intent.putExtra("Item", item);
                     context.startActivity(intent);
                 }
             });
+
+            if(item.getCategory().equals("사진/영상/UCC"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_video);
+            else if(item.getCategory().equals("디자인"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_design);
+            else if(item.getCategory().equals("게임/소프트웨어"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_it);
+            else if(item.getCategory().equals("해외"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_idea);
+            else if(item.getCategory().equals("광고/아이디어/마케팅"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_marketing);
+            else
+                holder.category.setBackgroundResource(R.drawable.detail_icon_scenario);
 
         }
 
@@ -75,7 +88,7 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
 
             TextView title, text_con, dday, date;
             CardView cardview;
-            ImageView imageView;
+            ImageView imageView,category;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -85,6 +98,7 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
                 date = (TextView) itemView.findViewById(R.id.date);
                 cardview = (CardView) itemView.findViewById(R.id.cardView);
                 imageView = (ImageView) itemView.findViewById(R.id.contest_image);
+                category = (ImageView) itemView.findViewById(R.id.category_image);
             }
         }
     }

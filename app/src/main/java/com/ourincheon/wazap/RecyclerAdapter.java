@@ -119,7 +119,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.member.setText(String.valueOf(item.getMember()));
         holder.day.setText(item.getDay());
 
-        // 카드뷰 터치ㅣ시-> 상세페이지로
+        // 카드뷰 터치시-> 상세페이지로
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +132,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 context.startActivity(intent);
             }
         });
+
         if(item.getClip()==0)
             holder.heart.setBackgroundResource(R.drawable.heart1);
         else
@@ -140,7 +141,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(context, item.getClip() + " " + position, Toast.LENGTH_SHORT).show();
                 if(!item.getWriter().equals(user_id))
                     pickContest(String.valueOf(item.getId()),access_token);
                 else

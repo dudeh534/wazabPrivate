@@ -21,6 +21,7 @@ public class Recycler_contestItem implements Serializable
     String benefit;
     String prize;
     String homepage;
+    String category;
 
  //   private ImageView imageView;
 
@@ -66,8 +67,12 @@ public class Recycler_contestItem implements Serializable
         return total;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     Recycler_contestItem(String title, String host, String dday, String date, String img,
-                         String total, String target, String benefit,String prize, String homepage)
+                         String total, String target, String benefit,String prize, String homepage, String category)
     {
         this.title = title;
         this.host = host;
@@ -79,7 +84,7 @@ public class Recycler_contestItem implements Serializable
         this.benefit = benefit;
         this.prize = prize;
         this.homepage = homepage;
-      //  this.imageView = imageView;
+        this.category = category;
     }
 
 }

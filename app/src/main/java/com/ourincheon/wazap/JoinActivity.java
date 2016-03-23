@@ -53,6 +53,7 @@ public class JoinActivity extends AppCompatActivity {
     ArrayList<ImageView> iv;
     ArrayList<MemberList> members;
     String username;
+    int cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
         context = this;
 
+        cnt =0;
         jTitle = (TextView) findViewById(R.id.jTitle);
         jCTitle = (TextView) findViewById(R.id.jCTitle);
         jCate =  (TextView) findViewById(R.id.jCate);
@@ -77,6 +79,8 @@ public class JoinActivity extends AppCompatActivity {
         jImg = (ImageView) findViewById(R.id.jImg);
 
         imgLayout= (LinearLayout) findViewById(R.id.imgLayout);
+       // imgLayout = new LinearLayout(context);
+
         iv = new ArrayList<ImageView>();
         members = new ArrayList<MemberList>();
 
@@ -86,9 +90,8 @@ public class JoinActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         access_token = pref.getString("access_token", "");
 
-        loadPage(num);
+       // loadPage(num);
 
-        addImg(members.size());
 
         jBefore = (Button) findViewById(R.id.jBefore);
         jBefore.setOnClickListener(new View.OnClickListener() {
@@ -130,15 +133,6 @@ public class JoinActivity extends AppCompatActivity {
         });
     }
 
-
-    void getMembers()
-    {
-        System.out.println("!!!!!!!!!1111111111111111111111111!"+username);
-        for(int i=0; i<members.size(); i++)
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+members.get(i).getUsername());
-
-      //  addImg();
-    }
 
 
     void addImg(int cnt)
@@ -205,8 +199,8 @@ public class JoinActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("-----------------------------------------------------------------");
         loadPage(num);
-
     }
 
     void pickContest(String num, final String access_token) {
@@ -406,14 +400,16 @@ public class JoinActivity extends AppCompatActivity {
                     else
                         jButton.setText("신청취소하기");
 
+                    System.out.println("membersize---------------"+contest.getData().getMembersize());
+                    //imgLayout = new LinearLayout(context);
+                    imgLayout.removeAllViews();
                     for(int i=0; i<contest.getData().getMembersize(); i++) {
-                        MemberList member = new MemberList();
-                        member = contest.getData().getMemberList(i);
-                        members.add(i, member);
-                        username = contest.getData().getMemberList(i).getUsername();
-                     /*   ImageView img = new ImageView(context);
-                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(50,50).crossFade().into(img);
-                        iv.add(i,img);*/
+                    //    MemberList member = new MemberList();
+                    //    member = contest.getData().getMemberList(i);
+                        ImageView img = new ImageView(context);
+                        System.out.println(contest.getData().getMemberList(i).getProfile_img());
+                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                        imgLayout.addView(img);
                     }
 
                 } else if (response.isSuccess()) {

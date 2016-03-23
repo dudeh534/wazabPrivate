@@ -4,6 +4,7 @@ import com.facebook.FacebookRequestError;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sue on 2016-02-24.
@@ -35,6 +36,16 @@ public class ContestData  implements Serializable {
     int views;
     int is_finish;
     int is_clip;
+
+    List<MemberList> member_list = new ArrayList<MemberList>();
+
+    public MemberList getMemberList(int i)
+    {
+        return member_list.get(i);
+    }
+
+    public int getMembersize()
+    {return  member_list.size();}
 
     public String getKakao_id() {
         return kakao_id;
@@ -278,4 +289,7 @@ public class ContestData  implements Serializable {
 
 
 }
+
+
+
 

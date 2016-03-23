@@ -64,9 +64,27 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
                 }
             });
 
+
+            // 카테고리별 분류
+            String[] temp=item.getCategory().split(",");
+            for(int j=0; j<temp.length; j++) {
+                if(temp[j].trim().equals("광고/아이디어/마케팅"))
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_marketing);
+                else if(temp[j].trim().equals("디자인/플래"))
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_design);
+                else if(temp[j].trim().equals("사진/영상/UCC"))
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_video);
+                else if(temp[j].trim().equals("게임/소프트웨어"))
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_it);
+                else if(temp[j].trim().equals("해외"))
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_idea);
+                else
+                    holder.category.setBackgroundResource(R.drawable.detail_icon_scenario);
+            }
+        /*
             if(item.getCategory().equals("사진/영상/UCC"))
-                holder.category.setBackgroundResource(R.drawable.detail_icon_video);
-            else if(item.getCategory().equals("디자인"))
+                holder.category.setBackgroundResource(R.drawable.detail_icon_video);시
+            else if(item.getCategory().equals("디자인/플래"))
                 holder.category.setBackgroundResource(R.drawable.detail_icon_design);
             else if(item.getCategory().equals("게임/소프트웨어"))
                 holder.category.setBackgroundResource(R.drawable.detail_icon_it);
@@ -76,7 +94,7 @@ public class contestRecyclerAdapter extends RecyclerView.Adapter<contestRecycler
                 holder.category.setBackgroundResource(R.drawable.detail_icon_marketing);
             else
                 holder.category.setBackgroundResource(R.drawable.detail_icon_scenario);
-
+*/
         }
 
         @Override

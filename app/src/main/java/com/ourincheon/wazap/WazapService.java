@@ -178,7 +178,8 @@ public interface WazapService {
     // 주간목록 받아오기
     @GET("weekly_list")
     Call<WeeklyList> getWeeklylist(
-            @Header("access-token") String access_token
+            @Header("access-token") String access_token,
+            @Query("amount") int amount
     );
 
     // 타이틀명 검색하기

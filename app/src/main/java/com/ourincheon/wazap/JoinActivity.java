@@ -1,5 +1,6 @@
 package com.ourincheon.wazap;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.Retrofit.ContestData;
+import com.ourincheon.wazap.Retrofit.MemberList;
 import com.ourincheon.wazap.Retrofit.reqContest;
 
 import org.json.JSONArray;
@@ -27,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,6 +49,10 @@ public class JoinActivity extends AppCompatActivity {
     String access_token,num,Writer;
     int is_apply;
     Button jPick,jBefore;
+    LinearLayout imgLayout;
+    ArrayList<ImageView> iv;
+    ArrayList<MemberList> members;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,10 @@ public class JoinActivity extends AppCompatActivity {
 
         jImg = (ImageView) findViewById(R.id.jImg);
 
+        imgLayout= (LinearLayout) findViewById(R.id.imgLayout);
+        iv = new ArrayList<ImageView>();
+        members = new ArrayList<MemberList>();
+
         Intent intent = getIntent();
         num =  intent.getExtras().getString("id");
 
@@ -75,6 +88,7 @@ public class JoinActivity extends AppCompatActivity {
 
         loadPage(num);
 
+        addImg(members.size());
 
         jBefore = (Button) findViewById(R.id.jBefore);
         jBefore.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +128,32 @@ public class JoinActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+
+    void getMembers()
+    {
+        System.out.println("!!!!!!!!!1111111111111111111111111!"+username);
+        for(int i=0; i<members.size(); i++)
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+members.get(i).getUsername());
+
+      //  addImg();
+    }
+
+
+    void addImg(int cnt)
+    {
+        System.out.println("11111111111111111111111111111111111111111");
+        // 이미지 동적으로 붙이
+        for(int i=0; i<cnt; i++) {
+            ImageView img = new ImageView(this);
+            Glide.with(context).load(R.drawable.detail_disable_design).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+            iv.add(i,img);
+        }
+
+        for(int i=0; i<iv.size(); i++) {
+            imgLayout.addView(iv.get(i));
+        }
     }
 
     void deleteApply(String contest)
@@ -166,6 +206,7 @@ public class JoinActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadPage(num);
+
     }
 
     void pickContest(String num, final String access_token) {
@@ -365,6 +406,15 @@ public class JoinActivity extends AppCompatActivity {
                     else
                         jButton.setText("신청취소하기");
 
+                    for(int i=0; i<contest.getData().getMembersize(); i++) {
+                        MemberList member = new MemberList();
+                        member = contest.getData().getMemberList(i);
+                        members.add(i, member);
+                        username = contest.getData().getMemberList(i).getUsername();
+                     /*   ImageView img = new ImageView(context);
+                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(50,50).crossFade().into(img);
+                        iv.add(i,img);*/
+                    }
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

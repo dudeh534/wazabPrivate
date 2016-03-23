@@ -175,7 +175,7 @@ public class FragmentPage extends Fragment {
 
 
         System.out.println("------------------------" + access_token);
-        Call<WeeklyList> call = service.getWeeklylist(access_token);
+        Call<WeeklyList> call = service.getWeeklylist(access_token,300);
         call.enqueue(new Callback<WeeklyList>() {
             @Override
             public void onResponse(Response<WeeklyList> response) {

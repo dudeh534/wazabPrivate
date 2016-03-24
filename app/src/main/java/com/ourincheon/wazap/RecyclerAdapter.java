@@ -62,8 +62,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         //// 카테고리 명에 맞는 이미지 출력 ////
         String[] temp = item.getCategory().split(" ");
-     /*    System.out.println("!!!!!!!!!!!!!!!!!!!!" + item.getCategory());
-       holder.category1.setText(item.getCategory());*/
         if(temp.length == 2 ) {
             holder.category1.setText(temp[1]);
 

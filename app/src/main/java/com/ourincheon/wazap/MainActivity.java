@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Drawable drawable = getResources().getDrawable(R.drawable.detail_title_banner);
         toolbar.setBackground(drawable);
@@ -49,16 +48,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        // 플로팅 버튼 터치시 -> 글쓰기 페이지
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, RecruitActivity.class);
                 i.putExtra("edit", 0);
-                //i.putExtra("KakaoInfo",kakao);
-                //i.putExtra("Nickname",nick);
                 startActivity(i);
-                //  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
             }
         });
 
@@ -108,8 +104,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         // 사용자 이름, 이미지 불러오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-      //  Intent intent = getIntent();
-       // kakao = (infoKaKao)intent.getSerializableExtra("KakaoInfo");
        nickname.setText(pref.getString("name",""));
 
         profileImg = (ImageView)header.findViewById(R.id.imageView);

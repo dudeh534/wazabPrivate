@@ -35,7 +35,6 @@ public class FragmentPage extends Fragment {
     private static final String ARG_POSITION = "position";
     RecyclerView content;
     LinearLayout linearLayout;
-    private DataStorage storage = new DataStorage();
     private int position;
     Contests contest;
     WeeklyList weekly;
@@ -47,8 +46,6 @@ public class FragmentPage extends Fragment {
     List<Recycler_contestItem> cont_marketing, cont_design, cont_photo,cont_it,cont_foreign, cont_etc;
     Recycler_item[] item;
     Recycler_contestItem[] contestItem;
-    String[] id_list,writer_list;
-    Intent Joininfo;
     String access_token;
 
     public static FragmentPage newInstance(int position) {
@@ -63,11 +60,37 @@ public class FragmentPage extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
+
+        // 저장된 값 불러오기
+        SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        final String user_id = pref.getString("user_id", "");
+        System.out.println(user_id);
+        access_token = pref.getString("access_token", "");
+
+        // 모집글 리스트
+        items = new ArrayList<>();
+        marketing = new ArrayList<>();
+        design= new ArrayList<>();
+        photo = new ArrayList<>();
+        it = new ArrayList<>();
+        foreign = new ArrayList<>();
+        etc = new ArrayList<>();
+
+        // 공모전 리스트
+        contestItems = new ArrayList<>();
+        cont_marketing = new ArrayList<>();
+        cont_design= new ArrayList<>();
+        cont_photo = new ArrayList<>();
+        cont_it = new ArrayList<>();
+        cont_foreign = new ArrayList<>();
+        cont_etc = new ArrayList<>();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         switch (position) {
+            //* 모집글 리스트 프래그먼트 *//
             case 0:
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
                 content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
@@ -75,80 +98,47 @@ public class FragmentPage extends Fragment {
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager);
 
-                SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                final String user_id = pref.getString("user_id", "");
-                System.out.println(user_id);
-                access_token = pref.getString("access_token", "");
-
-                items = new ArrayList<>();
-                marketing = new ArrayList<>();
-                design= new ArrayList<>();
-                photo = new ArrayList<>();
-                it = new ArrayList<>();
-                foreign = new ArrayList<>();
-                etc = new ArrayList<>();
-
        /*         Bundle bundle = getArguments();
                 int category = bundle.getInt("position");
                 Toast.makeText(getContext(), "ccccccccccccccccc" + category, Toast.LENGTH_SHORT).show();
 */
+                // 모집글 페이지 로드
                 loadPage(access_token);//, category);
-
-
 
                 // 전체 카드뷰 누를 경우 - 기능 없음
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
-
-                    }
-
+                    public void onItemClick(View view, int position) {}
                     @Override
-                    public void onItemLongClick(View view, int position) {
-
-                    }
+                    public void onItemLongClick(View view, int position) {}
                 }));
 
-
                 rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
-                content.setAdapter(rec);
                 linearLayout.removeAllViews();
                 linearLayout.addView(content);
                 return linearLayout;
 
+
+            //* 공모전 리스트 프래그먼트 *//
             case 1:
-                contestItems = new ArrayList<>();
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
                 content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager1);
 
-                SharedPreferences pref2 = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                access_token = pref2.getString("access_token", "");
-
-                cont_marketing = new ArrayList<>();
-                cont_design= new ArrayList<>();
-                cont_photo = new ArrayList<>();
-                cont_it = new ArrayList<>();
-                cont_foreign = new ArrayList<>();
-                cont_etc = new ArrayList<>();
-
+                // 공모전 리스트 로드
                 loadContest(access_token);
 
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
-                    }
+                    public void onItemClick(View view, int position) {}
 
                     @Override
-                    public void onItemLongClick(View view, int position) {
-
-                    }
+                    public void onItemLongClick(View view, int position) {}
                 }));
 
                 conRec = new contestRecyclerAdapter(getActivity(), contestItems, R.layout.fragment_page);
-                content.setAdapter(conRec);
                 linearLayout.removeAllViews();
                 linearLayout.addView(content);
                 return linearLayout;
@@ -164,6 +154,8 @@ public class FragmentPage extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+
+    //* 공모전 리스트 서버에서 받아옴 *//
     void loadContest(String access_token)
     {
         Retrofit retrofit = new Retrofit.Builder()
@@ -173,9 +165,8 @@ public class FragmentPage extends Fragment {
 
         WazapService service = retrofit.create(WazapService.class);
 
-
         System.out.println("------------------------" + access_token);
-        Call<WeeklyList> call = service.getWeeklylist(access_token,300);
+        Call<WeeklyList> call = service.getWeeklylist(access_token, 300);
         call.enqueue(new Callback<WeeklyList>() {
             @Override
             public void onResponse(Response<WeeklyList> response) {
@@ -184,8 +175,8 @@ public class FragmentPage extends Fragment {
                     Log.d("--------------------", response.message());
                     weekly = response.body();
 
-                   String result = new Gson().toJson(weekly);
-                   Log.d("SUCESS-----", result);
+                    String result = new Gson().toJson(weekly);
+                    Log.d("SUCESS-----", result);
 
 
                     contestItem = new Recycler_contestItem[weekly.getDatasize()];
@@ -193,35 +184,37 @@ public class FragmentPage extends Fragment {
 
                     for (int i = 0; i < weekly.getDatasize(); i++) {
                         contestItem[i] = new Recycler_contestItem(weekly.getData(i).getTITLE(),
-                                            weekly.getData(i).getHOSTING(),
-                                            "D - " + day.dday(weekly.getData(i).getDEADLINE_DATE()),
-                                            weekly.getData(i).getSTART_DATE()+" ~ "+weekly.getData(i).getDEADLINE_DATE(),
-                                            weekly.getData(i).getIMG(),
-                                            weekly.getData(i).getTOTALPRIZE(),
-                                            weekly.getData(i).getTARGET(),
-                                            weekly.getData(i).getBENEFIT(),
-                                            weekly.getData(i).getFIRSTPRIZE(),
-                                            weekly.getData(i).getHOMEPAGE(),
-                                            weekly.getData(i).getTAG()
-                                );
+                                weekly.getData(i).getHOSTING(),
+                                "D - " + day.dday(weekly.getData(i).getDEADLINE_DATE()),
+                                weekly.getData(i).getSTART_DATE() + " ~ " + weekly.getData(i).getDEADLINE_DATE(),
+                                weekly.getData(i).getIMG(),
+                                weekly.getData(i).getTOTALPRIZE(),
+                                weekly.getData(i).getTARGET(),
+                                weekly.getData(i).getBENEFIT(),
+                                weekly.getData(i).getFIRSTPRIZE(),
+                                weekly.getData(i).getHOMEPAGE(),
+                                weekly.getData(i).getTAG()
+                        );
                         contestItems.add(contestItem[i]);
 
                         // 카테고리별 분류
-                        String[] temp=weekly.getData(i).getTAG().split(",");
-                        for(int j=0; j<temp.length; j++) {
-                            if(temp[j].trim().equals("광고/아이디어/마케팅"))
+                        String[] temp = weekly.getData(i).getTAG().split(",");
+                        for (int j = 0; j < temp.length; j++) {
+                            if (temp[j].trim().equals("광고/아이디어/마케팅"))
                                 cont_marketing.add(contestItem[i]);
-                            else if(temp[j].trim().equals("디자인"))
+                            else if (temp[j].trim().equals("디자인"))
                                 cont_design.add(contestItem[i]);
-                            else if(temp[j].trim().equals("사진/영상/UCC"))
+                            else if (temp[j].trim().equals("사진/영상/UCC"))
                                 cont_photo.add(contestItem[i]);
-                            else if(temp[j].trim().equals("게임/소프트웨어"))
+                            else if (temp[j].trim().equals("게임/소프트웨어"))
                                 cont_it.add(contestItem[i]);
-                            else if(temp[j].trim().equals("해외"))
+                            else if (temp[j].trim().equals("해외"))
                                 cont_foreign.add(contestItem[i]);
                             else
                                 cont_etc.add(contestItem[i]);
                         }
+
+                        content.setAdapter(conRec);
                     }
 
                 } else if (response.isSuccess()) {
@@ -239,6 +232,8 @@ public class FragmentPage extends Fragment {
         });
     }
 
+
+    //* 모집글 리스트 서버에서 받아옴 *//
     void loadPage(String access_token)//, final int category)
     {
         Retrofit retrofit = new Retrofit.Builder()
@@ -300,6 +295,8 @@ public class FragmentPage extends Fragment {
                             else
                                 etc.add(item[i]);
                         }
+
+                        content.setAdapter(rec);
                     }
 
                 } else if (response.isSuccess()) {

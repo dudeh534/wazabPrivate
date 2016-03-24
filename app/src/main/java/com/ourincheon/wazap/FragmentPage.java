@@ -291,7 +291,7 @@ public class FragmentPage extends Fragment {
                                 marketing.add(item[i]);
                             else if(temp2[j].trim().equals("디자인"))
                                 design.add(item[i]);
-                            else if(temp2[j].trim().equals("사진/UCC"))
+                            else if(temp2[j].trim().equals("사진/영상/UCC"))
                                 photo.add(item[i]);
                             else if(temp2[j].trim().equals("게임/소프트웨어"))
                                 it.add(item[i]);

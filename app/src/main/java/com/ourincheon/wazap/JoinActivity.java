@@ -2,6 +2,7 @@ package com.ourincheon.wazap;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
@@ -50,10 +51,6 @@ public class JoinActivity extends AppCompatActivity {
     int is_apply;
     Button jPick,jBefore;
     LinearLayout imgLayout;
-    ArrayList<ImageView> iv;
-    ArrayList<MemberList> members;
-    String username;
-    int cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +58,6 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
         context = this;
 
-        cnt =0;
         jTitle = (TextView) findViewById(R.id.jTitle);
         jCTitle = (TextView) findViewById(R.id.jCTitle);
         jCate =  (TextView) findViewById(R.id.jCate);
@@ -79,18 +75,12 @@ public class JoinActivity extends AppCompatActivity {
         jImg = (ImageView) findViewById(R.id.jImg);
 
         imgLayout= (LinearLayout) findViewById(R.id.imgLayout);
-       // imgLayout = new LinearLayout(context);
-
-        iv = new ArrayList<ImageView>();
-        members = new ArrayList<MemberList>();
 
         Intent intent = getIntent();
         num =  intent.getExtras().getString("id");
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         access_token = pref.getString("access_token", "");
-
-       // loadPage(num);
 
 
         jBefore = (Button) findViewById(R.id.jBefore);
@@ -131,23 +121,6 @@ public class JoinActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-
-
-    void addImg(int cnt)
-    {
-        System.out.println("11111111111111111111111111111111111111111");
-        // 이미지 동적으로 붙이
-        for(int i=0; i<cnt; i++) {
-            ImageView img = new ImageView(this);
-            Glide.with(context).load(R.drawable.detail_disable_design).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
-            iv.add(i,img);
-        }
-
-        for(int i=0; i<iv.size(); i++) {
-            imgLayout.addView(iv.get(i));
-        }
     }
 
     void deleteApply(String contest)
@@ -394,21 +367,34 @@ public class JoinActivity extends AppCompatActivity {
 
                     is_apply = contest.getData().getIs_apply();
 
-
+                    // 신청하기 버튼 글자
                     if(is_apply==0)
                         jButton.setText("신청하기");
                     else
                         jButton.setText("신청취소하기");
 
-                    System.out.println("membersize---------------"+contest.getData().getMembersize());
-                    //imgLayout = new LinearLayout(context);
+                    // 멤버리스트 이미지로 붙이기
+                    System.out.println("membersize---------------" + contest.getData().getMembersize());
                     imgLayout.removeAllViews();
                     for(int i=0; i<contest.getData().getMembersize(); i++) {
-                    //    MemberList member = new MemberList();
-                    //    member = contest.getData().getMemberList(i);
+                        final int idx = i;
                         ImageView img = new ImageView(context);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(10,0,10,0);
+                        img.setLayoutParams(params);
                         System.out.println(contest.getData().getMemberList(i).getProfile_img());
                         Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                        img.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                System.out.println("---------------------"+contest.getData().getMemberList(idx).getUsers_id());
+
+                                Intent intent = new Intent(JoinActivity.this, showMypageActivity.class);
+                                intent.putExtra("user_id", contest.getData().getMemberList(idx).getUsers_id());
+                                intent.putExtra("flag",2);
+                                startActivity(intent);
+                            }
+                        });
                         imgLayout.addView(img);
                     }
 
@@ -449,4 +435,5 @@ public class JoinActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

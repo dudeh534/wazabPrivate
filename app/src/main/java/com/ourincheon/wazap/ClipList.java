@@ -562,6 +562,10 @@ public class ClipList extends AppCompatActivity {
                 holder.cTitle = (TextView) convertView.findViewById(R.id.ncTitle);
                 holder.Cate1 = (TextView) convertView.findViewById(R.id.ncCate1);
                 holder.Member = (TextView) convertView.findViewById(R.id.ncMember);
+                holder.Cate2 = (TextView) convertView.findViewById(R.id.ncCate2);
+
+                holder.c1 = (ImageView) convertView.findViewById(R.id.img1);
+                holder.c2 = (ImageView) convertView.findViewById(R.id.img2);
 
                 convertView.setTag(holder);
             }else{
@@ -572,7 +576,60 @@ public class ClipList extends AppCompatActivity {
 
             holder.cTitle.setText(mData.getTitle());
 
-            //          holder.Cate.setText(mData.getCategories());
+            //// 카테고리 명에 맞는 이미지 출력 ////
+            String[] temp = mData.getCategories().split(" ");
+            System.out.println(temp.length);
+
+            if(temp.length == 1 ) {
+                holder.Cate1.setText(temp[0]);
+
+                if(temp[0].equals("사진/영상/UCC"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_video);
+                else if(temp[0].equals("디자인"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_design);
+                else if(temp[0].equals("게임/소프트웨어"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_it);
+                else if(temp[0].equals("해외"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_idea);
+                else if(temp[0].equals("광고/아이디어/마케팅"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_marketing);
+                else
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_scenario);
+
+                holder.Cate2.setText(" ");
+                holder.c2.setVisibility(View.INVISIBLE);
+            }
+            else if(temp.length > 2) {
+                holder.Cate1.setText(temp[0]);
+
+                if(temp[0].equals("사진/영상/UCC"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_video);
+                else if(temp[0].equals("디자인"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_design);
+                else if(temp[0].equals("게임/소프트웨어"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_it);
+                else if(temp[0].equals("해외"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_idea);
+                else if(temp[0].equals("광고/아이디어/마케팅"))
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_marketing);
+                else
+                    holder.c1.setBackgroundResource(R.drawable.detail_disable_scenario);
+
+                holder.Cate2.setText(temp[2]);
+                holder.c2.setVisibility(View.VISIBLE);
+                if(temp[2].equals("사진/영상/UCC"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_video);
+                else if(temp[2].equals("디자인"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_design);
+                else if(temp[2].equals("게임/소프트웨어"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_it);
+                else if(temp[2].equals("해외"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_idea);
+                else if(temp[2].equals("광고/아이디어/마케팅"))
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_marketing);
+                else
+                    holder.c2.setBackgroundResource(R.drawable.detail_disable_scenario);
+            }
 
             holder.Member.setText("모집인원 " + mData.getRecruitment() + "명");
 

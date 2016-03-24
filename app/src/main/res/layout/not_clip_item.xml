@@ -50,7 +50,7 @@
                         android:layout_width="11dp"
                         android:layout_height="11dp"
                         android:id="@+id/img1"
-                        android:background="#0057ff"
+                        android:background="#575757"
                         android:layout_marginRight="8.33dp"
                         android:layout_marginTop="2dp" />
                     <com.ourincheon.wazap.NotoTextView

@@ -88,11 +88,11 @@ public class FragmentPage extends Fragment {
                 foreign = new ArrayList<>();
                 etc = new ArrayList<>();
 
-                Bundle bundle = getArguments();
+       /*         Bundle bundle = getArguments();
                 int category = bundle.getInt("position");
                 Toast.makeText(getContext(), "ccccccccccccccccc" + category, Toast.LENGTH_SHORT).show();
-
-                loadPage(access_token, category);
+*/
+                loadPage(access_token);//, category);
 
 
 
@@ -239,7 +239,7 @@ public class FragmentPage extends Fragment {
         });
     }
 
-    void loadPage(String access_token, final int category)
+    void loadPage(String access_token)//, final int category)
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to/")

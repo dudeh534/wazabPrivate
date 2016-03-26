@@ -9,7 +9,6 @@ import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
 import com.ourincheon.wazap.R;
-import com.ourincheon.wazap.Splash;
 
 /**
  * Created by Hsue.
@@ -23,9 +22,6 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.kakao_login);
-
-        Intent intent = new Intent(this, Splash.class);
-        startActivity(intent);
 
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);

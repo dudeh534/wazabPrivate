@@ -1,10 +1,10 @@
 package com.ourincheon.wazap;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.Contests;
@@ -41,13 +40,13 @@ public class FragmentPage extends Fragment {
     RecyclerAdapter rec;
     contestRecyclerAdapter conRec;
     List<Recycler_item> items;
-    List<Recycler_item> marketing, design, photo,it,foreign,etc;
+    List<Recycler_item> marketing, design, photo, it, foreign, etc;
     List<Recycler_contestItem> contestItems;
-    List<Recycler_contestItem> cont_marketing, cont_design, cont_photo,cont_it,cont_foreign, cont_etc;
+    List<Recycler_contestItem> cont_marketing, cont_design, cont_photo, cont_it, cont_foreign, cont_etc;
     Recycler_item[] item;
     Recycler_contestItem[] contestItem;
     String access_token;
-
+    SwipeRefreshLayout swipeRefreshLayout;
     public static FragmentPage newInstance(int position) {
         FragmentPage f = new FragmentPage();
         Bundle b = new Bundle();
@@ -70,7 +69,7 @@ public class FragmentPage extends Fragment {
         // 모집글 리스트
         items = new ArrayList<>();
         marketing = new ArrayList<>();
-        design= new ArrayList<>();
+        design = new ArrayList<>();
         photo = new ArrayList<>();
         it = new ArrayList<>();
         foreign = new ArrayList<>();
@@ -79,7 +78,7 @@ public class FragmentPage extends Fragment {
         // 공모전 리스트
         contestItems = new ArrayList<>();
         cont_marketing = new ArrayList<>();
-        cont_design= new ArrayList<>();
+        cont_design = new ArrayList<>();
         cont_photo = new ArrayList<>();
         cont_it = new ArrayList<>();
         cont_foreign = new ArrayList<>();
@@ -93,7 +92,15 @@ public class FragmentPage extends Fragment {
             //* 모집글 리스트 프래그먼트 *//
             case 0:
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
-                content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
+                swipeRefreshLayout = (SwipeRefreshLayout) linearLayout.findViewById(R.id.swipeRefresh);
+                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadPage(access_token);
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+                content = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager);
@@ -105,24 +112,36 @@ public class FragmentPage extends Fragment {
                 // 모집글 페이지 로드
                 loadPage(access_token);//, category);
 
+
                 // 전체 카드뷰 누를 경우 - 기능 없음
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {}
+                    public void onItemClick(View view, int position) {
+                    }
+
                     @Override
-                    public void onItemLongClick(View view, int position) {}
+                    public void onItemLongClick(View view, int position) {
+                    }
                 }));
 
                 rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
                 linearLayout.removeAllViews();
-                linearLayout.addView(content);
+                linearLayout.addView(swipeRefreshLayout);
                 return linearLayout;
 
 
             //* 공모전 리스트 프래그먼트 *//
             case 1:
                 linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_page, container, false);
-                content = (RecyclerView) linearLayout.findViewById(R.id.recyclerView);
+                swipeRefreshLayout = (SwipeRefreshLayout) linearLayout.findViewById(R.id.swipeRefresh);
+                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadContest(access_token);
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+                content = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
                 content.setLayoutManager(layoutManager1);
@@ -132,17 +151,19 @@ public class FragmentPage extends Fragment {
 
                 content.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), content, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {}
+                    public void onItemClick(View view, int position) {
+                    }
 
                     @Override
-                    public void onItemLongClick(View view, int position) {}
+                    public void onItemLongClick(View view, int position) {
+                    }
                 }));
 
                 conRec = new contestRecyclerAdapter(getActivity(), contestItems, R.layout.fragment_page);
                 linearLayout.removeAllViews();
-                linearLayout.addView(content);
+                linearLayout.addView(swipeRefreshLayout);
                 return linearLayout;
-                
+
             default:
                 return null;
 
@@ -150,14 +171,13 @@ public class FragmentPage extends Fragment {
     }
 
     @Override
-    public void onActivityCreated( Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
 
     //* 공모전 리스트 서버에서 받아옴 *//
-    void loadContest(String access_token)
-    {
+    void loadContest(String access_token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -273,30 +293,35 @@ public class FragmentPage extends Fragment {
                                 contest.getData(i).getCont_writer()
                         );
                         items.add(item[i]);
+                        try {
+                            String cates = contest.getData(i).getCates().substring(1, contest.getData(i).getCates().length() - 1);
+                            String str = "";
+                            String[] temp = cates.split("\"");
+                            for (int j = 0; j < temp.length; j++)
+                                str += temp[j] + " ";
+                            String[] temp2 = str.split(" , ");
+                            for (int j = 0; j < temp2.length; j++) {
+                                if (temp2[j].trim().equals("광고/아이디어/마케팅"))
+                                    marketing.add(item[i]);
+                                else if (temp2[j].trim().equals("디자인"))
+                                    design.add(item[i]);
+                                else if (temp2[j].trim().equals("사진/영상/UCC"))
+                                    photo.add(item[i]);
+                                else if (temp2[j].trim().equals("게임/소프트웨어"))
+                                    it.add(item[i]);
+                                else if (temp2[j].trim().equals("해외"))
+                                    foreign.add(item[i]);
+                                else
+                                    etc.add(item[i]);
+                            }
 
-                        String cates = contest.getData(i).getCates().substring(1,contest.getData(i).getCates().length()-1);
-                        String str="";
-                        String[] temp=cates.split("\"");
-                        for(int j=0; j<temp.length; j++)
-                            str += temp[j]+" ";
-                        String[] temp2 = str.split(" , ");
-
-                        for(int j=0; j<temp2.length; j++) {
-                            if(temp2[j].trim().equals("광고/아이디어/마케팅"))
-                                marketing.add(item[i]);
-                            else if(temp2[j].trim().equals("디자인"))
-                                design.add(item[i]);
-                            else if(temp2[j].trim().equals("사진/영상/UCC"))
-                                photo.add(item[i]);
-                            else if(temp2[j].trim().equals("게임/소프트웨어"))
-                                it.add(item[i]);
-                            else if(temp2[j].trim().equals("해외"))
-                                foreign.add(item[i]);
-                            else
-                                etc.add(item[i]);
+                            content.setAdapter(rec);
+                        } catch (StringIndexOutOfBoundsException e) {
                         }
 
-                        content.setAdapter(rec);
+
+
+
                     }
 
                 } else if (response.isSuccess()) {

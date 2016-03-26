@@ -48,7 +48,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Recycler_item item = items.get(position);
 
         SharedPreferences pref2 = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
@@ -139,10 +139,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!item.getWriter().equals(user_id))
-                    pickContest(String.valueOf(item.getId()),access_token);
-                else
+                if(!item.getWriter().equals(user_id)) {
+                    pickContest(String.valueOf(item.getId()), access_token);
+                    holder.heart.setBackgroundResource(R.drawable.heart2);
+                }
+                else {
                     Toast.makeText(context, "글 작성자는 스크랩할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

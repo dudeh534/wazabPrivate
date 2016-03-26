@@ -24,7 +24,6 @@ import com.facebook.login.LoginResult;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.MainActivity;
 import com.ourincheon.wazap.R;
-import com.ourincheon.wazap.Splash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +49,7 @@ public class FacebookLogin extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
     //    getHash();
         /* android app key 생성
@@ -66,8 +66,7 @@ public class FacebookLogin extends Activity {
 
         setContentView(R.layout.activity_login);
 
-        Intent intent = new Intent(this, Splash.class);
-        startActivity(intent);
+
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -80,6 +79,7 @@ public class FacebookLogin extends Activity {
         if(!pref.getString("name", "").equals(""))
         {
             loginComplete();
+            finish();
         }
 
 
@@ -193,6 +193,7 @@ public class FacebookLogin extends Activity {
                             Log.d("저장 실패: ", msg);
                         }
                         loginComplete();
+                        finish();
                     } else if (response.isSuccess())
                         Log.d("Response Body is NULL", response.message());
                     else {
@@ -219,7 +220,6 @@ public class FacebookLogin extends Activity {
         // 완료후 액티비티 이동
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override

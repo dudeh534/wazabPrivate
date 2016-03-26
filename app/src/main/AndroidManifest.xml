@@ -16,7 +16,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".facebook.FacebookLogin"
+            android:name=".Splash"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -35,7 +35,7 @@
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Splash" />
+        <activity android:name=".facebook.FacebookLogin" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />

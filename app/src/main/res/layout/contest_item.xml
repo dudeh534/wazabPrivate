@@ -100,15 +100,26 @@
 
             <Button
                 android:focusable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
                 android:background="@drawable/applicant_btn"
                 android:id="@+id/rdetail"
-                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:layout_marginRight="15.67dp"
                 android:layout_marginTop="5dp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView2" />
     </LinearLayout>
 
 </LinearLayout>

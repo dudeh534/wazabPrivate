@@ -20,10 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /*
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     ImageView profileImg;
     String thumbnail;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         toolbar.setBackground(drawable);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // 플로팅 버튼 터치시 -> 글쓰기 페이지
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         toolbar.setNavigationIcon(R.drawable.list_icon);
+//        toolbar.setElevation(0);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentPage(), "팀원모집");

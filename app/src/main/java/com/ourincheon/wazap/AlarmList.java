@@ -235,8 +235,8 @@ public class AlarmList extends AppCompatActivity {
             if (mData.getProfile_img() != null) {
                 holder.mIcon.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(mData.getProfile_img()).error(R.drawable.icon_user).override(150,150).crossFade().into(holder.mIcon);
-         //       ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.mIcon);
-         //      thumb.execute();
+                //       ThumbnailImage thumb = new ThumbnailImage(mData.getProfile_img(), holder.mIcon);
+                //      thumb.execute();
             }else{
                 holder.mIcon.setVisibility(View.VISIBLE);
                 holder.mIcon.setImageDrawable(getResources().getDrawable(R.drawable.icon_user));
@@ -250,3 +250,4 @@ public class AlarmList extends AppCompatActivity {
         }
     }
 }
+

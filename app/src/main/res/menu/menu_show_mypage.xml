@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ourincheon.wazap.showMypageActivity">
 
-    <item android:id="@+id/action_edit" android:title="수정"
-
+    <item android:id="@+id/action_edit"
+        android:icon="@drawable/detail_btn_setting"
         app:showAsAction="always"
          />
 </menu>

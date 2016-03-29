@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:elevation="0dp"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -53,52 +54,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#ffffff"
-                        android:backgroundTint="#FFA07A"
+                        android:backgroundTint="#ffffff"
                         app:tabGravity="fill"
-                        app:tabMode="fixed" />
+                        app:tabMode="fixed"
+                        android:elevation="0sp"/>
                 </android.support.design.widget.AppBarLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/xml_border"
-                    android:orientation="horizontal">
-
-                    <com.ourincheon.wazap.NotoTextView
-                        android:id="@+id/textView38"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
-                        android:text="카테고리"
-                        android:textColor="#FFD2D2D2" />
-
-                    <com.ourincheon.wazap.NotoTextView
-                        android:id="@+id/divider11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:text="|"
-                        android:textColor="#FFD2D2D2"
-                        android:textSize="10dp" />
-
-                    <com.ourincheon.wazap.NotoTextView
-                        android:id="@+id/spinnerT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="65dp"
-                        android:text=""
-                        android:textColor="#FFD2D2D2" />
-
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:entries="@array/categories"/>
-                </LinearLayout>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"

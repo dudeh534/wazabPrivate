@@ -2,13 +2,12 @@ package com.ourincheon.wazap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,13 +44,15 @@ public class showMypageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_mypage);
-
+        setContentView(R.layout.activity_scrolling);
         showContext = this;
         Intent intent = getIntent();
         user_id =  intent.getExtras().getString("user_id");
         flag = intent.getExtras().getInt("flag");
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.detail_btn_back_white);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         sName = (TextView) findViewById(R.id.sName);
         sMajor = (TextView)  findViewById(R.id.sMajor);
         sUniv = (TextView)  findViewById(R.id.sUniv);

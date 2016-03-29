@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.Contests;
@@ -100,6 +101,8 @@ public class FragmentPage extends Fragment {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+                LinearLayout linearLayout_spinner = (LinearLayout) linearLayout.findViewById(R.id.linearLayout_mother);
+                Spinner spinner = (Spinner) linearLayout_spinner.findViewById(R.id.spinner);//스피너
                 content = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 content.setHasFixedSize(true);
@@ -125,8 +128,11 @@ public class FragmentPage extends Fragment {
                 }));
 
                 rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
+                linearLayout_spinner.removeAllViews();
+                linearLayout_spinner.addView(spinner);
                 linearLayout.removeAllViews();
                 linearLayout.addView(swipeRefreshLayout);
+                linearLayout.addView(linearLayout_spinner);
                 return linearLayout;
 
 
@@ -293,7 +299,7 @@ public class FragmentPage extends Fragment {
                                 contest.getData(i).getCont_writer()
                         );
                         items.add(item[i]);
-                        try {
+                       /* *//*try {
                             String cates = contest.getData(i).getCates().substring(1, contest.getData(i).getCates().length() - 1);
                             String str = "";
                             String[] temp = cates.split("\"");
@@ -314,13 +320,8 @@ public class FragmentPage extends Fragment {
                                 else
                                     etc.add(item[i]);
                             }
-
+*/
                             content.setAdapter(rec);
-                        } catch (StringIndexOutOfBoundsException e) {
-                        }
-
-
-
 
                     }
 

@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
+//숨기는 뷰까지 만들어 놨고 이제 상세보기 눌렀을때 그 뷰가 보이도록 그리고 list set하도록
 public class ContestList extends AppCompatActivity {
     ScrollView scrollView;
     private ListView mListView = null;

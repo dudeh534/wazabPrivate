@@ -6,17 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.ContestData;
@@ -184,12 +185,13 @@ public class ContestList extends AppCompatActivity {
         public TextView Man;
         public TextView Member;
         Button Detail;
+        public LinearLayout open_layout;
     }
 
     private class ListViewAdapter extends BaseAdapter {
         private Context mContext = null;
         private ArrayList<ContestData> mListData = new ArrayList<ContestData>();
-
+        private SparseBooleanArray selectItem = new SparseBooleanArray();
         public ListViewAdapter(Context mContext) {
             super();
             this.mContext = mContext;
@@ -237,7 +239,7 @@ public class ContestList extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
 
@@ -249,8 +251,10 @@ public class ContestList extends AppCompatActivity {
                 holder.Cate = (TextView) convertView.findViewById(R.id.rcate);
                 holder.Man = (TextView) convertView.findViewById(R.id.rman);
                 holder.Member = (TextView) convertView.findViewById(R.id.rmember);
+                holder.open_layout = (LinearLayout) convertView.findViewById(R.id.open_layout);
 
                 holder.Detail = (Button) convertView.findViewById(R.id.rdetail);
+                holder.Detail.setSelected(selectItem.get(position, false));
                 holder.Detail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -259,10 +263,21 @@ public class ContestList extends AppCompatActivity {
                         intent.putExtra("id",String.valueOf(mData.getContests_id()));
                         startActivity(intent);
                    */
-                        ContestData mData = mAdapter.mListData.get(position);
-                        Intent intent = new Intent(ContestList.this, ApplierList.class);
-                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
-                        startActivity(intent);
+                        //여기 신청자 목록 눌렀을 때
+                        if (selectItem.get(position,false)){
+                            selectItem.delete(position);
+                            holder.Detail.setSelected(false);
+                            holder.open_layout.setVisibility(View.GONE);
+                        }else {
+                            selectItem.put(position,true);
+                            holder.Detail.setSelected(true);
+                            holder.open_layout.setVisibility(View.VISIBLE);
+                        }
+
+//                        ContestData mData = mAdapter.mListData.get(position);
+//                        Intent intent = new Intent(ContestList.this, ApplierList.class);
+//                        intent.putExtra("id",String.valueOf(mData.getContests_id()));
+//                        startActivity(intent);
                     }
                 });
                 convertView.setTag(holder);

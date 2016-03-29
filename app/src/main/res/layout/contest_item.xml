@@ -114,8 +114,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-
+        android:visibility="visible"
+        android:id="@+id/open_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="안녕하세용"/>
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

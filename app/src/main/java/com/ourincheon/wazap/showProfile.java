@@ -2,11 +2,10 @@ package com.ourincheon.wazap;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -200,10 +199,5 @@ public class showProfile extends AppCompatActivity {
 
 
     // 뒤로가기 버튼 터치시 -> 변경사항 ApplierList에 반영
-    @Override
-    public void onBackPressed() {
-        ((ApplierList)(ApplierList.mContext)).onResume();
-        super.onBackPressed();
-    }
 }
 

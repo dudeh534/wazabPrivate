@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.ContestData;
@@ -37,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     Context context;
     EditText sBox;
     Button sBtn;
+    NotoTextView sText;
     private ListView mListView = null;
     private ListViewAdapter mAdapter = null;
     Contests contests;
@@ -51,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
         context = this;
         mListView = (ListView) findViewById(R.id.sList);
 
+        sText =(NotoTextView)findViewById(R.id.searchNo);
         sBox =(EditText) findViewById(R.id.search_box);
 
         sBtn =(Button)findViewById(R.id.search_btn);
@@ -92,7 +95,7 @@ public class SearchActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         String access_token = pref.getString("access_token", "");
 
-        System.out.println("------------"+text+"------------"+access_token);
+        System.out.println("------------" + text + "------------" + access_token);
         Call<Contests> call = service.getSearchlist(access_token, text, 300);
         call.enqueue(new Callback<Contests>() {
             @Override
@@ -104,8 +107,12 @@ public class SearchActivity extends AppCompatActivity {
 
                     String result = new Gson().toJson(contests);
                     Log.d("SUCESS-----", result);
+                  //  Toast.makeText(getApplicationContext(), ""+contests.getMsg(), Toast.LENGTH_LONG).show();
 
-
+                    if(contests.isResult()==false)
+                        sText.setVisibility(View.VISIBLE);
+                    else
+                        sText.setVisibility(View.INVISIBLE);
                     JSONObject jsonRes;
                     try {
                         jsonRes = new JSONObject(result);
@@ -121,6 +128,7 @@ public class SearchActivity extends AppCompatActivity {
                         mListView.setAdapter(mAdapter);
                     } catch (JSONException e) {
                     }
+
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());

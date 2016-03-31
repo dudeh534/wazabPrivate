@@ -475,6 +475,7 @@ public class RecruitActivity extends AppCompatActivity {
                 else {
                     Log.d("Response Error Body", response.errorBody().toString());
                     System.out.println(response.code());
+                    Toast.makeText(getApplicationContext(), "저장이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.Retrofit.ContestData;
@@ -360,7 +364,16 @@ public class JoinActivity extends AppCompatActivity {
 
                     try {
                         String thumb = URLDecoder.decode(contest.getData().getProfile_img(), "EUC_KR");
-                        Glide.with(context).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
+                    //    Glide.with(context).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
+                        Glide.with(context).load(thumb).asBitmap().centerCrop().error(R.drawable.icon_user).override(80, 80).into(new BitmapImageViewTarget(jImg) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                jImg.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -380,7 +393,7 @@ public class JoinActivity extends AppCompatActivity {
                         final int idx = i;
                         ImageView img = new ImageView(context);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(10,0,10,0);
+                        params.setMargins(0,0,20,0);
                         img.setLayoutParams(params);
                         System.out.println(contest.getData().getMemberList(i).getProfile_img());
                         Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);

@@ -36,7 +36,7 @@
                 <com.ourincheon.wazap.NotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="나의 프로필"
+                    android:text=""
                     android:textColor="#ffffff"
                     android:id="@+id/mytext"
                     android:textSize="18dp"

@@ -277,5 +277,22 @@
                 android:textSize="12dp" />
         </LinearLayout>
 
+        <com.ourincheon.wazap.NotoTextView
+            android:textColor="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="41.33dp"
+            android:background="#0056ff"
+            android:text="수락하기"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/pButton"
+            android:visibility="invisible"/>
+
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

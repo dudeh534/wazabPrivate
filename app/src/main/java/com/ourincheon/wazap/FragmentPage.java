@@ -97,6 +97,7 @@ public class FragmentPage extends Fragment {
                 swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        items = new ArrayList<>();
                         loadPage(access_token);
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -127,7 +128,7 @@ public class FragmentPage extends Fragment {
                     }
                 }));
 
-                rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
+                //rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
                 linearLayout_spinner.removeAllViews();
                 linearLayout_spinner.addView(spinner);
                 linearLayout.removeAllViews();
@@ -321,6 +322,8 @@ public class FragmentPage extends Fragment {
                                     etc.add(item[i]);
                             }
 */
+
+                        rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
                             content.setAdapter(rec);
 
                     }

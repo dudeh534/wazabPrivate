@@ -65,7 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         if(temp.length == 2 ) {
             holder.category1.setText(temp[1]);
 
-            if(temp[1].equals("사진/영상/UCC"))
+            if(temp[1].equals("사진/UCC"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
             else if(temp[1].equals("디자인"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
@@ -83,7 +83,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         else if(temp.length > 3) {
             holder.category1.setText(temp[1]);
-            if(temp[1].equals("사진/영상/UCC"))
+            if(temp[1].equals("사진/UCC"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_video);
             else if(temp[1].equals("디자인"))
                 holder.c1.setBackgroundResource(R.drawable.detail_icon_design);
@@ -98,7 +98,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             holder.category2.setText(temp[3]);
             holder.c2.setVisibility(View.VISIBLE);
-            if(temp[3].equals("사진/영상/UCC"))
+            if(temp[3].equals("사진/UCC"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_video);
             else if(temp[3].equals("디자인"))
                 holder.c2.setBackgroundResource(R.drawable.detail_icon_design);

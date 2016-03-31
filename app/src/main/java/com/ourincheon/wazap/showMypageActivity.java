@@ -143,12 +143,11 @@ public class showMypageActivity extends AppCompatActivity {
                     try {
                         jsonRes = new JSONObject(result);
                         JSONArray jsonArr = jsonRes.getJSONArray("data");
-                        Log.d("username", jsonArr.getJSONObject(0).getString("username"));
                         sName.setText(jsonArr.getJSONObject(0).getString("username"));
                         sMajor.setText(jsonArr.getJSONObject(0).getString("major"));
                         sUniv.setText(jsonArr.getJSONObject(0).getString("school"));
                         sLoc.setText(jsonArr.getJSONObject(0).getString("locate"));
-                        //sKakao.setText(jsonArr.getJSONObject(0).getString("kakao_id"));
+                        //sKakao.setText(jsonArr.getJSONObject(0).getString("kakao_  id"));
                         sIntro.setText(jsonArr.getJSONObject(0).getString("introduce"));
                         sExp.setText(jsonArr.getJSONObject(0).getString("exp"));
                         sSkill.setText(jsonArr.getJSONObject(0).getString("skill"));
@@ -172,7 +171,6 @@ public class showMypageActivity extends AppCompatActivity {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        System.out.println(thumbnail);
 
                     } catch (JSONException e) {
                     }

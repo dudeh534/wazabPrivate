@@ -3,6 +3,7 @@ package com.ourincheon.wazap;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,10 @@ public class MypageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.detail_btn_back_white);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         eName = (TextView) findViewById(R.id.eName);
         eMajor = (EditText) findViewById(R.id.eMajor);
         eUniv = (EditText) findViewById(R.id.eUniv);

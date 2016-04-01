@@ -42,7 +42,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /*숨기는 뷰까지 만들어 놨고 이제 상세보기 눌렀을때 그 뷰가 보이도록 그리고 list set하도록
-* 상세보기 눌렀을때 고정*/
+* 상세보기 눌렀을때 고정
+* Oh my Interaction*/
 public class ContestList extends AppCompatActivity {
     public static Context mContext;
     public static ArrayList<ApplierData> mListData = new ArrayList<ApplierData>();
@@ -56,6 +57,8 @@ public class ContestList extends AppCompatActivity {
     private ListView mListView2 = null;
     private ListViewAdapter mAdapter = null;
     private Not_ListViewAdapter not_listAdapter = null;
+    private static int params_height = 0;
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -90,7 +93,27 @@ public class ContestList extends AppCompatActivity {
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = 211 * mListData.size() + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + params_height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public static void setListViewHeightBasedOnChildren2(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + params_height;
+
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -316,7 +339,8 @@ public class ContestList extends AppCompatActivity {
                             selectItem.delete(position);
                             holder.Detail.setSelected(false);//? 이거는 왜 안돼
                             holder.open_layout.setVisibility(View.GONE);
-                            //setListViewHeightBasedOnChildren(mListView);
+                            params_height -= 211 * mListData.size();
+                            setListViewHeightBasedOnChildren1(mListView);
                         } else {
                             selectItem.put(position, true);
                             holder.Detail.setSelected(true);
@@ -364,6 +388,7 @@ public class ContestList extends AppCompatActivity {
                                             holder.mListView1.setAdapter(mAdapter1);
                                             holder.mListView1.setDivider(null);
                                             holder.mListView1.setDividerHeight(0);
+                                            params_height += 211 * mListData.size();
                                             setListViewHeightBasedOnChildren(holder.mListView1);
                                             setListViewHeightBasedOnChildren1(mListView);
                                         } catch (JSONException e) {
@@ -514,22 +539,24 @@ public class ContestList extends AppCompatActivity {
 
     private class ListViewAdapter1 extends BaseAdapter {
         private Context mContext = null;
+        public ArrayList<ApplierData> mListData1 = new ArrayList<ApplierData>();
 
         public ListViewAdapter1(Context mContext) {
             super();
             this.mContext = mContext;
-            mListData.clear();
+            mListData1.clear();
+            mListData = mListData1;
         }
 
         @Override
         public int getCount() {
-            return mListData.size();
+            return mListData1.size();
         }
 
         @Override
         public Object getItem(int position) {
 
-            return mListData.get(position);
+            return mListData1.get(position);
         }
 
         @Override
@@ -552,11 +579,11 @@ public class ContestList extends AppCompatActivity {
             addInfo.setApplies_id(applies);
             addInfo.setIs_check(is_check);
 
-            mListData.add(addInfo);
+            mListData1.add(addInfo);
         }
 
         public void remove(int position) {
-            mListData.remove(position);
+            mListData1.remove(position);
             dataChange();
         }
 
@@ -585,7 +612,7 @@ public class ContestList extends AppCompatActivity {
                 holder = (ViewHolder1) convertView.getTag();
             }
 
-            final ApplierData mData = mListData.get(position);
+            final ApplierData mData = mListData1.get(position);
 
 
             holder.aName.setText(mData.getUsername());

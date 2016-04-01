@@ -45,6 +45,7 @@ import retrofit2.Retrofit;
 * 상세보기 눌렀을때 고정*/
 public class ContestList extends AppCompatActivity {
     public static Context mContext;
+    public static ArrayList<ApplierData> mListData = new ArrayList<ApplierData>();
     ScrollView scrollView;
     Contests contests;
     ArrayList<ContestData> contest_list;
@@ -71,6 +72,25 @@ public class ContestList extends AppCompatActivity {
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public static void setListViewHeightBasedOnChildren1(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = 211 * mListData.size() + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -204,7 +224,7 @@ public class ContestList extends AppCompatActivity {
         public TextView Man;
         public TextView Member;
         public LinearLayout open_layout;
-        public ListView mListView;
+        public ListView mListView1;
         Button Detail;
     }
 
@@ -279,7 +299,7 @@ public class ContestList extends AppCompatActivity {
                 holder.Man = (TextView) convertView.findViewById(R.id.rman);
                 holder.Member = (TextView) convertView.findViewById(R.id.rmember);
                 holder.open_layout = (LinearLayout) convertView.findViewById(R.id.open_layout);
-                holder.mListView = (ListView) convertView.findViewById(R.id.applierlistView);
+                holder.mListView1 = (ListView) convertView.findViewById(R.id.applierlistView);
                 holder.Detail = (Button) convertView.findViewById(R.id.rdetail);
                 holder.Detail.setSelected(selectItem.get(position, false));
                 holder.Detail.setOnClickListener(new View.OnClickListener() {
@@ -290,11 +310,13 @@ public class ContestList extends AppCompatActivity {
                         intent.putExtra("id",String.valueOf(mData.getContests_id()));
                         startActivity(intent);
                    */
+
                         //여기 신청자 목록 눌렀을 때
                         if (selectItem.get(position, false)) {
                             selectItem.delete(position);
-                            holder.Detail.setSelected(false);
+                            holder.Detail.setSelected(false);//? 이거는 왜 안돼
                             holder.open_layout.setVisibility(View.GONE);
+                            //setListViewHeightBasedOnChildren(mListView);
                         } else {
                             selectItem.put(position, true);
                             holder.Detail.setSelected(true);
@@ -304,9 +326,7 @@ public class ContestList extends AppCompatActivity {
                             SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                             access_token = pref.getString("access_token", "");
                             applier_list = new ArrayList<ApplierData>();
-                            loadApplier(num, access_token);
                             mAdapter1 = new ListViewAdapter1(ContestList.this);
-                            holder.mListView.setAdapter(mAdapter1);
                             //-----------------------------------
                             Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl("http://come.n.get.us.to/")
@@ -341,7 +361,11 @@ public class ContestList extends AppCompatActivity {
                                                         Integer.parseInt(jsonArr.getJSONObject(i).getString("applies_id")),
                                                         Integer.parseInt(jsonArr.getJSONObject(i).getString("is_check")));
                                             }
-                                            holder.mListView.setAdapter(mAdapter1);
+                                            holder.mListView1.setAdapter(mAdapter1);
+                                            holder.mListView1.setDivider(null);
+                                            holder.mListView1.setDividerHeight(0);
+                                            setListViewHeightBasedOnChildren(holder.mListView1);
+                                            setListViewHeightBasedOnChildren1(mListView);
                                         } catch (JSONException e) {
                                         }
 
@@ -358,6 +382,7 @@ public class ContestList extends AppCompatActivity {
                                     Log.e("Error", t.getMessage());
                                 }
                             });
+
 
                         }
 
@@ -489,11 +514,11 @@ public class ContestList extends AppCompatActivity {
 
     private class ListViewAdapter1 extends BaseAdapter {
         private Context mContext = null;
-        private ArrayList<ApplierData> mListData = new ArrayList<ApplierData>();
 
         public ListViewAdapter1(Context mContext) {
             super();
             this.mContext = mContext;
+            mListData.clear();
         }
 
         @Override
@@ -503,6 +528,7 @@ public class ContestList extends AppCompatActivity {
 
         @Override
         public Object getItem(int position) {
+
             return mListData.get(position);
         }
 

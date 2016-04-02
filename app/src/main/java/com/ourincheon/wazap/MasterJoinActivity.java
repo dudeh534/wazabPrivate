@@ -177,7 +177,6 @@ public class MasterJoinActivity extends AppCompatActivity {
         WazapService service = retrofit.create(WazapService.class);
 
         System.out.println("!!!!!!!!!!!!!!!!!!!"+access_token);
-        System.out.println("!!!!!!!!!!!!!!!!!!!"+num);
 
         Call<LinkedTreeMap> call = service.delContest(num,access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {

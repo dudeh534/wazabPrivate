@@ -33,6 +33,7 @@ import retrofit2.Retrofit;
 public class FragmentPage extends Fragment {
 
     private static final String ARG_POSITION = "position";
+    public static Context mContext;
     RecyclerView content;
     LinearLayout linearLayout;
     private int position;
@@ -48,6 +49,7 @@ public class FragmentPage extends Fragment {
     Recycler_contestItem[] contestItem;
     String access_token;
     SwipeRefreshLayout swipeRefreshLayout;
+
     public static FragmentPage newInstance(int position) {
         FragmentPage f = new FragmentPage();
         Bundle b = new Bundle();
@@ -60,6 +62,8 @@ public class FragmentPage extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
+
+        mContext = this.getActivity();
 
         // 저장된 값 불러오기
         SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
@@ -176,6 +180,13 @@ public class FragmentPage extends Fragment {
 
         }
     }
+
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        items = new ArrayList<>();
+        loadPage(access_token);
+    }*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -323,9 +334,8 @@ public class FragmentPage extends Fragment {
                                     etc.add(item[i]);
                             }
 */
-
                         rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
-                            content.setAdapter(rec);
+                        content.setAdapter(rec);
 
                     }
 

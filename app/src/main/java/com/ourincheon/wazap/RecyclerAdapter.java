@@ -164,6 +164,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         intent = new Intent(context, MasterJoinActivity.class);
 
                     intent.putExtra("id", String.valueOf(item.getId()));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });

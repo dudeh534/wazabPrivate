@@ -290,14 +290,15 @@ public class FragmentPage extends Fragment {
                         Dday day = new Dday();
 
                         item[i] = new Recycler_item(contest.getData(i).getTitle(),
-                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
+                                contest.getData(i).getCont_title(), contest.getData(i).getUsername(),
                                 contest.getData(i).getRecruitment(),
                                 contest.getData(i).getMembers(),
                                 contest.getData(i).getIs_clip(),
                                 contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
                                 "D - " + day.dday(parts[0]),
                                 contest.getData(i).getContests_id(),
-                                contest.getData(i).getCont_writer()
+                                contest.getData(i).getCont_writer(),
+                                contest.getData(i).getIs_finish()
                         );
                         items.add(item[i]);
                        /* *//*try {

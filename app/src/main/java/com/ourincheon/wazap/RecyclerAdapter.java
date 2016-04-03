@@ -1,9 +1,11 @@
 package com.ourincheon.wazap;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Recycler_item item = items.get(position);
@@ -152,6 +155,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.text.setTextColor(Color.parseColor("#727272"));
 
             holder.day.setBackground(null);
+
             holder.day.setText(item.getDay());
 
             // 카드뷰 터치시-> 상세페이지로

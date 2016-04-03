@@ -157,7 +157,7 @@ public class showMypageActivity extends AppCompatActivity {
 
                         try {
                             thumbnail = URLDecoder.decode(jsonArr.getJSONObject(0).getString("profile_img"), "EUC_KR");
-                            Glide.with(showContext).load(thumbnail).asBitmap().centerCrop().override(150, 150).into(new BitmapImageViewTarget(sImg) {
+                            Glide.with(showContext).load(thumbnail).asBitmap().centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(sImg) {
                                 @Override
                                 protected void setResource(Bitmap resource) {
                                     RoundedBitmapDrawable circularBitmapDrawable =

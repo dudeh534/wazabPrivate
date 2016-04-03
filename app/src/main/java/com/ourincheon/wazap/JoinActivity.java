@@ -365,7 +365,7 @@ public class JoinActivity extends AppCompatActivity {
                     try {
                         String thumb = URLDecoder.decode(contest.getData().getProfile_img(), "EUC_KR");
                     //    Glide.with(context).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
-                        Glide.with(context).load(thumb).asBitmap().centerCrop().error(R.drawable.icon_user).override(80, 80).into(new BitmapImageViewTarget(jImg) {
+                        Glide.with(context).load(thumb).asBitmap().centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(jImg) {
                             @Override
                             protected void setResource(Bitmap resource) {
                                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -391,12 +391,21 @@ public class JoinActivity extends AppCompatActivity {
                     imgLayout.removeAllViews();
                     for(int i=0; i<contest.getData().getMembersize(); i++) {
                         final int idx = i;
-                        ImageView img = new ImageView(context);
+                        final ImageView img = new ImageView(context);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(0,0,20,0);
+                        params.setMargins(0, 0, 20, 0);
                         img.setLayoutParams(params);
                         System.out.println(contest.getData().getMemberList(i).getProfile_img());
-                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                        //Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(70,70).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                img.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
                         img.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

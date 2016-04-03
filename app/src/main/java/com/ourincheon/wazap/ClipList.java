@@ -96,7 +96,7 @@ public class ClipList extends AppCompatActivity {
         });
         dialog = builder.create();
 
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       /* mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(ClipList.this, "취소", Toast.LENGTH_SHORT).show();
@@ -104,7 +104,7 @@ public class ClipList extends AppCompatActivity {
                 dialog.show();
                 return false;
             }
-        });
+        });*/
 
         /**** 상세보기 ****/
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -262,7 +262,7 @@ public class ClipList extends AppCompatActivity {
         WazapService service = retrofit.create(WazapService.class);
 
 
-        Call<Contests> call = service.getCliplist(access_token, 200, 200);
+        Call<Contests> call = service.getCliplist(access_token,200);
         call.enqueue(new Callback<Contests>() {
             @Override
             public void onResponse(Response<Contests> response) {
@@ -415,8 +415,9 @@ public class ClipList extends AppCompatActivity {
                     public void onClick(View v) {
                         ContestData mData = mListData.get(position);
                         contest_id = String.valueOf(mData.getContests_id());
-                        //Toast.makeText(ClipList.this, contest_id+position, Toast.LENGTH_SHORT).show();
-                        applyContest(contest_id, access_token);
+                       // applyContest(contest_id, access_token);
+                        posi = position;
+                        dialog.show();
                     }
                 });
 
@@ -492,16 +493,12 @@ public class ClipList extends AppCompatActivity {
                     holder.c2.setBackgroundResource(R.drawable.detail_icon_scenario);
             }
 
-            if(mData.getIs_apply()==0)
-                holder.Join.setBackgroundResource(R.drawable.scrap_info_button);
-            else
-                holder.Join.setBackgroundResource(R.drawable.appliedbtn);
-
             return convertView;
         }
     }
 
 
+    //*** 마감된 리스트 ***//
     private class Not_ListViewAdapter extends BaseAdapter {
         private Context mContext = null;
         private ArrayList<ContestData> mListData = new ArrayList<ContestData>();

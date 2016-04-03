@@ -185,7 +185,10 @@ public class FragmentPage extends Fragment {
     public void onResume() {
         super.onResume();
 
-
+        /*Bundle bundle = getArguments();
+        int ref = bundle.getInt("refresh");
+        System.out.println("========================= "+ref);
+        if(ref == 1) {*/
             items = new ArrayList<>();
             loadPage(access_token);
 

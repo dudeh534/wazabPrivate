@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -170,7 +171,7 @@ public class MasterJoinActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MasterJoinActivity.this, RecruitActivity.class);
         intent.putExtra("edit",1);
-        intent.putExtra("contestD",contestData);
+        intent.putExtra("contestD", contestData);
         //intent.putExtra("contestD",contestData.getContests_id());
         startActivity(intent);
     }
@@ -184,7 +185,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!"+access_token);
+        System.out.println("!!!!!!!!!!!!!!!!!!!" + access_token);
 
         Call<LinkedTreeMap> call = service.delContest(num,access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
@@ -277,7 +278,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<reqContest> call = service.getConInfo(num,access_token);
+        Call<reqContest> call = service.getConInfo(num, access_token);
         call.enqueue(new Callback<reqContest>() {
             @Override
             public void onResponse(Response<reqContest> response) {
@@ -328,7 +329,8 @@ public class MasterJoinActivity extends AppCompatActivity {
                         img.setLayoutParams(params);
                         System.out.println(contest.getData().getMemberList(i).getProfile_img());
                         //Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
-                        Glide.with(mContext).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(70,70).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
+                        int size = PixelToDp(mContext,150);
+                        Glide.with(mContext).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(size,size).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
                             @Override
                             protected void setResource(Bitmap resource) {
                                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -372,6 +374,13 @@ public class MasterJoinActivity extends AppCompatActivity {
                 Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    // pixel값을 dp값으로 변경
+    public static int PixelToDp(Context context, int pixel) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float dp = pixel / (metrics.densityDpi / 160f);
+        return (int) dp;
     }
 
     @Override

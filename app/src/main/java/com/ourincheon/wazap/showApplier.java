@@ -257,8 +257,8 @@ public class showApplier extends AppCompatActivity {
     // 뒤로가기 버튼 터치시 -> 변경사항 ApplierList에 반영
     @Override
     public void onBackPressed() {
-        ((ApplierList)(ApplierList.mContext)).onResume();
         super.onBackPressed();
+        ((ApplierList)(ApplierList.mContext)).onResume();
     }
 
     @Override

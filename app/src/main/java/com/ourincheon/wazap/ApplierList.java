@@ -111,6 +111,7 @@ public class ApplierList extends AppCompatActivity {
                         System.out.println(count);
                         mAdapter = new ListViewAdapter(mContext);
                         for (int i = 0; i < count; i++) {
+                            System.out.println("===="+Integer.parseInt(jsonArr.getJSONObject(i).getString("is_check")));
                             mAdapter.addItem(jsonArr.getJSONObject(i).getString("profile_img"),
                                     jsonArr.getJSONObject(i).getString("username"),
                                     jsonArr.getJSONObject(i).getString("app_users_id"),

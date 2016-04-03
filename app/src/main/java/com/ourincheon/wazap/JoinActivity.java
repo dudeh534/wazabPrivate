@@ -11,6 +11,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -200,7 +201,7 @@ public class JoinActivity extends AppCompatActivity {
                     boolean result = Boolean.parseBoolean(temp.get("result").toString());
                     String msg = temp.get("msg").toString();
 
-                    if(!msg.equals("이미 찜한 게시물 입니다.")) {
+                    if (!msg.equals("이미 찜한 게시물 입니다.")) {
                         if (result) {
                             Log.d("저장 결과: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -209,8 +210,7 @@ public class JoinActivity extends AppCompatActivity {
                             Log.d("저장 실패: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else
+                    } else
                         removeClip();
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
@@ -236,7 +236,7 @@ public class JoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<LinkedTreeMap> call = service.delClip(num,access_token);
+        Call<LinkedTreeMap> call = service.delClip(num, access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
             public void onResponse(Response<LinkedTreeMap> response) {
@@ -281,7 +281,7 @@ public class JoinActivity extends AppCompatActivity {
         WazapService service = retrofit.create(WazapService.class);
 
         System.out.println("-------------------"+access_token);
-        Call<LinkedTreeMap> call = service.applyContests(num,access_token);
+        Call<LinkedTreeMap> call = service.applyContests(num, access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
             public void onResponse(Response<LinkedTreeMap> response) {
@@ -326,7 +326,7 @@ public class JoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<reqContest> call = service.getConInfo(num,access_token);
+        Call<reqContest> call = service.getConInfo(num, access_token);
         call.enqueue(new Callback<reqContest>() {
             @Override
             public void onResponse(Response<reqContest> response) {
@@ -397,7 +397,8 @@ public class JoinActivity extends AppCompatActivity {
                         img.setLayoutParams(params);
                         System.out.println(contest.getData().getMemberList(i).getProfile_img());
                         //Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
-                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(70,70).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
+                        int size = PixelToDp(context,150);
+                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(size,size).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
                             @Override
                             protected void setResource(Bitmap resource) {
                                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -434,6 +435,13 @@ public class JoinActivity extends AppCompatActivity {
                 Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    // pixel값을 dp값으로 변경
+    public static int PixelToDp(Context context, int pixel) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float dp = pixel / (metrics.densityDpi / 160f);
+        return (int) dp;
     }
 
     @Override

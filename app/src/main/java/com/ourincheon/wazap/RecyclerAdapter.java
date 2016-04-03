@@ -183,8 +183,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if(!item.getWriter().equals(user_id)) {
+                        item.setClick();
                         pickContest(String.valueOf(item.getId()), access_token);
-                        holder.heart.setBackgroundResource(R.drawable.heart2);
+
+                        //make heart work well
+                        if(item.getClick()%2==1 && item.getClip()==0)
+                            holder.heart.setBackgroundResource(R.drawable.heart2);
+                        else if(item.getClick()%2==0 && item.getClip()==0)
+                            holder.heart.setBackgroundResource(R.drawable.heart1);
+                        if(item.getClick()%2==1 && item.getClip()==1)
+                            holder.heart.setBackgroundResource(R.drawable.heart1);
+                        else if(item.getClick()%2==0 && item.getClip()==1)
+                            holder.heart.setBackgroundResource(R.drawable.heart2);
                     }
                     else {
                         Toast.makeText(context, "글 작성자는 스크랩할 수 없습니다.", Toast.LENGTH_LONG).show();
@@ -255,6 +265,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     void pickContest(final String num, final String access_token) {
+        int ret = -1;
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://come.n.get.us.to/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -288,8 +300,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     Log.d("Response Body isNull", response.message());
                 } else {
                     Log.d("Response Error Body", response.errorBody().toString());
+
                 }
             }
+
+
 
             @Override
             public void onFailure(Throwable t) {

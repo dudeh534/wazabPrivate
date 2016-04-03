@@ -181,12 +181,15 @@ public class FragmentPage extends Fragment {
         }
     }
 
-    /*@Override
+    @Override
     public void onResume() {
         super.onResume();
-        items = new ArrayList<>();
-        loadPage(access_token);
-    }*/
+
+
+            items = new ArrayList<>();
+            loadPage(access_token);
+
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

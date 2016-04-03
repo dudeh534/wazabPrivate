@@ -201,6 +201,11 @@ public class MasterJoinActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("삭제 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        FragmentPage fragment = new FragmentPage();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("refresh",1);
+                        fragment.setArguments(bundle);
                         finish();
 
                     } else {

@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +47,7 @@ import retrofit2.Retrofit;
 public class ContestList extends AppCompatActivity {
     public static Context mContext;
     public static ArrayList<ApplierData> mListData = new ArrayList<ApplierData>();
-    public static ArrayList<Integer> List_SIZE = new ArrayList<Integer>();
+    public static HashMap<Integer,Integer> List_SIZE = new HashMap<>();
     ScrollView scrollView;
     Contests contests;
     ArrayList<ContestData> contest_list;
@@ -57,7 +58,7 @@ public class ContestList extends AppCompatActivity {
     private ListView mListView2 = null;
     private ListViewAdapter mAdapter = null;
     private Not_ListViewAdapter not_listAdapter = null;
-
+    private static int temp = 0;
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -77,7 +78,7 @@ public class ContestList extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    public static void setListViewHeightBasedOnChildren_add(ListView listView) {
+    public static void setListViewHeightBasedOnChildren_add(ListView listView,int position) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -89,11 +90,10 @@ public class ContestList extends AppCompatActivity {
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
-        List_SIZE.add(mListData.size());
-        int temp = 0;
-        for(int i = 0; i < List_SIZE.size();i++){
-            temp += List_SIZE.get(i);
-        }
+        List_SIZE.put(position, mListData.size());
+
+        temp += List_SIZE.get(position);
+
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = 211 * temp + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -112,11 +112,10 @@ public class ContestList extends AppCompatActivity {
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
+        temp -= List_SIZE.get(position);
         List_SIZE.remove(position);
-        int temp = 0;
-        for(int i = 0; i < List_SIZE.size();i++){
-            temp += List_SIZE.get(i);
-        }
+
+
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = 211 * temp + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -393,7 +392,7 @@ public class ContestList extends AppCompatActivity {
                                             holder.mListView1.setDivider(null);
                                             holder.mListView1.setDividerHeight(0);
                                             setListViewHeightBasedOnChildren(holder.mListView1);
-                                            setListViewHeightBasedOnChildren_add(mListView);
+                                            setListViewHeightBasedOnChildren_add(mListView, position);
                                         } catch (JSONException e) {
                                         }
 

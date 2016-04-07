@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.Retrofit.ContestData;
@@ -196,7 +201,7 @@ public class JoinActivity extends AppCompatActivity {
                     boolean result = Boolean.parseBoolean(temp.get("result").toString());
                     String msg = temp.get("msg").toString();
 
-                    if(!msg.equals("이미 찜한 게시물 입니다.")) {
+                    if (!msg.equals("이미 찜한 게시물 입니다.")) {
                         if (result) {
                             Log.d("저장 결과: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -205,8 +210,7 @@ public class JoinActivity extends AppCompatActivity {
                             Log.d("저장 실패: ", msg);
                             Toast.makeText(getApplicationContext(), "찜 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else
+                    } else
                         removeClip();
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
@@ -232,7 +236,7 @@ public class JoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<LinkedTreeMap> call = service.delClip(num,access_token);
+        Call<LinkedTreeMap> call = service.delClip(num, access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
             public void onResponse(Response<LinkedTreeMap> response) {
@@ -277,7 +281,7 @@ public class JoinActivity extends AppCompatActivity {
         WazapService service = retrofit.create(WazapService.class);
 
         System.out.println("-------------------"+access_token);
-        Call<LinkedTreeMap> call = service.applyContests(num,access_token);
+        Call<LinkedTreeMap> call = service.applyContests(num, access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
             public void onResponse(Response<LinkedTreeMap> response) {
@@ -322,7 +326,7 @@ public class JoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<reqContest> call = service.getConInfo(num,access_token);
+        Call<reqContest> call = service.getConInfo(num, access_token);
         call.enqueue(new Callback<reqContest>() {
             @Override
             public void onResponse(Response<reqContest> response) {
@@ -333,69 +337,95 @@ public class JoinActivity extends AppCompatActivity {
 
                     Log.d("SUCCESS", contest.getMsg());
 
-                    jTitle.setText(contest.getData().getTitle());
-                    jCTitle.setText(contest.getData().getCont_title());
-                    jCate.setText(contest.getData().getCategories());
-                    jApply.setText(String.valueOf(contest.getData().getAppliers()));
-                    jMem.setText(String.valueOf(contest.getData().getMembers()));
-                    jRec.setText(" / "+String.valueOf(contest.getData().getRecruitment()));
-                    jName.setText(contest.getData().getUsername());
-                    jCover.setText(contest.getData().getCover());
-                    jHost.setText(contest.getData().getHosts());
-                    jLoc.setText(contest.getData().getCont_locate());
-                    jPos.setText(contest.getData().getPositions());
-                    jKakao.setText(contest.getData().getKakao_id());
-
-                    Writer = contest.getData().getCont_writer();
-
-                    if(contest.getData().getIs_clip()==0)
-                       jPick.setBackgroundResource(R.drawable.heart1);
-                    else
-                        jPick.setBackgroundResource(R.drawable.heart2);
-
-
-                    String[] parts = contest.getData().getPeriod().split("T");
-                    Dday day = new Dday();
-                    jDate.setText("D - "+day.dday(parts[0]));
-
-                    try {
-                        String thumb = URLDecoder.decode(contest.getData().getProfile_img(), "EUC_KR");
-                        Glide.with(context).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                    if(contest.getMsg().equals("모집글 정보가 없습니다.")) {
+                        //System.out.println("======================================");
+                        Toast.makeText(getApplicationContext(), contest.getMsg(), Toast.LENGTH_LONG).show();
+                        finish();
                     }
+                    else {
+                        jTitle.setText(contest.getData().getTitle());
+                        jCTitle.setText(contest.getData().getCont_title());
+                        jCate.setText(contest.getData().getCategories());
+                        jApply.setText(String.valueOf(contest.getData().getAppliers()));
+                        jMem.setText(String.valueOf(contest.getData().getMembers()));
+                        jRec.setText(" / " + String.valueOf(contest.getData().getRecruitment()));
+                        jName.setText(contest.getData().getUsername());
+                        jCover.setText(contest.getData().getCover());
+                        jHost.setText(contest.getData().getHosts());
+                        jLoc.setText(contest.getData().getCont_locate());
+                        jPos.setText(contest.getData().getPositions());
+                        jKakao.setText(contest.getData().getKakao_id());
 
-                    is_apply = contest.getData().getIs_apply();
+                        Writer = contest.getData().getCont_writer();
 
-                    // 신청하기 버튼 글자
-                    if(is_apply==0)
-                        jButton.setText("신청하기");
-                    else
-                        jButton.setText("신청취소하기");
+                        if (contest.getData().getIs_clip() == 0)
+                            jPick.setBackgroundResource(R.drawable.heart1);
+                        else
+                            jPick.setBackgroundResource(R.drawable.heart2);
 
-                    // 멤버리스트 이미지로 붙이기
-                    System.out.println("membersize---------------" + contest.getData().getMembersize());
-                    imgLayout.removeAllViews();
-                    for(int i=0; i<contest.getData().getMembersize(); i++) {
-                        final int idx = i;
-                        ImageView img = new ImageView(context);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(10,0,10,0);
-                        img.setLayoutParams(params);
-                        System.out.println(contest.getData().getMemberList(i).getProfile_img());
-                        Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
-                        img.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                System.out.println("---------------------"+contest.getData().getMemberList(idx).getUsers_id());
 
-                                Intent intent = new Intent(JoinActivity.this, showMypageActivity.class);
-                                intent.putExtra("user_id", contest.getData().getMemberList(idx).getUsers_id());
-                                intent.putExtra("flag",2);
-                                startActivity(intent);
-                            }
-                        });
-                        imgLayout.addView(img);
+                        String[] parts = contest.getData().getPeriod().split("T");
+                        Dday day = new Dday();
+                        jDate.setText("D - " + day.dday(parts[0]));
+
+                        try {
+                            String thumb = URLDecoder.decode(contest.getData().getProfile_img(), "EUC_KR");
+                            //    Glide.with(context).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
+                            Glide.with(context).load(thumb).asBitmap().centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(jImg) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    jImg.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                        is_apply = contest.getData().getIs_apply();
+
+                        // 신청하기 버튼 글자
+                        if (is_apply == 0)
+                            jButton.setText("신청하기");
+                        else
+                            jButton.setText("신청취소하기");
+
+                        // 멤버리스트 이미지로 붙이기
+                        System.out.println("membersize---------------" + contest.getData().getMembersize());
+                        imgLayout.removeAllViews();
+                        for (int i = 0; i < contest.getData().getMembersize(); i++) {
+                            final int idx = i;
+                            final ImageView img = new ImageView(context);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(0, 0, 20, 0);
+                            img.setLayoutParams(params);
+                            System.out.println(contest.getData().getMemberList(i).getProfile_img());
+                            //Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                            int size = PixelToDp(context, 150);
+                            Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(size, size).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    img.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
+                            img.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    System.out.println("---------------------" + contest.getData().getMemberList(idx).getUsers_id());
+
+                                    Intent intent = new Intent(JoinActivity.this, showMypageActivity.class);
+                                    intent.putExtra("user_id", contest.getData().getMemberList(idx).getUsers_id());
+                                    intent.putExtra("flag", 2);
+                                    startActivity(intent);
+                                }
+                            });
+                            imgLayout.addView(img);
+                        }
                     }
 
                 } else if (response.isSuccess()) {
@@ -412,6 +442,13 @@ public class JoinActivity extends AppCompatActivity {
                 Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    // pixel값을 dp값으로 변경
+    public static int PixelToDp(Context context, int pixel) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float dp = pixel / (metrics.densityDpi / 160f);
+        return (int) dp;
     }
 
     @Override

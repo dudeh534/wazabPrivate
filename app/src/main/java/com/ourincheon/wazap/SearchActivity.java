@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ourincheon.wazap.Retrofit.ContestData;
@@ -25,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,50 +38,41 @@ import retrofit2.Retrofit;
 
 public class SearchActivity extends AppCompatActivity {
 
+    RecyclerView content;
     Context context;
     EditText sBox;
     Button sBtn;
-    private ListView mListView = null;
-    private ListViewAdapter mAdapter = null;
-    Contests contests;
-    ArrayList<ContestData> contest_list;
+    NotoTextView sText;
+    RecyclerAdapter rec;
+    List<Recycler_item> items;
+    Recycler_item[] item;
+    Contests contest;
     int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search2);
+
+        content = (RecyclerView)findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        content.setHasFixedSize(true);
+        content.setLayoutManager(layoutManager);
 
         context = this;
-        mListView = (ListView) findViewById(R.id.sList);
 
+
+        sText =(NotoTextView)findViewById(R.id.searchNo);
         sBox =(EditText) findViewById(R.id.search_box);
 
         sBtn =(Button)findViewById(R.id.search_btn);
         sBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                items = new ArrayList<>();
                 searchTitle(sBox.getText().toString());
             }
         });
-
-
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                ContestData mData = mAdapter.mListData.get(position);
-                // Toast.makeText(AlarmList.this, mData.msg_url, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SearchActivity.this, JoinActivity.class);
-                intent.putExtra("id",String.valueOf(mData.getContests_id()));
-                startActivity(intent);
-            }
-        });
-
-        mAdapter = new ListViewAdapter(this);
-
-        mListView.setAdapter(mAdapter);
     }
 
     void searchTitle(String text)
@@ -92,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         String access_token = pref.getString("access_token", "");
 
-        System.out.println("------------"+text+"------------"+access_token);
+        System.out.println("------------" + text + "------------" + access_token);
         Call<Contests> call = service.getSearchlist(access_token, text, 300);
         call.enqueue(new Callback<Contests>() {
             @Override
@@ -100,27 +95,41 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.isSuccess() && response.body() != null) {
 
                     Log.d("SUCCESS", response.message());
-                    contests = response.body();
+                    contest = response.body();
 
-                    String result = new Gson().toJson(contests);
+                    String result = new Gson().toJson(contest);
                     Log.d("SUCESS-----", result);
+                  //  Toast.makeText(getApplicationContext(), ""+contests.getMsg(), Toast.LENGTH_LONG).show();
 
+                    if(contest.isResult()==false)
+                        sText.setVisibility(View.VISIBLE);
+                    else
+                        sText.setVisibility(View.INVISIBLE);
 
-                    JSONObject jsonRes;
-                    try {
-                        jsonRes = new JSONObject(result);
-                        JSONArray jsonArr = jsonRes.getJSONArray("data");
-                        count = jsonArr.length();
-                        System.out.println(count);
-                        mAdapter=new ListViewAdapter(context);
-                        for (int i = 0; i < count; i++) {
-                                mAdapter.addItem(jsonArr.getJSONObject(i).getString("title")
-                                ,Integer.parseInt(jsonArr.getJSONObject(i).getString("contests_id")));
+                    rec = new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_search2);
+                    item = new Recycler_item[contest.getDatasize()];
 
-                        }
-                        mListView.setAdapter(mAdapter);
-                    } catch (JSONException e) {
+                    for (int i = 0; i < contest.getDatasize(); i++) {
+                        String[] parts = contest.getData(i).getPeriod().split("T");
+                        Dday day = new Dday();
+
+                        item[i] = new Recycler_item(contest.getData(i).getTitle(),
+                                contest.getData(i).getCont_title(), contest.getData(i).getUsername(),
+                                contest.getData(i).getRecruitment(),
+                                contest.getData(i).getMembers(),
+                                contest.getData(i).getIs_clip(),
+                                contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
+                                "D - " + day.dday(parts[0]),
+                                contest.getData(i).getContests_id(),
+                                contest.getData(i).getCont_writer(),
+                                contest.getData(i).getIs_finish()
+                        );
+                        items.add(item[i]);
+
+                        content.setAdapter(rec);
+
                     }
+
 
                 } else if (response.isSuccess()) {
                     Log.d("Response Body isNull", response.message());
@@ -136,79 +145,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
-    private class ViewHolder {
-
-        public TextView Title;
-
-    }
-
-    private class ListViewAdapter extends BaseAdapter {
-        private Context mContext = null;
-        private ArrayList<ContestData> mListData = new ArrayList<ContestData>();
-
-        public ListViewAdapter(Context mContext) {
-            super();
-            this.mContext = mContext;
-        }
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public void addItem(String title, int id){
-            ContestData addInfo = null;
-            addInfo = new ContestData();
-            addInfo.setTitle(title);
-            addInfo.setContests_id(id);
-            mListData.add(addInfo);
-        }
-
-
-        public void remove(int position){
-            mListData.remove(position);
-            dataChange();
-        }
-
-        public void dataChange(){
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.search_item, null);
-
-                holder.Title = (TextView) convertView.findViewById(R.id.stitle);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            ContestData mData = mListData.get(position);
-
-            holder.Title.setText(mData.getTitle());
-
-            return convertView;
-        }
-    }
-
 
 }
 

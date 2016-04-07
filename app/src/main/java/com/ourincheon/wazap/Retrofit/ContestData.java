@@ -11,8 +11,6 @@ import java.util.List;
  */
 
 public class ContestData  implements Serializable {
-    final String[] Category_Arr = {"논문/학술","디자인/UCC","IT/개발","게임","마케팅/광고","기타"};
-    int[] category_idx = new int[6];
     int applies_id;
     int contests_id;
     int recruitment;

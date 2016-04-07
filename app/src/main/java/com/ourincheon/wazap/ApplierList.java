@@ -111,6 +111,7 @@ public class ApplierList extends AppCompatActivity {
                         System.out.println(count);
                         mAdapter = new ListViewAdapter(mContext);
                         for (int i = 0; i < count; i++) {
+                            System.out.println("===="+Integer.parseInt(jsonArr.getJSONObject(i).getString("is_check")));
                             mAdapter.addItem(jsonArr.getJSONObject(i).getString("profile_img"),
                                     jsonArr.getJSONObject(i).getString("username"),
                                     jsonArr.getJSONObject(i).getString("app_users_id"),
@@ -242,16 +243,26 @@ public class ApplierList extends AppCompatActivity {
             holder.aPBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ApplierList.this, showProfile.class);
+                    Intent intent = new Intent(ApplierList.this, showApplier.class);
                     intent.putExtra("thumbnail", mData.getProfile_img());
                     intent.putExtra("user_id", mData.getApp_users_id());
                     intent.putExtra("applies_id", String.valueOf(mData.getApplies_id()));
                     intent.putExtra("contest_id", num);
-                    intent.putExtra("flag", mData.getIs_check());
+                    intent.putExtra("is_ok", mData.getIs_check());
                     startActivity(intent);
                 }
             });
 
+          /*  holder.aPBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ApplierList.this, showMypageActivity.class);
+                    intent.putExtra("user_id", mData.getApp_users_id());
+                    intent.putExtra("flag",3);
+                    startActivity(intent);
+                }
+            });
+*/
             return convertView;
         }
     }

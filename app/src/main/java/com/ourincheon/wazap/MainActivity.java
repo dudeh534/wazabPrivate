@@ -1,8 +1,10 @@
 package com.ourincheon.wazap;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,6 +13,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.TabLayout;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +28,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
 /*
 * TODO - TABLayout RecyclerView insert
 * TODO - ListView Subpage*/
@@ -32,12 +39,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     ImageView profileImg;
     String thumbnail;
+    Context context;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Drawable drawable = getResources().getDrawable(R.drawable.detail_title_banner);
@@ -85,7 +94,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         toolbar.setNavigationIcon(R.drawable.list_icon);
-//        toolbar.setElevation(0);
+        int currentVersion = Build.VERSION.SDK_INT;
+        if(currentVersion>= Build.VERSION_CODES.LOLLIPOP)
+            toolbar.setElevation(0);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentPage(), "팀원모집");
@@ -108,8 +119,18 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         profileImg = (ImageView)header.findViewById(R.id.imageView);
        thumbnail = pref.getString("profile_img","");
-        ThumbnailImage thumb = new ThumbnailImage(thumbnail,profileImg);
-        thumb.execute();
+    //    ThumbnailImage thumb = new ThumbnailImage(thumbnail,profileImg);
+    //    thumb.execute();
+
+        Glide.with(context).load(thumbnail).asBitmap().centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(profileImg) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                profileImg.setImageDrawable(circularBitmapDrawable);
+            }
+        });
 
         ImageView profileBtn = (ImageView)header.findViewById(R.id.showProBtn);
         profileBtn.setOnClickListener(new View.OnClickListener() {

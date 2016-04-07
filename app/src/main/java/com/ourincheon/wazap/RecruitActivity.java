@@ -168,10 +168,12 @@ public class RecruitActivity extends AppCompatActivity {
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        reDate.setOnClickListener(new View.OnClickListener(){
+
+        reDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            { new DatePickerDialog(RecruitActivity.this, dateSetListener,year,month,day).show();}
+            public void onClick(View v) {
+                new DatePickerDialog(RecruitActivity.this, dateSetListener, year, month, day).show();
+            }
         });
 
         reLoc.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +234,10 @@ public class RecruitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //               Toast.makeText(getApplicationContext(), reDate.getText().toString(), Toast.LENGTH_SHORT).show();
-                if(reTitle.getText().toString().equals("") || reCTitle.getText().toString().equals("") || reNum.getText().toString().equals("")
+                Dday date = new Dday();
+                if(date.dday(reDate.getText().toString())<0)
+                    Toast.makeText(RecruitActivity.this, "이미 지난 기간을 선택할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                else if(reTitle.getText().toString().equals("") || reCTitle.getText().toString().equals("") || reNum.getText().toString().equals("")
                     ||reHost.getText().toString().equals("") || reIntro.getText().toString().equals("") || reDate.getText().toString().equals("")
                         || reLoc.getText().toString().equals("") || rePos.getText().toString().equals("")
                         || (checkbox[0].isChecked() == false && checkbox[1].isChecked() == false && checkbox[2].isChecked() == false
@@ -270,8 +275,13 @@ public class RecruitActivity extends AppCompatActivity {
     {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            String msg = String.format("%d-%d-%d", year,monthOfYear+1, dayOfMonth);
+            String msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth);
+            Dday date = new Dday();
             reDate.setText(msg);
+            if(date.dday(reDate.getText().toString())<0) {
+                Toast.makeText(RecruitActivity.this, "이미 지난 기간을 선택할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                reDate.setText(null);
+            }
         }
 
     };
@@ -400,7 +410,8 @@ public class RecruitActivity extends AppCompatActivity {
                 .build();
         WazapService service = client.create(WazapService.class);
 
-        System.out.println(String.valueOf(contest_id));
+        System.out.println("========================== "+String.valueOf(contest_id));
+        System.out.println("========================== "+access_token);
         Call<LinkedTreeMap> call = service.editContest(access_token,String.valueOf(contest_id), contest);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override
@@ -475,6 +486,7 @@ public class RecruitActivity extends AppCompatActivity {
                 else {
                     Log.d("Response Error Body", response.errorBody().toString());
                     System.out.println(response.code());
+                    Toast.makeText(getApplicationContext(), "저장이 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
 

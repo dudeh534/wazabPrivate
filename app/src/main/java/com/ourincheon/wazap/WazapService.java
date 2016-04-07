@@ -112,7 +112,7 @@ public interface WazapService {
     @GET("clips")
     Call<Contests> getCliplist(
             @Header("access-token") String access_token,
-            @Query("start_id") int start_id,
+           // @Query("start_id") int start_id,
             @Query("amount") int amount
     );
 

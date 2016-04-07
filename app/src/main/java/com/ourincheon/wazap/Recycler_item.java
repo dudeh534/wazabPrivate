@@ -16,6 +16,8 @@ public class Recycler_item {
     private int recruit;
     private int member;
     private int clip;
+    private int finish;
+    private int click;
 
 
     String getTitle(){
@@ -53,6 +55,10 @@ public class Recycler_item {
         return clip;
     }
 
+    public int getFinish() {
+        return finish;
+    }
+
     public String getWriter() {
         return writer;
     }
@@ -61,7 +67,15 @@ public class Recycler_item {
         return id;
     }
 
-    Recycler_item(String title, String text, String name, int recruit,int member,int clip,String category, String loc, String day, int id, String writer)
+    public int getClick() {
+        return click;
+    }
+
+    public void setClick() {
+        this.click = click+1;
+    }
+
+    Recycler_item(String title, String text, String name, int recruit,int member,int clip,String category, String loc, String day, int id, String writer, int finish)
      {
         this.title=title;
         this.text=text;
@@ -74,5 +88,7 @@ public class Recycler_item {
         this.day = day;
         this.id = id;
         this.writer = writer;
+         this.finish = finish;
+         click = 0;
     }
 }

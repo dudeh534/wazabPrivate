@@ -33,6 +33,7 @@ import retrofit2.Retrofit;
 public class FragmentPage extends Fragment {
 
     private static final String ARG_POSITION = "position";
+    public static Context mContext;
     RecyclerView content;
     LinearLayout linearLayout;
     private int position;
@@ -48,6 +49,7 @@ public class FragmentPage extends Fragment {
     Recycler_contestItem[] contestItem;
     String access_token;
     SwipeRefreshLayout swipeRefreshLayout;
+
     public static FragmentPage newInstance(int position) {
         FragmentPage f = new FragmentPage();
         Bundle b = new Bundle();
@@ -60,6 +62,8 @@ public class FragmentPage extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
+
+        mContext = this.getActivity();
 
         // 저장된 값 불러오기
         SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
@@ -97,6 +101,7 @@ public class FragmentPage extends Fragment {
                 swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        items = new ArrayList<>();
                         loadPage(access_token);
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -127,7 +132,7 @@ public class FragmentPage extends Fragment {
                     }
                 }));
 
-                rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
+                //rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
                 linearLayout_spinner.removeAllViews();
                 linearLayout_spinner.addView(spinner);
                 linearLayout.removeAllViews();
@@ -174,6 +179,19 @@ public class FragmentPage extends Fragment {
                 return null;
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        /*Bundle bundle = getArguments();
+        int ref = bundle.getInt("refresh");
+        System.out.println("========================= "+ref);
+        if(ref == 1) {
+            items = new ArrayList<>();
+            loadPage(access_token);
+*/
     }
 
     @Override
@@ -289,14 +307,15 @@ public class FragmentPage extends Fragment {
                         Dday day = new Dday();
 
                         item[i] = new Recycler_item(contest.getData(i).getTitle(),
-                                contest.getData(i).getHosts(), contest.getData(i).getUsername(),
+                                contest.getData(i).getCont_title(), contest.getData(i).getUsername(),
                                 contest.getData(i).getRecruitment(),
                                 contest.getData(i).getMembers(),
                                 contest.getData(i).getIs_clip(),
                                 contest.getData(i).getCategories(), contest.getData(i).getCont_locate(),
                                 "D - " + day.dday(parts[0]),
                                 contest.getData(i).getContests_id(),
-                                contest.getData(i).getCont_writer()
+                                contest.getData(i).getCont_writer(),
+                                contest.getData(i).getIs_finish()
                         );
                         items.add(item[i]);
                        /* *//*try {
@@ -321,7 +340,8 @@ public class FragmentPage extends Fragment {
                                     etc.add(item[i]);
                             }
 */
-                            content.setAdapter(rec);
+                        rec = new RecyclerAdapter(getActivity(), items, R.layout.fragment_page);
+                        content.setAdapter(rec);
 
                     }
 

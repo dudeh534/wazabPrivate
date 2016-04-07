@@ -4,25 +4,38 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.ourincheon.wazap.Retrofit.ContestData;
 import com.ourincheon.wazap.Retrofit.reqContest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,12 +49,14 @@ public class MasterJoinActivity extends AppCompatActivity {
     public static Context mContext;
     reqContest contest;
     ContestData contestData;
+    ContestData editconData;
     TextView jTitle,jCTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos,jKakao;
     Button eBtn,jBefore;
     ImageView jImg;
     String access_token,num;
     AlertDialog.Builder ad,deleteD;
     CharSequence list[] = {"수정하기", "삭제하기","취소"};
+    LinearLayout imgLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +66,7 @@ public class MasterJoinActivity extends AppCompatActivity {
         mContext = this;
 
         contestData = new ContestData();
+        editconData = new ContestData();
 
         jTitle = (TextView) findViewById(R.id.jmTitle);
         jCTitle = (TextView) findViewById(R.id.jmCTitle);
@@ -67,6 +83,8 @@ public class MasterJoinActivity extends AppCompatActivity {
         jKakao = (TextView) findViewById(R.id.jmKakao);
 
         jImg = (ImageView) findViewById(R.id.jmImg);
+
+        imgLayout= (LinearLayout) findViewById(R.id.mimgLayout);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         access_token = pref.getString("access_token", "");
@@ -155,7 +173,7 @@ public class MasterJoinActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MasterJoinActivity.this, RecruitActivity.class);
         intent.putExtra("edit",1);
-        intent.putExtra("contestD",contestData);
+        intent.putExtra("contestD", editconData);
         //intent.putExtra("contestD",contestData.getContests_id());
         startActivity(intent);
     }
@@ -169,8 +187,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!"+access_token);
-        System.out.println("!!!!!!!!!!!!!!!!!!!"+num);
+        System.out.println("!!!!!!!!!!!!!!!!!!!" + access_token);
 
         Call<LinkedTreeMap> call = service.delContest(num,access_token);
         call.enqueue(new Callback<LinkedTreeMap>() {
@@ -186,6 +203,11 @@ public class MasterJoinActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("삭제 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+                  /*      FragmentPage fragment = new FragmentPage();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("refresh",1);
+                        fragment.setArguments(bundle);*/
                         finish();
 
                     } else {
@@ -233,7 +255,7 @@ public class MasterJoinActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "마감되었습니다.", Toast.LENGTH_SHORT).show();
-
+                        finish();
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "마감 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -263,7 +285,7 @@ public class MasterJoinActivity extends AppCompatActivity {
 
         WazapService service = retrofit.create(WazapService.class);
 
-        Call<reqContest> call = service.getConInfo(num,access_token);
+        Call<reqContest> call = service.getConInfo(num, access_token);
         call.enqueue(new Callback<reqContest>() {
             @Override
             public void onResponse(Response<reqContest> response) {
@@ -274,31 +296,84 @@ public class MasterJoinActivity extends AppCompatActivity {
 
                     Log.d("SUCCESS", contest.getMsg());
 
-                   System.out.println(contest.getData().getTitle());
+                    editconData.setContests_id(contest.getData().getContests_id());
                     jTitle.setText(contest.getData().getTitle());
+                    editconData.setTitle(contest.getData().getTitle());
                     jCTitle.setText(contest.getData().getCont_title());
+                    editconData.setCont_title(contest.getData().getCont_title());
                     jCate.setText(contest.getData().getCategories());
                     jApply.setText(String.valueOf(contest.getData().getAppliers()));
                     jMem.setText(String.valueOf(contest.getData().getMembers()));
                     jRec.setText(" / "+String.valueOf(contest.getData().getRecruitment()));
+                    editconData.setRecruitment(contest.getData().getRecruitment());
                     jName.setText(contest.getData().getUsername());
+                    editconData.setUsername(contest.getData().getUsername());
                     jCover.setText(contest.getData().getCover());
+                    editconData.setCover(contest.getData().getCover());
                     jHost.setText(contest.getData().getHosts());
+                    editconData.setHosts(contest.getData().getHosts());
                     jLoc.setText(contest.getData().getCont_locate());
+                    editconData.setCont_locate(contest.getData().getCont_locate());
                     jPos.setText(contest.getData().getPositions());
+                    editconData.setPositions(contest.getData().getPositions());
                     jKakao.setText(contest.getData().getKakao_id());
 
                     try {
                         String thumb = URLDecoder.decode(contest.getData().getProfile_img(), "EUC_KR");
-                        Glide.with(mContext).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
+                        //Glide.with(mContext).load(thumb).error(R.drawable.icon_user).override(50,50).crossFade().into(jImg);
+                        Glide.with(mContext).load(thumb).asBitmap().centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(jImg) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                jImg.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
+                    }
+
+                    // 멤버리스트 이미지로 붙이기
+                    System.out.println("membersize---------------" + contest.getData().getMembersize());
+                    imgLayout.removeAllViews();
+                    for(int i=0; i<contest.getData().getMembersize(); i++) {
+                        final int idx = i;
+                        final ImageView img = new ImageView(mContext);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0, 0, 20, 0);
+                        img.setLayoutParams(params);
+                        System.out.println(contest.getData().getMemberList(i).getProfile_img());
+                        //Glide.with(context).load(contest.getData().getMemberList(i).getProfile_img()).error(R.drawable.icon_user).override(70,70).crossFade().into(img);
+                        int size = PixelToDp(mContext,150);
+                        Glide.with(mContext).load(contest.getData().getMemberList(i).getProfile_img()).asBitmap().override(size,size).centerCrop().error(R.drawable.icon_user).into(new BitmapImageViewTarget(img) {
+                            @Override
+                            protected void setResource(Bitmap resource) {
+                                RoundedBitmapDrawable circularBitmapDrawable =
+                                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                                circularBitmapDrawable.setCircular(true);
+                                img.setImageDrawable(circularBitmapDrawable);
+                            }
+                        });
+                        img.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                System.out.println("---------------------"+contest.getData().getMemberList(idx).getUsers_id());
+
+                                Intent intent = new Intent(MasterJoinActivity.this, showMypageActivity.class);
+                                intent.putExtra("user_id", contest.getData().getMemberList(idx).getUsers_id());
+                                intent.putExtra("flag",2);
+                                startActivity(intent);
+                            }
+                        });
+                        imgLayout.addView(img);
                     }
 
 
                     String[] parts = contest.getData().getPeriod().split("T");
                     Dday day = new Dday();
                     jDate.setText("D - "+day.dday(parts[0]));
+                    editconData.setPeriod(parts[0]);
 
                     contestData = contest.getData();
 
@@ -316,6 +391,13 @@ public class MasterJoinActivity extends AppCompatActivity {
                 Log.e("Error", t.getMessage());
             }
         });
+    }
+
+    // pixel값을 dp값으로 변경
+    public static int PixelToDp(Context context, int pixel) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float dp = pixel / (metrics.densityDpi / 160f);
+        return (int) dp;
     }
 
     @Override

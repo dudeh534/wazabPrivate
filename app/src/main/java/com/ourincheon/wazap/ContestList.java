@@ -46,6 +46,7 @@ import retrofit2.Retrofit;
 public class ContestList extends AppCompatActivity {
     public static Context mContext;
     public static ArrayList<ApplierData> mListData = new ArrayList<ApplierData>();
+    public static ArrayList<Integer> List_SIZE = new ArrayList<Integer>();
     ScrollView scrollView;
     Contests contests;
     ArrayList<ContestData> contest_list;
@@ -76,7 +77,7 @@ public class ContestList extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    public static void setListViewHeightBasedOnChildren1(ListView listView) {
+    public static void setListViewHeightBasedOnChildren_add(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -88,9 +89,36 @@ public class ContestList extends AppCompatActivity {
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
-
+        List_SIZE.add(mListData.size());
+        int temp = 0;
+        for(int i = 0; i < List_SIZE.size();i++){
+            temp += List_SIZE.get(i);
+        }
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = 211 * mListData.size() + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = 211 * temp + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public static void setListViewHeightBasedOnChildren_delete(ListView listView, int position) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        List_SIZE.remove(position);
+        int temp = 0;
+        for(int i = 0; i < List_SIZE.size();i++){
+            temp += List_SIZE.get(i);
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = 211 * temp + totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -99,7 +127,7 @@ public class ContestList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contest_list);
-
+        List_SIZE.clear();
         mListView = (ListView) findViewById(R.id.contestlistView);
         mListView2 = (ListView) findViewById(R.id.listView1);
 
@@ -316,7 +344,7 @@ public class ContestList extends AppCompatActivity {
                             selectItem.delete(position);
                             holder.Detail.setSelected(false);//? 이거는 왜 안돼
                             holder.open_layout.setVisibility(View.GONE);
-                            //setListViewHeightBasedOnChildren(mListView);
+                            setListViewHeightBasedOnChildren_delete(mListView,position);
                         } else {
                             selectItem.put(position, true);
                             holder.Detail.setSelected(true);
@@ -365,7 +393,7 @@ public class ContestList extends AppCompatActivity {
                                             holder.mListView1.setDivider(null);
                                             holder.mListView1.setDividerHeight(0);
                                             setListViewHeightBasedOnChildren(holder.mListView1);
-                                            setListViewHeightBasedOnChildren1(mListView);
+                                            setListViewHeightBasedOnChildren_add(mListView);
                                         } catch (JSONException e) {
                                         }
 

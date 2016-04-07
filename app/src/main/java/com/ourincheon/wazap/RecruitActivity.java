@@ -410,7 +410,8 @@ public class RecruitActivity extends AppCompatActivity {
                 .build();
         WazapService service = client.create(WazapService.class);
 
-        System.out.println(String.valueOf(contest_id));
+        System.out.println("========================== "+String.valueOf(contest_id));
+        System.out.println("========================== "+access_token);
         Call<LinkedTreeMap> call = service.editContest(access_token,String.valueOf(contest_id), contest);
         call.enqueue(new Callback<LinkedTreeMap>() {
             @Override

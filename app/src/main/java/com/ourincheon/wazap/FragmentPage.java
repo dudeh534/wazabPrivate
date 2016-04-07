@@ -188,10 +188,10 @@ public class FragmentPage extends Fragment {
         /*Bundle bundle = getArguments();
         int ref = bundle.getInt("refresh");
         System.out.println("========================= "+ref);
-        if(ref == 1) {*/
+        if(ref == 1) {
             items = new ArrayList<>();
             loadPage(access_token);
-
+*/
     }
 
     @Override

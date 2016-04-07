@@ -49,6 +49,7 @@ public class MasterJoinActivity extends AppCompatActivity {
     public static Context mContext;
     reqContest contest;
     ContestData contestData;
+    ContestData editconData;
     TextView jTitle,jCTitle,jButton,jmList,jCate,jApply,jRec,jName,jCover,jMem,jDate,jHost,jLoc,jPos,jKakao;
     Button eBtn,jBefore;
     ImageView jImg;
@@ -65,6 +66,7 @@ public class MasterJoinActivity extends AppCompatActivity {
         mContext = this;
 
         contestData = new ContestData();
+        editconData = new ContestData();
 
         jTitle = (TextView) findViewById(R.id.jmTitle);
         jCTitle = (TextView) findViewById(R.id.jmCTitle);
@@ -171,7 +173,7 @@ public class MasterJoinActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MasterJoinActivity.this, RecruitActivity.class);
         intent.putExtra("edit",1);
-        intent.putExtra("contestD", contestData);
+        intent.putExtra("contestD", editconData);
         //intent.putExtra("contestD",contestData.getContests_id());
         startActivity(intent);
     }
@@ -202,10 +204,10 @@ public class MasterJoinActivity extends AppCompatActivity {
                         Log.d("삭제 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
 
-                        FragmentPage fragment = new FragmentPage();
+                  /*      FragmentPage fragment = new FragmentPage();
                         Bundle bundle = new Bundle();
                         bundle.putInt("refresh",1);
-                        fragment.setArguments(bundle);
+                        fragment.setArguments(bundle);*/
                         finish();
 
                     } else {
@@ -253,7 +255,7 @@ public class MasterJoinActivity extends AppCompatActivity {
                     if (result) {
                         Log.d("저장 결과: ", msg);
                         Toast.makeText(getApplicationContext(), "마감되었습니다.", Toast.LENGTH_SHORT).show();
-
+                        finish();
                     } else {
                         Log.d("저장 실패: ", msg);
                         Toast.makeText(getApplicationContext(), "마감 안됬습니다.다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -294,17 +296,26 @@ public class MasterJoinActivity extends AppCompatActivity {
 
                     Log.d("SUCCESS", contest.getMsg());
 
+                    editconData.setContests_id(contest.getData().getContests_id());
                     jTitle.setText(contest.getData().getTitle());
+                    editconData.setTitle(contest.getData().getTitle());
                     jCTitle.setText(contest.getData().getCont_title());
+                    editconData.setCont_title(contest.getData().getCont_title());
                     jCate.setText(contest.getData().getCategories());
                     jApply.setText(String.valueOf(contest.getData().getAppliers()));
                     jMem.setText(String.valueOf(contest.getData().getMembers()));
                     jRec.setText(" / "+String.valueOf(contest.getData().getRecruitment()));
+                    editconData.setRecruitment(contest.getData().getRecruitment());
                     jName.setText(contest.getData().getUsername());
+                    editconData.setUsername(contest.getData().getUsername());
                     jCover.setText(contest.getData().getCover());
+                    editconData.setCover(contest.getData().getCover());
                     jHost.setText(contest.getData().getHosts());
+                    editconData.setHosts(contest.getData().getHosts());
                     jLoc.setText(contest.getData().getCont_locate());
+                    editconData.setCont_locate(contest.getData().getCont_locate());
                     jPos.setText(contest.getData().getPositions());
+                    editconData.setPositions(contest.getData().getPositions());
                     jKakao.setText(contest.getData().getKakao_id());
 
                     try {
@@ -362,6 +373,7 @@ public class MasterJoinActivity extends AppCompatActivity {
                     String[] parts = contest.getData().getPeriod().split("T");
                     Dday day = new Dday();
                     jDate.setText("D - "+day.dday(parts[0]));
+                    editconData.setPeriod(parts[0]);
 
                     contestData = contest.getData();
 

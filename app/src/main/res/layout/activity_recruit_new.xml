@@ -73,7 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:textColor="#464646"/>
+            android:textColor="#464646"
+            android:backgroundTint="#ffffff"/>
 
         <com.ourincheon.wazap.NotoTextView
             android:layout_width="wrap_content"
@@ -187,8 +188,9 @@
                 android:id="@+id/reCTitle"
                 android:layout_marginRight="12dp"
                 android:hint="입력하세요"
-                android:layout_marginTop="15dp"
-                android:textSize="13dp" />
+                android:layout_marginTop="20dp"
+                android:textSize="13dp"
+                android:backgroundTint="#ffffff"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -196,14 +198,15 @@
                 android:id="@+id/reHost"
                 android:layout_marginRight="12dp"
                 android:hint="입력하세요"
-                android:layout_marginTop="5dp"
-                android:textSize="13dp" />
+                android:layout_marginTop="10dp"
+                android:textSize="13dp"
+                android:backgroundTint="#ffffff"/>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="7dp">
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -273,7 +276,8 @@
                     android:hint="모집 인원을 입력하세요"
                     android:id="@+id/reNum"
                     android:inputType="number"
-                    android:textSize="14dp" />
+                    android:textSize="14dp"
+                    android:backgroundTint="#ffffff"/>
 
             </LinearLayout>
 
@@ -299,7 +303,8 @@
                 android:textSize="14dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                />
+                android:backgroundTint="#ffffff"
+                android:layout_marginTop="4dp" />
 
 
         </LinearLayout>
